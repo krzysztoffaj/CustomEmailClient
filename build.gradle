@@ -1,0 +1,24 @@
+apply plugin: 'application'
+apply plugin: "idea"
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+}
+
+mainClassName = "sample.Main"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java", "src/main/resources"]
+            includes = ["**/*.fxml", "**/*.xml"]
+        }
+    }
+}
