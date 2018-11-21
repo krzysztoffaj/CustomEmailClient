@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" prefHeight="800.0" prefWidth="1200.0" vgap="10"
+          xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.app.controller.EmailBrowserController">
+    <columnConstraints>
+        <ColumnConstraints/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+    </rowConstraints>
+    <children>
+        <BorderPane prefHeight="800.0" prefWidth="1200.0">
+            <top>
+            </top>
+
+
+            <left>
+                <VBox prefHeight="780.0" prefWidth="323.0" BorderPane.alignment="CENTER_LEFT">
+                    <children>
+                        <HBox alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0">
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0"
+                                        text="Address book"/>
+                            </children>
+                        </HBox>
+
+
+                        <HBox minWidth="-Infinity" prefHeight="700.0" prefWidth="323.0">
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                            <children>
+                                <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
+                                    <HBox.margin>
+                                        <Insets/>
+                                    </HBox.margin>
+                                    <children>
+                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
+                                                text="Inbox"/>
+                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
+                                                text="Sent"/>
+                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
+                                                text="Draft"/>
+                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
+                                                text="Deleted"/>
+                                    </children>
+                                </VBox>
+
+                                <ListView fx:id="listedEmails" prefHeight="712.0" prefWidth="200.0"
+                                          onMouseClicked="#handleSelectedEmail">
+                                    <HBox.margin>
+                                        <Insets left="11.0"/>
+                                    </HBox.margin>
+                                </ListView>
+                            </children>
+                        </HBox>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </VBox>
+            </left>
+
+
+            <center>
+                <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                    <children>
+                        <HBox fx:id="operationsPane" minWidth="-Infinity" prefHeight="52.0" prefWidth="449.0"
+                              BorderPane.alignment="CENTER_RIGHT">
+                            <BorderPane.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="25.0"/>
+                            </BorderPane.margin>
+                            <children>
+                                <Button fx:id="refresh" mnemonicParsing="false" onAction="#getEmails" prefHeight="67.0"
+                                        prefWidth="100" text="Refresh"/>
+                                <Button fx:id="compose" mnemonicParsing="false" prefHeight="67.0" prefWidth="100"
+                                        text="Compose"/>
+                                <Button fx:id="reply" mnemonicParsing="false" prefHeight="67.0"
+                                        prefWidth="100" text="Reply"/>
+                                <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="100" text="Reply to all"/>
+                                <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="100" text="Forward"/>
+                                <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="100" text="Delete"/>
+                                <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="100" text="Mark"/>
+                                <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="100" text="Save"/>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0"/>
+                            </padding>
+                        </HBox>
+
+                        <ListView fx:id="emailDetails" prefHeight="100.0" prefWidth="827.0"/>
+
+                        <TextArea fx:id="emailBody" editable="false" prefHeight="600.0" prefWidth="860.0"
+                                  stylesheets="@../styles/EmailBody.css" wrapText="true">
+                            <VBox.margin>
+                                <Insets/>
+                            </VBox.margin>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </padding>
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                        </TextArea>
+                    </children>
+                </VBox>
+            </center>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+            </padding>
+        </BorderPane>
+    </children>
+</GridPane>

@@ -1,24 +1,13 @@
 apply plugin: 'application'
-apply plugin: "idea"
+apply plugin: 'idea'
+apply plugin: 'java'
 
-targetCompatibility = '1.8'
-sourceCompatibility = '1.8'
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
-dependencies {
-
-}
-
-mainClassName = "sample.Main"
-
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/java", "src/main/resources"]
-            includes = ["**/*.fxml", "**/*.xml"]
-        }
-    }
-}
+group = 'com.app'
+mainClassName = 'com.app.Main'
