@@ -2,7 +2,6 @@ package com.app.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Control;
@@ -18,7 +17,7 @@ public class EmailManager {
 
     public void showEmail(ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/app/fxml/MainWindow.fxml"));
-        EmailExtractor extractor = new EmailExtractor(path);
+        EmailExtractorFromTxt extractor = new EmailExtractorFromTxt(path);
         List<String> email = extractor.getEmail();
         List<String> list = new ArrayList<>();
         list.add("From:\t" + extractor.getSender(email));
@@ -34,7 +33,7 @@ public class EmailManager {
     }
 
     public void addEmailToList(ListView<String> listedEmails, ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
-        EmailExtractor extractor = new EmailExtractor(path);
+        EmailExtractorFromTxt extractor = new EmailExtractorFromTxt(path);
         List<String> email = extractor.getEmail();
 
         List<String> list = new ArrayList<>();

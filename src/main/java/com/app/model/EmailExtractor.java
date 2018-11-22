@@ -1,49 +1,22 @@
 package com.app.model;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class EmailExtractor {
+public interface EmailExtractor {
+    public List<String> getEmail() throws Exception;
 
-    private String path;
+    public String getSender(List<String> email);
 
-    public EmailExtractor(String path) {
-        this.path = path;
-    }
+    public String getReceivers(List<String> email);
 
-    public List<String> getEmail() throws IOException {
-        return Files.readAllLines(Paths.get(this.path));
-    }
+    public String getSubject(List<String> email);
 
-    public String getSender(List<String> email) {
-        return email.get(0);
-    }
+    public String getMark(List<String> email);
 
-    public String getReceivers(List<String> email) {
-        return email.get(1);
-    }
+    public String getDate(List<String> email);
 
-    public String getSubject(List<String> email) {
-        return email.get(2);
-    }
-
-    public String getMark(List<String> email) {
-        return email.get(3);
-    }
-
-    public String getDate(List<String> email) {
-        return email.get(4);
-    }
-
-    public String getBody(List<String> email) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 7; i < email.size(); i++) {
-            stringBuilder.append(email.get(i)).append("\n");
-        }
-        return stringBuilder.toString();
-    }
+    public String getBody(List<String> email);
 }
