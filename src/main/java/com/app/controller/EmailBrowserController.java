@@ -26,6 +26,8 @@ public class EmailBrowserController {
     @FXML
     Button refresh;
     @FXML
+    Button addressBook;
+    @FXML
     Button newEmail;
     @FXML
     Button reply;
@@ -43,15 +45,10 @@ public class EmailBrowserController {
     private final EmailManager emailManager = new EmailManager();
 
     @FXML
-    private void setButtonsWidthToFillHbox() {
-        Button[] operations = {refresh, newEmail, reply, replyToAll, forward, delete, mark, save};
+    public void setButtonsWidthToFillHbox() {
+        Button[] operations = {addressBook, newEmail, reply, replyToAll, forward, delete, mark, save};
         for (Button operation : operations) {
-//            operationsPane.getChildren().add(operation);
-        }
-        int btnCount = operationsPane.getChildren().size();
-
-        for (Button operation : operations) {
-            operation.prefWidthProperty().bind(operationsPane.widthProperty().divide(btnCount));
+            operation.prefWidthProperty().bind(operationsPane.widthProperty().divide(operations.length));
         }
     }
 

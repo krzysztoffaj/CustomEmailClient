@@ -9,122 +9,59 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="center" maxHeight="Infinity" prefHeight="800.0" prefWidth="1200.0"
-      xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.app.controller.EmailBrowserController">
-    <!--<columnConstraints>-->
-    <!--<ColumnConstraints />-->
-    <!--</columnConstraints>-->
-    <!--<rowConstraints>-->
-    <!--<RowConstraints />-->
-    <!--</rowConstraints>-->
-    <children>
-        <BorderPane maxHeight="Infinity" prefWidth="1200.0" VBox.vgrow="ALWAYS">
-            <top>
-            </top>
 
-
-            <left>
-                <VBox prefWidth="323.0" BorderPane.alignment="CENTER_LEFT">
-                    <children>
-                        <HBox alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0">
-                            <children>
-                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0"
-                                        text="Address book"/>
-                            </children>
-                        </HBox>
-
-
-                        <HBox minWidth="-Infinity" prefHeight="700.0" prefWidth="323.0">
-                            <HBox.margin>
-                                <Insets/>
-                            </HBox.margin>
-                            <children>
-                                <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
-                                    <HBox.margin>
-                                        <Insets/>
-                                    </HBox.margin>
-                                    <children>
-                                        <Button onAction="#setButtonsWidthToFillHbox" mnemonicParsing="false"
-                                                prefHeight="50.0" prefWidth="100.0" text="Inbox"/>
-                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
-                                                text="Sent"/>
-                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
-                                                text="Draft"/>
-                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0"
-                                                text="Deleted"/>
-                                    </children>
-                                </VBox>
-
-                                <ListView fx:id="listedEmails" onMouseClicked="#handleSelectedEmail" prefHeight="712.0"
-                                          prefWidth="200.0">
-                                    <HBox.margin>
-                                        <Insets left="11.0"/>
-                                    </HBox.margin>
-                                </ListView>
-                            </children>
-                        </HBox>
-                    </children>
-                    <BorderPane.margin>
-                        <Insets/>
-                    </BorderPane.margin>
+    <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+        <VBox VBox.vgrow="ALWAYS">
+            <HBox minWidth="-Infinity" VBox.vgrow="ALWAYS">
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <padding>
+                        <Insets right="10.0" top="60.0"/>
+                    </padding>
+                    <Button mnemonicParsing="false" onAction="#setButtonsWidthToFillHbox"
+                            prefHeight="50.0" prefWidth="100.0" text="Inbox"/>
+                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Sent"/>
+                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Draft"/>
+                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Deleted"/>
                 </VBox>
-            </left>
 
-
-            <center>
-                <VBox maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                      prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
-                    <BorderPane.margin>
-                        <Insets/>
-                    </BorderPane.margin>
-                    <children>
-                        <HBox fx:id="operationsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="52.0" prefWidth="1500.0"
-                              BorderPane.alignment="CENTER_RIGHT">
-                            <BorderPane.margin>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="25.0"/>
-                            </BorderPane.margin>
-                            <children>
-                                <Button fx:id="refresh" mnemonicParsing="false" onAction="#getEmails" prefHeight="67.0"
-                                        text="Refresh"/>
-                                <Button fx:id="newEmail" mnemonicParsing="false" prefHeight="67.0" text="New email"/>
-                                <Button fx:id="reply" mnemonicParsing="false" prefHeight="67.0" text="Reply"/>
-                                <Button fx:id="replyToAll" mnemonicParsing="false" prefHeight="67.0"
-                                        text="Reply to all"/>
-                                <Button fx:id="forward" mnemonicParsing="false" prefHeight="67.0" text="Forward"/>
-                                <Button fx:id="delete" mnemonicParsing="false" prefHeight="67.0" text="Delete"/>
-                                <Button fx:id="mark" mnemonicParsing="false" prefHeight="67.0" text="Mark"/>
-                                <Button fx:id="save" mnemonicParsing="false" prefHeight="67.0" text="Save"/>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0"/>
-                            </padding>
-                        </HBox>
-
-                        <ListView fx:id="emailDetails" minHeight="100.0" prefHeight="100.0"/>
-
-                        <TextArea fx:id="emailBody" editable="false" minHeight="600.0" prefHeight="600.0"
-                                  stylesheets="@../styles/EmailBody.css" wrapText="true">
-                            <VBox.margin>
-                                <Insets/>
-                            </VBox.margin>
-                            <padding>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                            </padding>
-                            <font>
-                                <Font size="16.0"/>
-                            </font>
-                            <opaqueInsets>
-                                <Insets/>
-                            </opaqueInsets>
-                        </TextArea>
-                    </children>
+                <VBox spacing="10.0">
+                    <Button fx:id="refresh" mnemonicParsing="false" onAction="#getEmails"
+                            prefWidth="200.0" minHeight="50" text="Refresh"/>
+                    <ListView fx:id="listedEmails" onMouseClicked="#handleSelectedEmail"
+                              prefWidth="200.0" VBox.vgrow="ALWAYS">
+                    </ListView>
                 </VBox>
-            </center>
-            <padding>
-                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
-            </padding>
-        </BorderPane>
-    </children>
+            </HBox>
+        </VBox>
+
+        <VBox minHeight="400" minWidth="600" spacing="10.0" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+            <HBox fx:id="operationsPane">
+                <Button fx:id="addressBook" mnemonicParsing="false" minHeight="50.0" text="Address book"/>
+                <Button fx:id="newEmail" mnemonicParsing="false" minHeight="50.0" text="New email"/>
+                <Button fx:id="reply" mnemonicParsing="false" minHeight="50.0" text="Reply"/>
+                <Button fx:id="replyToAll" mnemonicParsing="false" minHeight="50.0" text="Reply to all"/>
+                <Button fx:id="forward" mnemonicParsing="false" minHeight="50.0" text="Forward"/>
+                <Button fx:id="delete" mnemonicParsing="false" minHeight="50.0" text="Delete"/>
+                <Button fx:id="mark" mnemonicParsing="false" minHeight="50.0" text="Mark"/>
+                <Button fx:id="save" mnemonicParsing="false" minHeight="50.0" text="Save"/>
+            </HBox>
+
+            <ListView fx:id="emailDetails" minHeight="100.0" prefHeight="100.0"/>
+
+            <TextArea fx:id="emailBody" editable="false" VBox.vgrow="SOMETIMES"
+                      stylesheets="@../styles/EmailBody.css" wrapText="true">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" top="10.0"/>
+                </padding>
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </TextArea>
+        </VBox>
+        <padding>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+        </padding>
+    </HBox>
 </VBox>
