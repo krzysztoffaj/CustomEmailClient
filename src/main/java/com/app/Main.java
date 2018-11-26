@@ -1,7 +1,6 @@
 package com.app;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +13,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/com/app/fxml/MainWindow.fxml"));
         primaryStage.setTitle("Custom Email Client");
         primaryStage.setScene(new Scene(root, 1200, 800));
-        primaryStage.setMinWidth(600);
+        primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(400);
         primaryStage.show();
     }
