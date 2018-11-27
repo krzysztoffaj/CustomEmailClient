@@ -70,7 +70,7 @@ public class EmailBrowserController {
             });
         }
     }
-    
+
     @FXML
     private void handleSelectedEmail() {
         String workingDirection = Paths.get(".").toAbsolutePath().normalize().toString();

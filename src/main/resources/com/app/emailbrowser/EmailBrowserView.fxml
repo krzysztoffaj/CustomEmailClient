@@ -58,7 +58,7 @@
             <ListView fx:id="emailDetails" minHeight="110.0" prefHeight="110.0"/>
 
             <TextArea fx:id="emailBody" editable="false" VBox.vgrow="SOMETIMES"
-                      stylesheets="@EmailBody.css" wrapText="true">
+                      stylesheets="@styles/EmailBody.css" wrapText="true">
                 <padding>
                     <Insets bottom="10.0" left="10.0" top="10.0"/>
                 </padding>
