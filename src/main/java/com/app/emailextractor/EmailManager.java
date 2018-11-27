@@ -1,5 +1,7 @@
-package com.app.model;
+package com.app.emailextractor;
 
+import com.app.emailbrowser.EmailBrowserModel;
+import com.app.emailbrowser.EmailBrowserModelTxt;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -15,15 +17,15 @@ import java.util.List;
 
 public class EmailManager {
 
-    public void showEmail(ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/app/fxml/MainWindow.fxml"));
-        EmailExtractorFromTxt extractor = new EmailExtractorFromTxt(path);
+    public void showEmail(ListView<String> emailDetails, TextArea emailBody, String path) throws Exception {
+        EmailBrowserModel extractor = new EmailBrowserModelTxt(path);
         List<String> email = extractor.getEmail();
         List<String> list = new ArrayList<>();
         list.add("From:\t" + extractor.getSender(email));
         list.add("To:\t\t" + extractor.getReceivers(email));
         list.add("Subject:\t" + extractor.getSubject(email));
         list.add("Date:\t" + extractor.getDate(email));
+
         ObservableList<String> observableList = FXCollections.observableArrayList(list);
         emailDetails.getItems().clear();
         emailDetails.getItems().addAll(observableList);
@@ -33,7 +35,7 @@ public class EmailManager {
     }
 
     public void addEmailToList(ListView<String> listedEmails, ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
-        EmailExtractorFromTxt extractor = new EmailExtractorFromTxt(path);
+        EmailBrowserModelTxt extractor = new EmailBrowserModelTxt(path);
         List<String> email = extractor.getEmail();
 
         List<String> list = new ArrayList<>();

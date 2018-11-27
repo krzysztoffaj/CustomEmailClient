@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/com/app/fxml/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/app/emailbrowser/EmailBrowserView.fxml"));
         primaryStage.setTitle("Custom Email Client");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.setMinWidth(800);

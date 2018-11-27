@@ -1,8 +1,8 @@
-package com.app.model;
+package com.app.emailbrowser;
 
 import java.util.List;
 
-public class EmailExtractorFromDb implements EmailExtractor {
+public class EmailBrowserModelDb implements EmailBrowserModel {
 
     @Override
     public List<String> getEmail() throws Exception {

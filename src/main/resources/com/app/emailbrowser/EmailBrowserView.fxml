@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.app.controller.EmailBrowserController">
+      fx:controller="com.app.emailbrowser.EmailBrowserController">
 
     <HBox spacing="10.0" VBox.vgrow="ALWAYS">
         <VBox VBox.vgrow="ALWAYS">
@@ -18,17 +18,17 @@
                     <padding>
                         <Insets right="10.0" top="60.0"/>
                     </padding>
-                    <Button mnemonicParsing="false" onAction="#setButtonsWidthToFillHbox"
-                            prefHeight="50.0" prefWidth="100.0" text="Inbox"/>
-                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Sent"/>
-                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Draft"/>
-                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Deleted"/>
+                    <Button fx:id="inbox" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Inbox"/>
+                    <Button fx:id="sent" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Sent"/>
+                    <Button fx:id="saved" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Saved"/>
+                    <Button fx:id="draft" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Draft"/>
+                    <Button fx:id="deleted" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Deleted"/>
                 </VBox>
 
                 <VBox spacing="10.0">
-                    <Button fx:id="refresh" mnemonicParsing="false" onAction="#getEmails"
+                    <Button fx:id="refresh" mnemonicParsing="false"
                             prefWidth="200.0" minHeight="50" text="Refresh"/>
-                    <ListView fx:id="listedEmails" onMouseClicked="#handleSelectedEmail"
+                    <ListView fx:id="listedEmails"
                               prefWidth="200.0" VBox.vgrow="ALWAYS">
                     </ListView>
                 </VBox>
@@ -58,7 +58,7 @@
             <ListView fx:id="emailDetails" minHeight="110.0" prefHeight="110.0"/>
 
             <TextArea fx:id="emailBody" editable="false" VBox.vgrow="SOMETIMES"
-                      stylesheets="@../styles/EmailBody.css" wrapText="true">
+                      stylesheets="@EmailBody.css" wrapText="true">
                 <padding>
                     <Insets bottom="10.0" left="10.0" top="10.0"/>
                 </padding>

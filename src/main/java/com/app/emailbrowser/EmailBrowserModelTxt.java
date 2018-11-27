@@ -1,15 +1,15 @@
-package com.app.model;
+package com.app.emailbrowser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class EmailExtractorFromTxt implements EmailExtractor {
+public class EmailBrowserModelTxt implements EmailBrowserModel {
 
     private String path;
 
-    public EmailExtractorFromTxt(String path) {
+    public EmailBrowserModelTxt(String path) {
         this.path = path;
     }
 
@@ -50,5 +50,13 @@ public class EmailExtractorFromTxt implements EmailExtractor {
             stringBuilder.append(email.get(i)).append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    public static String prepareFilename(String filename) {
+        filename = filename.substring(filename.lastIndexOf("\n") + 1);
+        filename = filename.replace("   ", " ");
+        filename = filename.replace(":", "");
+
+        return filename;
     }
 }
