@@ -1,9 +1,6 @@
 package com.app.emailbrowser;
 
 import com.app.emailextractor.EmailManager;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -33,6 +30,8 @@ public class EmailBrowserController {
 
     private final EmailManager emailManager = new EmailManager();
 
+    private String selectedMailbox = "Inbox";
+
 //    private final EmailBrowserModel emailBrowserModel;
 //
 //
@@ -41,7 +40,7 @@ public class EmailBrowserController {
 //    }
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() throws Exception {
 //        EmailBrowserController(new EmailBrowserModelTxt());
         getEmails(inbox.getText());
         setButtonsWidthToFillHbox();
@@ -61,14 +60,31 @@ public class EmailBrowserController {
     private void handleMailboxesClickEvents() {
         Button[] operations = {inbox, sent, draft, saved, deleted};
         for (Button operation : operations) {
-            operation.setOnAction((event) -> {
+            operation.setOnMouseClicked((event) -> {
                 try {
                     getEmails(operation.getText());
+                    selectedMailbox = operation.getText();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
         }
+    }
+    
+    @FXML
+    private void handleSelectedEmail() {
+        String workingDirection = Paths.get(".").toAbsolutePath().normalize().toString();
+        listedEmails.setOnMouseClicked(event -> {
+            String extractedFilename = listedEmails.getSelectionModel().getSelectedItem();
+            String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
+            System.out.println(selectedMailbox);
+            try {
+                emailManager.showEmail(emailDetails, emailBody,
+                        Paths.get(workingDirection, "emails", selectedMailbox, preparedFilename + ".txt").normalize().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
@@ -80,31 +96,5 @@ public class EmailBrowserController {
         for (File file : files) {
             emailManager.addEmailToList(listedEmails, emailDetails, emailBody, file.getPath());
         }
-    }
-
-    @FXML
-    public void handleSelectedEmail() throws IOException {
-
-
-//        String workingDirection = Paths.get(".").toAbsolutePath().normalize().toString();
-//        String extractedFilename = listedEmails.getSelectionModel().getSelectedItem();
-//        final String tak = EmailBrowserModelTxt.prepareFilename(extractedFilename);
-
-//        emailManager.showEmail(emailDetails, emailBody, workingDirection + "/emails/Inbox/" + tak + ".txt");
-//        listedEmails.setOnMouseClicked((event ->
-//
-//        {
-//            try {
-//                emailManager.showEmail(emailDetails, emailBody, workingDirection + "/emails/Inbox/" + tak + ".txt");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//                ));
-
-//        String workingDirection = Paths.get(".").toAbsolutePath().normalize().toString();
-//        String extractedFilename = listedEmails.getSelectionModel().getSelectedItem();
-//        extractedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
-//        emailManager.showEmail(emailDetails, emailBody, workingDirection + "/emails/Inbox/" + extractedFilename + ".txt");
     }
 }
