@@ -4,20 +4,14 @@ import com.app.emailbrowser.EmailBrowserModel;
 import com.app.emailbrowser.EmailBrowserModelTxt;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Control;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmailManager {
-
-    public void showEmail(ListView<String> emailDetails, TextArea emailBody, String path) throws Exception {
+    public void showEmail(ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
         EmailBrowserModel extractor = new EmailBrowserModelTxt(path);
         List<String> email = extractor.getEmail();
         List<String> list = new ArrayList<>();

@@ -1,11 +1,12 @@
 package com.app.emailbrowser;
 
+import java.io.IOException;
 import java.util.List;
 
 public class EmailBrowserModelDb implements EmailBrowserModel {
 
     @Override
-    public List<String> getEmail() throws Exception {
+    public List<String> getEmail() throws IOException {
         return null;
     }
 

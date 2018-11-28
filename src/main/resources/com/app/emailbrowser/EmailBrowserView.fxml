@@ -18,17 +18,22 @@
                     <padding>
                         <Insets right="10.0" top="60.0"/>
                     </padding>
-                    <Button fx:id="inbox" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Inbox"/>
-                    <Button fx:id="sent" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Sent"/>
-                    <Button fx:id="saved" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Saved"/>
-                    <Button fx:id="draft" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Draft"/>
-                    <Button fx:id="deleted" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Deleted"/>
+                    <Button mnemonicParsing="false" onAction="#handleMailboxesClick"
+                            prefHeight="50.0" prefWidth="100.0" text="Inbox"/>
+                    <Button mnemonicParsing="false" onAction="#handleMailboxesClick"
+                            prefHeight="50.0" prefWidth="100.0" text="Sent"/>
+                    <Button mnemonicParsing="false" onAction="#handleMailboxesClick"
+                            prefHeight="50.0" prefWidth="100.0" text="Saved"/>
+                    <Button mnemonicParsing="false" onAction="#handleMailboxesClick"
+                            prefHeight="50.0" prefWidth="100.0" text="Draft"/>
+                    <Button mnemonicParsing="false" onAction="#handleMailboxesClick"
+                            prefHeight="50.0" prefWidth="100.0" text="Deleted"/>
                 </VBox>
 
                 <VBox spacing="10.0">
-                    <Button fx:id="refresh" mnemonicParsing="false" onAction="#handleRefreshClickEvents"
+                    <Button mnemonicParsing="false" onAction="#handleRefreshClick"
                             prefWidth="200.0" minHeight="50" text="Refresh"/>
-                    <ListView fx:id="emailList"
+                    <ListView fx:id="emailList" onMouseClicked="#handleSelectedEmail"
                               prefWidth="200.0" VBox.vgrow="ALWAYS">
                     </ListView>
                 </VBox>

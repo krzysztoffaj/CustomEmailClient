@@ -1,6 +1,7 @@
 package com.app.emailbrowser;
 
 import com.app.emailextractor.EmailManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -14,8 +15,6 @@ import static java.util.Objects.*;
 
 public class EmailBrowserController {
     @FXML
-    Button refresh;
-    @FXML
     ListView<String> emailList;
 
     @FXML
@@ -28,27 +27,20 @@ public class EmailBrowserController {
     @FXML
     Button addressBook, newEmail, reply, replyToAll, forward, delete, mark, save;
 
-    @FXML
-    Button inbox, sent, saved, draft, deleted;
+//    @FXML
+//    Button inbox, sent, saved, draft, deleted;
 
     private final EmailManager emailManager = new EmailManager();
 
     private String selectedMailbox = "Inbox";
 
 //    private final EmailBrowserModel emailBrowserModel;
-//
-//
-//    public EmailBrowserController(EmailBrowserModel emailBrowserModel) {
-//        this.emailBrowserModel = emailBrowserModel;
-//    }
 
     @FXML
     public void initialize() throws Exception {
 //        EmailBrowserController(new EmailBrowserModelTxt());
-        getEmails(inbox.getText());
+        getEmails(selectedMailbox);
         setButtonsWidthToFillHbox();
-        handleMailboxesClickEvents();
-        handleSelectedEmail();
     }
 
     @FXML
@@ -60,44 +52,23 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void handleRefreshClickEvents() {
-//        refresh.setOnMouseClicked((event) -> {
-            try {
-                getEmails(selectedMailbox);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//        });
+    private void handleRefreshClick() throws IOException {
+        getEmails(selectedMailbox);
     }
 
     @FXML
-    private void handleMailboxesClickEvents() {
-        Button[] operations = {inbox, sent, draft, saved, deleted};
-        for (Button operation : operations) {
-            operation.setOnMouseClicked((event) -> {
-                try {
-                    getEmails(operation.getText());
-                    selectedMailbox = operation.getText();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+    private void handleMailboxesClick(ActionEvent event) throws IOException {
+        selectedMailbox = ((Button) event.getSource()).getText();
+        getEmails(selectedMailbox);
     }
 
     @FXML
-    private void handleSelectedEmail() {
+    private void handleSelectedEmail() throws IOException {
         String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
-        emailList.setOnMouseClicked(event -> {
-            String extractedFilename = emailList.getSelectionModel().getSelectedItem();
-            String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
-            try {
-                emailManager.showEmail(emailDetails, emailBody,
-                        Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt").normalize().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        String extractedFilename = emailList.getSelectionModel().getSelectedItem();
+        String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
+        emailManager.showEmail(emailDetails, emailBody,
+                Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt").normalize().toString());
     }
 
     @FXML

@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public interface EmailBrowserModel {
-    public List<String> getEmail() throws Exception;
+    public List<String> getEmail() throws IOException;
 
     public String getSender(List<String> email);
 
