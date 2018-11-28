@@ -26,9 +26,9 @@
                 </VBox>
 
                 <VBox spacing="10.0">
-                    <Button fx:id="refresh" mnemonicParsing="false"
+                    <Button fx:id="refresh" mnemonicParsing="false" onAction="#handleRefreshClickEvents"
                             prefWidth="200.0" minHeight="50" text="Refresh"/>
-                    <ListView fx:id="listedEmails"
+                    <ListView fx:id="emailList"
                               prefWidth="200.0" VBox.vgrow="ALWAYS">
                     </ListView>
                 </VBox>
