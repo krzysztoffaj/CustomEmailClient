@@ -66,9 +66,11 @@ public class EmailBrowserController {
     private void handleSelectedEmail() throws IOException {
         String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
         String extractedFilename = emailList.getSelectionModel().getSelectedItem();
-        String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
-        emailManager.showEmail(emailDetails, emailBody,
-                Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt").normalize().toString());
+        if(extractedFilename != null) {
+            String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
+            emailManager.showEmail(emailDetails, emailBody,
+                    Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt").normalize().toString());
+        }
     }
 
     @FXML
