@@ -1,35 +1,31 @@
 package com.app.emailbrowser;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmailBrowserModelTxt implements EmailBrowserModel {
-
-    private String path;
-
-    private final String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
-
-    public EmailBrowserModelTxt(String path) {
-        this.path = path;
-    }
+    private final String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
+    private final String emailDirectory = String.valueOf(Paths.get(workingDirectory, "emails", "inbox"));
 
     @Override
-    public List getEmails() {
+    public List<List<String>> getEmails() {
+        File[] files = new File(emailDirectory).listFiles();
+
         return null;
     }
 
     @Override
     public List<String> getEmail() {
         try {
-            return Files.readAllLines(Paths.get(this.path));
+            return Files.readAllLines(Paths.get(emailDirectory, "2018-06-06 2106.txt"));
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
-
 
 
     @Override
@@ -73,4 +69,6 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
 
         return filename;
     }
+
+
 }

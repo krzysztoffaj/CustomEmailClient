@@ -6,13 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmailManager {
-    public void showEmail(ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
-        EmailBrowserModel extractor = new EmailBrowserModelTxt(path);
+    public void showEmail(ListView<String> emailDetails, TextArea emailBody) {
+        EmailBrowserModel extractor = new EmailBrowserModelTxt();
         List<String> email = extractor.getEmail();
         List<String> list = new ArrayList<>();
         list.add("From:\t" + extractor.getSender(email));
@@ -28,8 +27,8 @@ public class EmailManager {
         emailBody.setEditable(false);
     }
 
-    public void addEmailToList(ListView<String> listedEmails, ListView<String> emailDetails, TextArea emailBody, String path) {
-        EmailBrowserModelTxt extractor = new EmailBrowserModelTxt(path);
+    public void addEmailToList(ListView<String> listedEmails) {
+        EmailBrowserModelTxt extractor = new EmailBrowserModelTxt();
         List<String> email = extractor.getEmail();
 
         List<String> list = new ArrayList<>();

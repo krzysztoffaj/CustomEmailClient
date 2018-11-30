@@ -1,6 +1,7 @@
 package com.app.emailbrowser;
 
-import com.app.emailextractor.EmailManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -27,19 +28,13 @@ public class EmailBrowserController {
     @FXML
     Button addressBook, newEmail, reply, replyToAll, forward, delete, mark, save;
 
-//    @FXML
-//    Button inbox, sent, saved, draft, deleted;
-
-    private final EmailManager emailManager = new EmailManager();
-
     private String selectedMailbox = "Inbox";
 
-//    private final EmailBrowserModel emailBrowserModel;
+    private final EmailBrowserModel emailBrowserModel = new EmailBrowserModelTxt();
 
     @FXML
-    public void initialize() throws Exception {
-//        EmailBrowserController(new EmailBrowserModelTxt());
-        getEmails(selectedMailbox);
+    public void initialize() {
+        getEmailList(selectedMailbox);
         setButtonsWidthToFillHbox();
     }
 
@@ -52,39 +47,86 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void handleRefreshClick() throws IOException {
-        getEmails(selectedMailbox);
+    private void handleRefreshClick() {
+        getEmailList(selectedMailbox);
     }
 
     @FXML
-    private void handleMailboxesClick(ActionEvent event) throws IOException {
+    private void handleMailboxesClick(ActionEvent event) {
         selectedMailbox = ((Button) event.getSource()).getText();
-        getEmails(selectedMailbox);
+        getEmailList(selectedMailbox);
     }
 
     @FXML
-    private void handleSelectedEmail() throws IOException {
-        String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
-        String extractedFilename = emailList.getSelectionModel().getSelectedItem();
-        if(extractedFilename != null) {
-            String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
-            emailManager.showEmail(emailDetails, emailBody,
-                    Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt").normalize().toString());
-        }
+    private void handleSelectedEmail() {
+//        String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
+//        String extractedFilename = emailList.getSelectionModel().getSelectedItem();
+//        if (extractedFilename != null) {
+//            String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
+
+//            emailManager.showEmail(emailDetails, emailBody,
+//                    String.valueOf(Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt")));
+        showEmailDetails();
+        showEmailBody();
     }
 
     @FXML
-    private void getEmails(String mailbox) {
+    private void getEmailList(String mailbox) {
         emailList.getItems().clear();
 
 
-
-
-        String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
+        String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
         File[] files = new File(workingDirectory + "/emails/" + mailbox).listFiles();
         Arrays.sort(requireNonNull(files), Collections.reverseOrder());
         for (File file : files) {
-            emailManager.addEmailToList(emailList, emailDetails, emailBody, file.getPath());
+            addEmailToList();
         }
+    }
+
+    private void showEmailBody() {
+        emailBody.setText(emailBrowserModel.getBody(emailBrowserModel.getEmail()));
+        emailBody.setEditable(false);
+    }
+
+    private void showEmailDetails() {
+        List<String> email = emailBrowserModel.getEmail();
+        emailDetails.getItems().clear();
+        emailDetails.getItems().add("From:\t" + emailBrowserModel.getSender(email));
+        emailDetails.getItems().add("To:\t\t" + emailBrowserModel.getReceivers(email));
+        emailDetails.getItems().add("Subject:\t" + emailBrowserModel.getSubject(email));
+        emailDetails.getItems().add("Date:\t" + emailBrowserModel.getDate(email));
+//        emailDetails.setMouseTransparent(true);
+
+//        emailDetails.getItems().clear();
+//        emailDetails.getItems().addAll(observableList);
+    }
+
+    private void addEmailToList() {
+        List<String> email = emailBrowserModel.getEmail();
+
+        List<String> emailDisplayedInList = new ArrayList<>();
+        emailDisplayedInList.add(emailBrowserModel.getSender(email) + "\n" +
+                emailBrowserModel.getSubject(email) + "\n" +
+                emailBrowserModel.getDate(email));
+        ObservableList<String> observableList = FXCollections.observableArrayList(emailDisplayedInList);
+        emailList.setCellFactory(param -> new ListCell<String>() {
+            {
+                prefWidthProperty().bind(emailList.widthProperty().subtract(2));
+                setMaxWidth(Control.USE_PREF_SIZE);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item != null && !empty) {
+                    setText(item);
+                } else {
+                    setText(null);
+                }
+            }
+        });
+
+        emailList.getItems().addAll(observableList);
     }
 }
