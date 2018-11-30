@@ -1,12 +1,12 @@
 package com.app.emailbrowser;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.List;
 
 public interface EmailBrowserModel {
-    public List<String> getEmail() throws IOException;
+    public List getEmails();
+
+    public List<String> getEmail();
 
     public String getSender(List<String> email);
 

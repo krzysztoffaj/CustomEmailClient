@@ -6,7 +6,12 @@ import java.util.List;
 public class EmailBrowserModelDb implements EmailBrowserModel {
 
     @Override
-    public List<String> getEmail() throws IOException {
+    public List getEmails() {
+        return null;
+    }
+
+    @Override
+    public List<String> getEmail() {
         return null;
     }
 

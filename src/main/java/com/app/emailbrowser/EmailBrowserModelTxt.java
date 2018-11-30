@@ -9,14 +9,28 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
 
     private String path;
 
+    private final String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
+
     public EmailBrowserModelTxt(String path) {
         this.path = path;
     }
 
     @Override
-    public List<String> getEmail() throws IOException {
-        return Files.readAllLines(Paths.get(this.path));
+    public List getEmails() {
+        return null;
     }
+
+    @Override
+    public List<String> getEmail() {
+        try {
+            return Files.readAllLines(Paths.get(this.path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     @Override
     public String getSender(List<String> email) {

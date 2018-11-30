@@ -74,8 +74,12 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void getEmails(String mailbox) throws IOException {
+    private void getEmails(String mailbox) {
         emailList.getItems().clear();
+
+
+
+
         String workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
         File[] files = new File(workingDirectory + "/emails/" + mailbox).listFiles();
         Arrays.sort(requireNonNull(files), Collections.reverseOrder());

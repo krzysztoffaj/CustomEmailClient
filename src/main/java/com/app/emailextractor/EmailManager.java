@@ -28,7 +28,7 @@ public class EmailManager {
         emailBody.setEditable(false);
     }
 
-    public void addEmailToList(ListView<String> listedEmails, ListView<String> emailDetails, TextArea emailBody, String path) throws IOException {
+    public void addEmailToList(ListView<String> listedEmails, ListView<String> emailDetails, TextArea emailBody, String path) {
         EmailBrowserModelTxt extractor = new EmailBrowserModelTxt(path);
         List<String> email = extractor.getEmail();
 
