@@ -1,14 +1,14 @@
 package com.app.emailbrowser;
 
+import com.app.common.Email;
+import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -60,54 +60,51 @@ public class EmailBrowserController {
     @FXML
     private void handleSelectedEmail() {
 //        String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
-//        String extractedFilename = emailList.getSelectionModel().getSelectedItem();
-//        if (extractedFilename != null) {
-//            String preparedFilename = EmailBrowserModelTxt.prepareFilename(extractedFilename);
+        String emailIdentifier = emailList.getSelectionModel().getSelectedItem();
+        System.out.println(emailIdentifier);
+//        if (emailIdentifier != null) {
+//            String preparedFilename = EmailBrowserModelTxt.prepareFilename(emailIdentifier);
 
 //            emailManager.showEmail(emailDetails, emailBody,
 //                    String.valueOf(Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt")));
-        showEmailDetails();
-        showEmailBody();
+        showEmailDetails(emailIdentifier);
+        showEmailBody(emailIdentifier);
     }
 
     @FXML
     private void getEmailList(String mailbox) {
         emailList.getItems().clear();
-
-
-        String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
-        File[] files = new File(workingDirectory + "/emails/" + mailbox).listFiles();
-        Arrays.sort(requireNonNull(files), Collections.reverseOrder());
-        for (File file : files) {
-            addEmailToList();
+//        emailList.setItems((ObservableList<String>) emailBrowserModel.getEmails());
+        List<Email> emails = emailBrowserModel.getEmails();
+        Arrays.sort(new List[]{requireNonNull(emails)}, Collections.reverseOrder());
+        for (Email email : emails) {
+            addEmailToList(email);
         }
     }
 
-    private void showEmailBody() {
-        emailBody.setText(emailBrowserModel.getBody(emailBrowserModel.getEmail()));
+    private void showEmailBody(String emailIdentifier) {
+        emailBody.setText(emailBrowserModel.getEmail(emailIdentifier).getBody());
         emailBody.setEditable(false);
     }
 
-    private void showEmailDetails() {
-        List<String> email = emailBrowserModel.getEmail();
+    private void showEmailDetails(String emailIdentifier) {
+        Email email = emailBrowserModel.getEmail(emailIdentifier);
         emailDetails.getItems().clear();
-        emailDetails.getItems().add("From:\t" + emailBrowserModel.getSender(email));
-        emailDetails.getItems().add("To:\t\t" + emailBrowserModel.getReceivers(email));
-        emailDetails.getItems().add("Subject:\t" + emailBrowserModel.getSubject(email));
-        emailDetails.getItems().add("Date:\t" + emailBrowserModel.getDate(email));
+        emailDetails.getItems().add("From:\t" + email.getSender());
+        emailDetails.getItems().add("To:\t\t" + email.getReceivers());
+        emailDetails.getItems().add("Subject:\t" + email.getSubject());
+        emailDetails.getItems().add("Date:\t" + email.getDate());
 //        emailDetails.setMouseTransparent(true);
 
 //        emailDetails.getItems().clear();
 //        emailDetails.getItems().addAll(observableList);
     }
 
-    private void addEmailToList() {
-        List<String> email = emailBrowserModel.getEmail();
-
+    private void addEmailToList(Email email) {
         List<String> emailDisplayedInList = new ArrayList<>();
-        emailDisplayedInList.add(emailBrowserModel.getSender(email) + "\n" +
-                emailBrowserModel.getSubject(email) + "\n" +
-                emailBrowserModel.getDate(email));
+        emailDisplayedInList.add(email.getSender() + "\n" +
+                                 email.getSubject() + "\n" +
+                                 String.valueOf(email.getDate()).replace("T",  "   "));
         ObservableList<String> observableList = FXCollections.observableArrayList(emailDisplayedInList);
         emailList.setCellFactory(param -> new ListCell<String>() {
             {
