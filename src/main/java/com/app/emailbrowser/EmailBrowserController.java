@@ -78,7 +78,7 @@ public class EmailBrowserController {
         Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
         emailDetails.getItems().clear();
         emailDetails.getItems().add("From:\t" + email.getSender());
-        emailDetails.getItems().add("To:\t\t" + email.getReceivers());
+        emailDetails.getItems().add("To:\t\t" + email.getReceivers().toString().replace("[", "").replace("]", ""));
         emailDetails.getItems().add("Subject:\t" + email.getSubject());
         emailDetails.getItems().add("Date:\t" + email.getDate());
     }
