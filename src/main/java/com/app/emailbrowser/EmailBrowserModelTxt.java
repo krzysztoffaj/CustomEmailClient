@@ -10,10 +10,10 @@ import java.util.*;
 
 public class EmailBrowserModelTxt implements EmailBrowserModel {
     private final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
-    private final String emailDirectory = String.valueOf(Paths.get(workingDirectory, "emails", "inbox"));
+    private final String emailDirectory = String.valueOf(Paths.get(workingDirectory, "emails"));
 
     @Override
-    public Email getEmail(String emailPath) {
+    public Email getEmail(String mailbox, String emailPath) {
         try {
             List<String> emailFile = Files.readAllLines(Paths.get(emailPath));
             Email email = new Email();
@@ -32,12 +32,12 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
     }
 
     @Override
-    public List<Email> getEmails() {
-        File[] files = new File(emailDirectory).listFiles();
+    public List<Email> getEmails(String mailbox) {
+        File[] files = new File(String.valueOf(Paths.get(emailDirectory, mailbox))).listFiles();
         List<Email> emails = new ArrayList<>();
         if (files != null) {
             for (File file : files) {
-                emails.add(getEmail(file.getPath()));
+                emails.add(getEmail(mailbox, file.getPath()));
             }
         }
         emails.sort(Comparator.comparing(Email::getDate).reversed());

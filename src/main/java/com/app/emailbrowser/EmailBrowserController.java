@@ -61,6 +61,7 @@ public class EmailBrowserController {
     private void handleSelectedEmail() {
 //        String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
         String emailIdentifier = emailList.getSelectionModel().getSelectedItem();
+        emailIdentifier = emailIdentifier.substring(emailIdentifier.lastIndexOf("\n"));
         System.out.println(emailIdentifier);
 //        if (emailIdentifier != null) {
 //            String preparedFilename = EmailBrowserModelTxt.prepareFilename(emailIdentifier);
@@ -74,19 +75,19 @@ public class EmailBrowserController {
     @FXML
     private void getEmailList(String mailbox) {
         emailList.getItems().clear();
-        List<Email> emails = emailBrowserModel.getEmails();
+        List<Email> emails = emailBrowserModel.getEmails(selectedMailbox);
         for (Email email : emails) {
             addEmailToList(email);
         }
     }
 
     private void showEmailBody(String emailIdentifier) {
-        emailBody.setText(emailBrowserModel.getEmail(emailIdentifier).getBody());
+        emailBody.setText(emailBrowserModel.getEmail(selectedMailbox, emailIdentifier).getBody());
         emailBody.setEditable(false);
     }
 
     private void showEmailDetails(String emailIdentifier) {
-        Email email = emailBrowserModel.getEmail(emailIdentifier);
+        Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
         emailDetails.getItems().clear();
         emailDetails.getItems().add("From:\t" + email.getSender());
         emailDetails.getItems().add("To:\t\t" + email.getReceivers());
