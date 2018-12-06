@@ -1,7 +1,5 @@
 package com.app.common;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Email {
@@ -9,7 +7,7 @@ public class Email {
     private List<String> receivers;
     private String subject;
     private String mark;
-    private LocalDateTime date;
+    private String dateTime;
     private String body;
 
     public String getSender() {
@@ -44,12 +42,12 @@ public class Email {
         this.mark = mark;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public String getDate() {
+        return dateTime;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDate(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getBody() {

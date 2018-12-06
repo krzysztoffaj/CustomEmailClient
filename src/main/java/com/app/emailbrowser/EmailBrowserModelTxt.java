@@ -6,15 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class EmailBrowserModelTxt implements EmailBrowserModel {
     private final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
@@ -30,7 +22,7 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
             email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*,\\s*")));
             email.setSubject(emailFile.get(2));
             email.setMark(emailFile.get(3));
-            email.setDate(LocalDateTime.parse((emailFile.get(4))));
+            email.setDate((emailFile.get(4)));
             email.setBody(prepareEmailBody(emailFile));
 
             return email;
@@ -48,6 +40,7 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
                 emails.add(getEmail(file.getPath()));
             }
         }
+        emails.sort(Comparator.comparing(Email::getDate).reversed());
         return emails;
     }
 

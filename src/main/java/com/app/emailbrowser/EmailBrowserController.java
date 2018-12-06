@@ -74,9 +74,7 @@ public class EmailBrowserController {
     @FXML
     private void getEmailList(String mailbox) {
         emailList.getItems().clear();
-//        emailList.setItems((ObservableList<String>) emailBrowserModel.getEmails());
         List<Email> emails = emailBrowserModel.getEmails();
-        Arrays.sort(new List[]{requireNonNull(emails)}, Collections.reverseOrder());
         for (Email email : emails) {
             addEmailToList(email);
         }
@@ -104,8 +102,8 @@ public class EmailBrowserController {
         List<String> emailDisplayedInList = new ArrayList<>();
         emailDisplayedInList.add(email.getSender() + "\n" +
                                  email.getSubject() + "\n" +
-                                 String.valueOf(email.getDate()).replace("T",  "   "));
-        ObservableList<String> observableList = FXCollections.observableArrayList(emailDisplayedInList);
+                                 email.getDate());
+        ObservableList<String> emailDescription = FXCollections.observableArrayList(emailDisplayedInList);
         emailList.setCellFactory(param -> new ListCell<String>() {
             {
                 prefWidthProperty().bind(emailList.widthProperty().subtract(2));
@@ -124,6 +122,6 @@ public class EmailBrowserController {
             }
         });
 
-        emailList.getItems().addAll(observableList);
+        emailList.getItems().addAll(emailDescription);
     }
 }
