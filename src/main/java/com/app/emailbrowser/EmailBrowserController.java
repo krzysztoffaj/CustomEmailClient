@@ -8,11 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.*;
 
-import static java.util.Objects.*;
 
 public class EmailBrowserController {
     @FXML
@@ -34,7 +31,7 @@ public class EmailBrowserController {
 
     @FXML
     public void initialize() {
-        getEmailList(selectedMailbox);
+        getEmailList();
         setButtonsWidthToFillHbox();
     }
 
@@ -48,32 +45,24 @@ public class EmailBrowserController {
 
     @FXML
     private void handleRefreshClick() {
-        getEmailList(selectedMailbox);
+        getEmailList();
     }
 
     @FXML
     private void handleMailboxesClick(ActionEvent event) {
         selectedMailbox = ((Button) event.getSource()).getText();
-        getEmailList(selectedMailbox);
+        getEmailList();
     }
 
     @FXML
     private void handleSelectedEmail() {
-//        String workingDirectory = String.valueOf(Paths.get(".").toAbsolutePath());
-        String emailIdentifier = emailList.getSelectionModel().getSelectedItem();
-        emailIdentifier = emailIdentifier.substring(emailIdentifier.lastIndexOf("\n"));
-        System.out.println(emailIdentifier);
-//        if (emailIdentifier != null) {
-//            String preparedFilename = EmailBrowserModelTxt.prepareFilename(emailIdentifier);
-
-//            emailManager.showEmail(emailDetails, emailBody,
-//                    String.valueOf(Paths.get(workingDirectory, "emails", selectedMailbox, preparedFilename + ".txt")));
+        String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, emailList.getSelectionModel().getSelectedItem());
         showEmailDetails(emailIdentifier);
         showEmailBody(emailIdentifier);
     }
 
     @FXML
-    private void getEmailList(String mailbox) {
+    private void getEmailList() {
         emailList.getItems().clear();
         List<Email> emails = emailBrowserModel.getEmails(selectedMailbox);
         for (Email email : emails) {
@@ -83,7 +72,6 @@ public class EmailBrowserController {
 
     private void showEmailBody(String emailIdentifier) {
         emailBody.setText(emailBrowserModel.getEmail(selectedMailbox, emailIdentifier).getBody());
-        emailBody.setEditable(false);
     }
 
     private void showEmailDetails(String emailIdentifier) {
@@ -93,17 +81,13 @@ public class EmailBrowserController {
         emailDetails.getItems().add("To:\t\t" + email.getReceivers());
         emailDetails.getItems().add("Subject:\t" + email.getSubject());
         emailDetails.getItems().add("Date:\t" + email.getDate());
-//        emailDetails.setMouseTransparent(true);
-
-//        emailDetails.getItems().clear();
-//        emailDetails.getItems().addAll(observableList);
     }
 
     private void addEmailToList(Email email) {
-        List<String> emailDisplayedInList = new ArrayList<>();
-        emailDisplayedInList.add(email.getSender() + "\n" +
-                                 email.getSubject() + "\n" +
-                                 email.getDate());
+        String emailDisplayedInList =
+                        email.getSender() + "\n" +
+                        email.getSubject() + "\n" +
+                        email.getDate();
         ObservableList<String> emailDescription = FXCollections.observableArrayList(emailDisplayedInList);
         emailList.setCellFactory(param -> new ListCell<String>() {
             {

@@ -15,4 +15,9 @@ public class EmailBrowserModelDb implements EmailBrowserModel {
     public List<Email> getEmails(String mailbox) {
         return null;
     }
+
+    @Override
+    public String prepareEmailIdentifier(String mailbox, String emailIdentifier) {
+        return null;
+    }
 }

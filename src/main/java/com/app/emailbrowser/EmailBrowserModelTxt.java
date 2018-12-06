@@ -19,7 +19,7 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
             Email email = new Email();
 
             email.setSender(emailFile.get(0));
-            email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*,\\s*")));
+            email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*;\\s*")));
             email.setSubject(emailFile.get(2));
             email.setMark(emailFile.get(3));
             email.setDate((emailFile.get(4)));
@@ -44,13 +44,13 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
         return emails;
     }
 
-    private String prepareFilename(String rawFilename) {
-        String filename = rawFilename.substring(rawFilename.lastIndexOf("\n") + 1);
-//        filename = filename.replace("   ", " ");
-        filename = filename.replace(":", "");
-        filename = filename + ".txt";
+    @Override
+    public String prepareEmailIdentifier(String mailbox, String rawEmailIdentifier) {
+        String emailFile = rawEmailIdentifier.substring(rawEmailIdentifier.lastIndexOf("\n") + 1);
+        emailFile = emailFile.replace(":", ".");
+        emailFile = emailFile + ".txt";
 
-        return filename;
+        return String.valueOf(Paths.get(emailDirectory, mailbox, emailFile));
     }
 
     private String prepareEmailBody(List<String> emailFile) {
