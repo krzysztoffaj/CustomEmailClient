@@ -2,8 +2,6 @@ package com.app.emailbrowser;
 
 import com.app.common.Email;
 import javafx.fxml.FXML;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -31,8 +29,8 @@ public class EmailBrowserController {
 
     @FXML
     public void initialize() {
-        getEmailList();
         setButtonsWidthToFillHbox();
+        getEmailList();
     }
 
     @FXML
@@ -88,25 +86,6 @@ public class EmailBrowserController {
                         email.getSender() + "\n" +
                         email.getSubject() + "\n" +
                         email.getDate();
-        ObservableList<String> emailDescription = FXCollections.observableArrayList(emailDisplayedInList);
-        emailList.setCellFactory(param -> new ListCell<String>() {
-            {
-                prefWidthProperty().bind(emailList.widthProperty().subtract(2));
-                setMaxWidth(Control.USE_PREF_SIZE);
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item != null && !empty) {
-                    setText(item);
-                } else {
-                    setText(null);
-                }
-            }
-        });
-
-        emailList.getItems().addAll(emailDescription);
+        emailList.getItems().add(emailDisplayedInList);
     }
 }

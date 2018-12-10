@@ -34,7 +34,7 @@
                     <Button mnemonicParsing="false" onAction="#handleRefreshClick"
                             prefWidth="200.0" minHeight="50" text="Refresh"/>
                     <ListView fx:id="emailList" onMouseClicked="#handleSelectedEmail"
-                              prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              stylesheets="@styles/EmailList.css" prefWidth="200.0" VBox.vgrow="ALWAYS">
                     </ListView>
                 </VBox>
             </HBox>
