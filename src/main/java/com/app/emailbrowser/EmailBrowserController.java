@@ -54,9 +54,12 @@ public class EmailBrowserController {
 
     @FXML
     private void handleSelectedEmail() {
-        String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, emailList.getSelectionModel().getSelectedItem());
-        showEmailDetails(emailIdentifier);
-        showEmailBody(emailIdentifier);
+        String selectedEmail = emailList.getSelectionModel().getSelectedItem();
+        if(selectedEmail != null) {
+            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, selectedEmail);
+            showEmailDetails(emailIdentifier);
+            showEmailBody(emailIdentifier);
+        }
     }
 
     @FXML
