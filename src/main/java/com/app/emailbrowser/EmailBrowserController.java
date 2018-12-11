@@ -57,8 +57,10 @@ public class EmailBrowserController {
         String selectedEmail = emailList.getSelectionModel().getSelectedItem();
         if(selectedEmail != null) {
             String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, selectedEmail);
-            showEmailDetails(emailIdentifier);
-            showEmailBody(emailIdentifier);
+            Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
+
+            showEmailDetails(email);
+            showEmailBody(email);
         }
     }
 
@@ -71,12 +73,11 @@ public class EmailBrowserController {
         }
     }
 
-    private void showEmailBody(String emailIdentifier) {
-        emailBody.setText(emailBrowserModel.getEmail(selectedMailbox, emailIdentifier).getBody());
+    private void showEmailBody(Email email) {
+        emailBody.setText(email.getBody());
     }
 
-    private void showEmailDetails(String emailIdentifier) {
-        Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
+    private void showEmailDetails(Email email) {
         emailDetails.getItems().clear();
         emailDetails.getItems().add("From:\t" + email.getSender());
         emailDetails.getItems().add("To:\t\t" + email.getReceivers().toString().replace("[", "").replace("]", ""));
