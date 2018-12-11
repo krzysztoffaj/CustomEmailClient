@@ -1,0 +1,13 @@
+Tester <test@test.com>
+Simple Receiver <simple.receiver@yahoo.com>, Another Receiver <another.receiver@yahoo.com>
+Stop spam
+Read
+2018-06-06 11:06:19
+
+
+Hello,
+
+Please stop spaming.
+
+Best regards,
+Tester
