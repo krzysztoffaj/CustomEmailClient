@@ -1,15 +1,21 @@
 package com.app.emailbrowser;
 
 import com.app.common.Email;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 import java.util.*;
 
 
 public class EmailBrowserController {
+    @FXML
+    Text backgroundOperation;
+    @FXML
+    ProgressBar backgroundOperationProgress;
     @FXML
     ListView<String> emailList;
 
@@ -54,23 +60,45 @@ public class EmailBrowserController {
 
     @FXML
     private void handleSelectedEmail() {
-        String selectedEmail = emailList.getSelectionModel().getSelectedItem();
-        if(selectedEmail != null) {
-            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, selectedEmail);
-            Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
+        backgroundOperation.setText("Loading email...");
+        backgroundOperationProgress.setVisible(true);
 
-            showEmailDetails(email);
-            showEmailBody(email);
+        String selectedEmail = emailList.getSelectionModel().getSelectedItem();
+        if (selectedEmail != null) {
+            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, selectedEmail);
+
+            Thread loadEmails = new Thread(() -> {
+                Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
+                Platform.runLater(() -> {
+                    EmailBrowserController.this.showEmailDetails(email);
+                    EmailBrowserController.this.showEmailBody(email);
+                    backgroundOperation.setText("");
+                    backgroundOperationProgress.setVisible(false);
+                });
+            });
+            loadEmails.setDaemon(true);
+            loadEmails.start();
         }
     }
 
     @FXML
     private void getEmailList() {
+        backgroundOperation.setText("Loading emails...");
+        backgroundOperationProgress.setVisible(true);
+
         emailList.getItems().clear();
-        List<Email> emails = emailBrowserModel.getEmails(selectedMailbox);
-        for (Email email : emails) {
-            addEmailToList(email);
-        }
+        Thread loadEmail = new Thread(() -> {
+            List<Email> emails = emailBrowserModel.getEmails(selectedMailbox);
+            Platform.runLater(() -> {
+                for (Email email : emails) {
+                    addEmailToList(email);
+                }
+                backgroundOperation.setText("");
+                backgroundOperationProgress.setVisible(false);
+            });
+        });
+        loadEmail.setDaemon(true);
+        loadEmail.start();
     }
 
     private void showEmailBody(Email email) {

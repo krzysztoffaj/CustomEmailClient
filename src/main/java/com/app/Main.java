@@ -13,8 +13,8 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/com/app/emailbrowser/EmailBrowserView.fxml"));
         primaryStage.setTitle("Custom Email Client");
         primaryStage.setScene(new Scene(root, 1200, 800));
-        primaryStage.setMinWidth(800);
-        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(450);
         primaryStage.show();
     }
 
