@@ -13,8 +13,8 @@
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.emailcomposer.EmailComposerController">
 
     <HBox>
-        <Button fx:id="send" mnemonicParsing="false" text="Send" textAlignment="CENTER"
-                maxHeight="40" minHeight="40.0" minWidth="150">
+        <Button fx:id="send" mnemonicParsing="false" onAction="#handleSendClick" text="Send"
+                maxHeight="40" minHeight="40.0" minWidth="150" textAlignment="CENTER">
             <HBox.margin>
                 <Insets right="50.0"/>
             </HBox.margin>
@@ -38,15 +38,15 @@
     </HBox>
 
     <HBox>
-        <VBox>
+        <VBox spacing="5.0">
             <Text text="To:">
                 <font>
-                    <Font size="18.0"/>
+                    <Font size="16.0"/>
                 </font>
             </Text>
             <Text text="Subject:">
                 <font>
-                    <Font size="18.0"/>
+                    <Font size="16.0"/>
                 </font>
             </Text>
             <padding>
@@ -54,8 +54,8 @@
             </padding>
         </VBox>
         <VBox HBox.hgrow="ALWAYS">
-            <TextField/>
-            <TextField/>
+            <TextField fx:id="receivers"/>
+            <TextField fx:id="subject"/>
         </VBox>
     </HBox>
 

@@ -1,6 +1,7 @@
 package com.app.emailbrowser;
 
 import com.app.common.Email;
+import com.app.emailcomposer.EmailComposerController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -38,7 +40,17 @@ public class EmailBrowserController {
     private final EmailBrowserModel emailBrowserModel = new EmailBrowserModelTxt();
 
     @FXML
-    public void initialize() {
+    public static void setupStage(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(EmailBrowserController.class.getResource("/com/app/emailbrowser/EmailBrowserView.fxml"));
+        primaryStage.setTitle("Custom Email Client");
+        primaryStage.setScene(new Scene(root, 1200, 800));
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(450);
+        primaryStage.show();
+    }
+
+    @FXML
+    private void initialize() {
         setButtonsWidthToFillHbox();
         getEmailList();
     }
@@ -106,18 +118,8 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void handleNewEmailClick() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/emailcomposer/EmailComposerView.fxml"));
-            Stage secondaryStage = new Stage();
-            secondaryStage.setTitle("Email composer");
-            secondaryStage.setScene(new Scene(fxmlLoader.load(), 1000, 750));
-            secondaryStage.setMinWidth(600);
-            secondaryStage.setMinHeight(400);
-            secondaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void handleNewEmailClick() throws IOException {
+        EmailComposerController.setupStage();
     }
 
     private void showEmailBody(Email email) {
