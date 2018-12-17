@@ -1,7 +1,7 @@
 Another Tester <another.tester@gmail.com>
-Simple Receiver <simple.receiver@yahoo.com>
+Simple User <simple.user@yahoo.com>
 No action required
-Unread
+UNMARKED
 2018-02-12 08:09:40
 
 

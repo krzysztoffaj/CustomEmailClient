@@ -1,7 +1,7 @@
 Some Employee <some.employee@company.com>
-Simple Receiver <simple.receiver@yahoo.com>
+Simple User <simple.user@yahoo.com>
 E-mail removal
-Unread
+UNMARKED
 2018-09-11 23:10:13
 
 

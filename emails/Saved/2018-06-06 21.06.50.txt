@@ -1,7 +1,7 @@
 Customer Service <customer.service@booking.com>
-Simple Receiver <simple.receiver@yahoo.com>
+Simple User <simple.user@yahoo.com>
 Special wish accepted
-Unread
+UNMARKED
 2018-06-06 21:06:50
 
 
