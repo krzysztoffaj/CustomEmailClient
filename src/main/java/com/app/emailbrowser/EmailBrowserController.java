@@ -4,9 +4,13 @@ import com.app.common.Email;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -99,6 +103,21 @@ public class EmailBrowserController {
         });
         loadEmail.setDaemon(true);
         loadEmail.start();
+    }
+
+    @FXML
+    private void handleNewEmailClick() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/emailcomposer/EmailComposerView.fxml"));
+            Stage secondaryStage = new Stage();
+            secondaryStage.setTitle("Email composer");
+            secondaryStage.setScene(new Scene(fxmlLoader.load(), 1000, 750));
+            secondaryStage.setMinWidth(600);
+            secondaryStage.setMinHeight(400);
+            secondaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showEmailBody(Email email) {
