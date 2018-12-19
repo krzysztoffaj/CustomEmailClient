@@ -6,9 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -64,15 +62,33 @@ public class EmailComposerController {
     @FXML
     private void handleSendClick() {
         email.setSender("Simple User <simple.user@yahoo.com>");
+
         email.setSubject(subject.getText());
+
         email.setReceivers(Arrays.asList(receivers.getText().split("\\s*,\\s*")));
+        if (receivers.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+        else if (!email.getReceivers().stream().allMatch(s -> s.contains("@")) ||
+                !email.getReceivers().stream().allMatch(s -> s.contains("."))) {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Invalid receivers entry.", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+
         email.setMark(String.valueOf(EmailMarks.UNMARKED));
+
         email.setDate(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+
         email.setBody(emailBody.getText());
 
         Thread sendEmail = new Thread(() -> {
             model.sendEmail(email);
             Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
+                alert.showAndWait();
                 Stage stage = (Stage) send.getScene().getWindow();
                 stage.close();
             });
