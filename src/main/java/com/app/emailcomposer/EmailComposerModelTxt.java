@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 public class EmailComposerModelTxt implements EmailComposerModel {
     private final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
-    private final String sentEmailDirectory = String.valueOf(Paths.get(workingDirectory, "emails", "sent"));
+    private final String sentEmailDirectory = String.valueOf(Paths.get(workingDirectory, "emails", "Sent"));
 
     @Override
     public void sendEmail(Email email) {
