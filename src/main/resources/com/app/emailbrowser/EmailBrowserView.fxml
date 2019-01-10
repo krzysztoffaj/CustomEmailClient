@@ -54,7 +54,7 @@
 
         <VBox spacing="10.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
             <HBox fx:id="operationsPane">
-                <Button fx:id="addressBook" mnemonicParsing="false" text="Address book"
+                <Button fx:id="addressBook" mnemonicParsing="false" onAction="#handleAddressBookClick" text="Address book"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
                 <Button fx:id="newEmail" mnemonicParsing="false" onAction="#handleNewEmailClick" text="New email"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>

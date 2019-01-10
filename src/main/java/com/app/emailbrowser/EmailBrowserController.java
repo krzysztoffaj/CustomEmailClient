@@ -1,5 +1,6 @@
 package com.app.emailbrowser;
 
+import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
 import com.app.emailcomposer.EmailComposerController;
 import javafx.application.Platform;
@@ -120,6 +121,11 @@ public class EmailBrowserController {
     @FXML
     private void handleNewEmailClick() throws IOException {
         EmailComposerController.setupStage();
+    }
+
+    @FXML
+    private void handleAddressBookClick() throws IOException {
+        AddressBookController.setupStage();
     }
 
     private void showEmailBody(Email email) {
