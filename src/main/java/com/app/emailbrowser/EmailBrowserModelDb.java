@@ -20,4 +20,9 @@ public class EmailBrowserModelDb implements EmailBrowserModel {
     public String prepareEmailIdentifier(String mailbox, String emailIdentifier) {
         return null;
     }
+
+    @Override
+    public void moveEmailToDeleted(String selectedEmail) {
+
+    }
 }

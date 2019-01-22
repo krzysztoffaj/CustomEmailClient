@@ -64,7 +64,7 @@
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
                 <Button fx:id="forward" mnemonicParsing="false" text="Forward"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
-                <Button fx:id="delete" mnemonicParsing="false" text="Delete"
+                <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDeleteClick" text="Delete"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
                 <Button fx:id="mark" mnemonicParsing="false" text="Mark"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>

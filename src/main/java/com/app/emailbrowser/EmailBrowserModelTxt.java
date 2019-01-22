@@ -5,6 +5,7 @@ import com.app.common.Email;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -51,6 +52,17 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
         emailFile = emailFile + ".txt";
 
         return String.valueOf(Paths.get(emailDirectory, mailbox, emailFile));
+    }
+
+    @Override
+    public void moveEmailToDeleted(String selectedEmail) {
+        Path source = Paths.get(selectedEmail);
+        Path destination = Paths.get(workingDirectory, "emails", "Deleted");
+        try {
+            Files.move(source, destination.resolve(source.getFileName()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String prepareEmailBody(List<String> emailFile) {

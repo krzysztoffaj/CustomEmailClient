@@ -12,4 +12,6 @@ public interface EmailBrowserModel {
     List<Email> getEmails(String mailbox);
 
     String prepareEmailIdentifier(String mailbox, String emailIdentifier);
+
+    void moveEmailToDeleted(String selectedEmail);
 }

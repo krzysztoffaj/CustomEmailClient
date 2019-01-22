@@ -36,7 +36,7 @@ public class EmailBrowserController {
     @FXML
     Button addressBook, newEmail, reply, replyToAll, forward, delete, mark, save;
 
-    private String selectedMailbox = "Inbox";
+    private String currentMailbox = "Inbox";
 
     private final EmailBrowserModel emailBrowserModel = new EmailBrowserModelTxt();
 
@@ -71,7 +71,7 @@ public class EmailBrowserController {
 
     @FXML
     private void handleMailboxesClick(ActionEvent event) {
-        selectedMailbox = ((Button) event.getSource()).getText();
+        currentMailbox = ((Button) event.getSource()).getText();
         getEmailList();
     }
 
@@ -82,10 +82,10 @@ public class EmailBrowserController {
 
         String selectedEmail = emailList.getSelectionModel().getSelectedItem();
         if (selectedEmail != null) {
-            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(selectedMailbox, selectedEmail);
+            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(currentMailbox, selectedEmail);
 
             Thread loadEmails = new Thread(() -> {
-                Email email = emailBrowserModel.getEmail(selectedMailbox, emailIdentifier);
+                Email email = emailBrowserModel.getEmail(currentMailbox, emailIdentifier);
                 Platform.runLater(() -> {
                     EmailBrowserController.this.showEmailDetails(email);
                     EmailBrowserController.this.showEmailBody(email);
@@ -105,7 +105,7 @@ public class EmailBrowserController {
 
         emailList.getItems().clear();
         Thread loadEmail = new Thread(() -> {
-            List<Email> emails = emailBrowserModel.getEmails(selectedMailbox);
+            List<Email> emails = emailBrowserModel.getEmails(currentMailbox);
             Platform.runLater(() -> {
                 for (Email email : emails) {
                     addEmailToList(email);
@@ -126,6 +126,28 @@ public class EmailBrowserController {
     @FXML
     private void handleAddressBookClick() throws IOException {
         AddressBookController.setupStage();
+    }
+
+    @FXML
+    private void handleDeleteClick() {
+        backgroundOperation.setText("Deleting email...");
+        backgroundOperationProgress.setVisible(true);
+
+        String selectedEmail = emailList.getSelectionModel().getSelectedItem();
+        if (selectedEmail != null) {
+            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(currentMailbox, selectedEmail);
+            Thread deleteEmail = new Thread(() -> {
+                emailBrowserModel.moveEmailToDeleted(emailIdentifier);
+                Platform.runLater(() -> {
+                    backgroundOperation.setText("");
+                    backgroundOperationProgress.setVisible(false);
+
+                    getEmailList();
+                });
+            });
+            deleteEmail.setDaemon(true);
+            deleteEmail.start();
+        }
     }
 
     private void showEmailBody(Email email) {
