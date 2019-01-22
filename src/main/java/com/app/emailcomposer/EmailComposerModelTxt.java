@@ -16,7 +16,7 @@ public class EmailComposerModelTxt implements EmailComposerModel {
                 email.getDate().replace(":", ".") + ".txt"));
         try (PrintWriter newEmailFile = new PrintWriter(newEmailPath)) {
             newEmailFile.println(email.getSender());
-            newEmailFile.println(email.getReceivers().toString().replace("[", "").replace("]", ""));
+            newEmailFile.println(email.getReceiversFormatted());
             newEmailFile.println(email.getSubject());
             newEmailFile.println(email.getMark());
             newEmailFile.println(email.getDate());

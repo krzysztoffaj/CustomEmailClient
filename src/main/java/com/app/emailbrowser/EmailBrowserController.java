@@ -157,16 +157,24 @@ public class EmailBrowserController {
     private void showEmailDetails(Email email) {
         emailDetails.getItems().clear();
         emailDetails.getItems().add("From:\t" + email.getSender());
-        emailDetails.getItems().add("To:\t\t" + email.getReceivers().toString().replace("[", "").replace("]", ""));
+        emailDetails.getItems().add("To:\t\t" + email.getReceiversFormatted());
         emailDetails.getItems().add("Subject:\t" + email.getSubject());
         emailDetails.getItems().add("Date:\t" + email.getDate());
     }
 
     private void addEmailToList(Email email) {
-        String emailDisplayedInList =
-                        email.getSender() + "\n" +
-                        email.getSubject() + "\n" +
-                        email.getDate();
+        String emailDisplayedInList;
+        if(currentMailbox.equals("Sent")) {
+            emailDisplayedInList =
+                            email.getReceiversFormatted() + "\n" +
+                            email.getSubject() + "\n" +
+                            email.getDate();
+        } else {
+            emailDisplayedInList =
+                            email.getSender() + "\n" +
+                            email.getSubject() + "\n" +
+                            email.getDate();
+        }
         emailList.getItems().add(emailDisplayedInList);
     }
 }

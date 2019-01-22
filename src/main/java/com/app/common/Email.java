@@ -22,6 +22,10 @@ public class Email {
         return receivers;
     }
 
+    public String getReceiversFormatted() {
+        return getReceivers().toString().replace("[", "").replace("]", "");
+    }
+
     public void setReceivers(List<String> receivers) {
         this.receivers = receivers;
     }
