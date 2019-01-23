@@ -59,17 +59,17 @@
                 <Button fx:id="newEmail" mnemonicParsing="false" onAction="#handleNewEmailClick" text="New email"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
                 <Button fx:id="reply" mnemonicParsing="false" text="Reply"
-                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
+                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
                 <Button fx:id="replyToAll" mnemonicParsing="false" text="Reply to all"
-                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
+                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
                 <Button fx:id="forward" mnemonicParsing="false" text="Forward"
-                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
+                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
                 <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDeleteClick" text="Delete"
-                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
+                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
                 <Button fx:id="mark" mnemonicParsing="false" text="Mark"
-                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
+                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
                 <Button fx:id="save" mnemonicParsing="false" text="Save"
-                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
+                        maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
             </HBox>
 
             <ListView fx:id="emailDetails" minHeight="110.0" prefHeight="110.0"/>

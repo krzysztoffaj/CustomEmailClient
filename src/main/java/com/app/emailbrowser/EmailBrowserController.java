@@ -95,6 +95,8 @@ public class EmailBrowserController {
             });
             loadEmails.setDaemon(true);
             loadEmails.start();
+
+            disableEmailOperationsButtons(false);
         }
     }
 
@@ -134,20 +136,20 @@ public class EmailBrowserController {
         backgroundOperationProgress.setVisible(true);
 
         String selectedEmail = emailList.getSelectionModel().getSelectedItem();
-        if (selectedEmail != null) {
-            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(currentMailbox, selectedEmail);
-            Thread deleteEmail = new Thread(() -> {
-                emailBrowserModel.moveEmailToDeleted(emailIdentifier);
-                Platform.runLater(() -> {
-                    backgroundOperation.setText("");
-                    backgroundOperationProgress.setVisible(false);
+        String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(currentMailbox, selectedEmail);
+        Thread deleteEmail = new Thread(() -> {
+            emailBrowserModel.moveEmailToDeleted(emailIdentifier);
+            Platform.runLater(() -> {
+                backgroundOperation.setText("");
+                backgroundOperationProgress.setVisible(false);
 
-                    getEmailList();
-                });
+                getEmailList();
             });
-            deleteEmail.setDaemon(true);
-            deleteEmail.start();
-        }
+        });
+        deleteEmail.setDaemon(true);
+        deleteEmail.start();
+
+        disableEmailOperationsButtons(true);
     }
 
     private void showEmailBody(Email email) {
@@ -164,7 +166,7 @@ public class EmailBrowserController {
 
     private void addEmailToList(Email email) {
         String emailDisplayedInList;
-        if(currentMailbox.equals("Sent")) {
+        if (currentMailbox.equals("Sent")) {
             emailDisplayedInList =
                             email.getReceiversFormatted() + "\n" +
                             email.getSubject() + "\n" +
@@ -176,5 +178,12 @@ public class EmailBrowserController {
                             email.getDate();
         }
         emailList.getItems().add(emailDisplayedInList);
+    }
+
+    private void disableEmailOperationsButtons(boolean disabled) {
+        Button[] emailOperations = {reply, replyToAll, forward, delete, mark, save};
+        for (Button operation : emailOperations) {
+            operation.setDisable(disabled);
+        }
     }
 }
