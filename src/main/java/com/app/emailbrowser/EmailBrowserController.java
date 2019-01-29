@@ -38,7 +38,7 @@ public class EmailBrowserController {
 
     private String currentMailbox = "Inbox";
 
-    private final EmailBrowserModel emailBrowserModel = new EmailBrowserModelTxt();
+    private final EmailBrowserModel model = new EmailBrowserModelTxt();
 
     @FXML
     public static void setupStage(Stage primaryStage) throws IOException {
@@ -82,10 +82,10 @@ public class EmailBrowserController {
 
         String selectedEmail = emailList.getSelectionModel().getSelectedItem();
         if (selectedEmail != null) {
-            String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(currentMailbox, selectedEmail);
+            String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
 
             Thread loadEmails = new Thread(() -> {
-                Email email = emailBrowserModel.getEmail(currentMailbox, emailIdentifier);
+                Email email = model.getEmail(currentMailbox, emailIdentifier);
                 Platform.runLater(() -> {
                     EmailBrowserController.this.showEmailDetails(email);
                     EmailBrowserController.this.showEmailBody(email);
@@ -107,7 +107,7 @@ public class EmailBrowserController {
 
         emailList.getItems().clear();
         Thread loadEmail = new Thread(() -> {
-            List<Email> emails = emailBrowserModel.getEmails(currentMailbox);
+            List<Email> emails = model.getEmails(currentMailbox);
             Platform.runLater(() -> {
                 for (Email email : emails) {
                     addEmailToList(email);
@@ -136,9 +136,9 @@ public class EmailBrowserController {
         backgroundOperationProgress.setVisible(true);
 
         String selectedEmail = emailList.getSelectionModel().getSelectedItem();
-        String emailIdentifier = emailBrowserModel.prepareEmailIdentifier(currentMailbox, selectedEmail);
+        String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
         Thread deleteEmail = new Thread(() -> {
-            emailBrowserModel.moveEmailToDeleted(emailIdentifier);
+            model.moveEmailToDeleted(emailIdentifier);
             Platform.runLater(() -> {
                 backgroundOperation.setText("");
                 backgroundOperationProgress.setVisible(false);

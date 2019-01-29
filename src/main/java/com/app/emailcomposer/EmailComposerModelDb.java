@@ -8,4 +8,9 @@ public class EmailComposerModelDb implements EmailComposerModel {
     public void sendEmail(Email email) {
 
     }
+
+    @Override
+    public void saveDraft(Email email) {
+        
+    }
 }

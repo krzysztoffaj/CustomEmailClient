@@ -22,7 +22,7 @@ public class EmailComposerController {
     @FXML
     HBox additionalOperations;
     @FXML
-    Button addressBook, attachFile, save, delete;
+    Button addressBook, attachFile, saveDraft, delete;
 
     @FXML
     TextField receivers;
@@ -32,7 +32,6 @@ public class EmailComposerController {
     @FXML
     TextArea emailBody;
 
-    private Email email = new Email();
     private final EmailComposerModel model = new EmailComposerModelTxt();
 
     @FXML
@@ -53,7 +52,7 @@ public class EmailComposerController {
 
     @FXML
     private void setButtonsWidthToFillHbox() {
-        Button[] operations = {addressBook, attachFile, save, delete};
+        Button[] operations = {addressBook, attachFile, saveDraft, delete};
         for (Button operation : operations) {
             operation.prefWidthProperty().bind(additionalOperations.widthProperty().divide(operations.length));
         }
@@ -61,11 +60,8 @@ public class EmailComposerController {
 
     @FXML
     private void handleSendClick() {
-        email.setSender("Simple User <simple.user@yahoo.com>");
+        Email email = setEmailProperties();
 
-        email.setSubject(subject.getText());
-
-        email.setReceivers(Arrays.asList(receivers.getText().split("\\s*,\\s*")));
         if (receivers.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
             alert.showAndWait();
@@ -78,12 +74,6 @@ public class EmailComposerController {
             return;
         }
 
-        email.setMark(String.valueOf(EmailMarks.UNMARKED));
-
-        email.setDate(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-
-        email.setBody(emailBody.getText());
-
         Thread sendEmail = new Thread(() -> {
             model.sendEmail(email);
             Platform.runLater(() -> {
@@ -95,5 +85,50 @@ public class EmailComposerController {
         });
         sendEmail.setDaemon(true);
         sendEmail.start();
+    }
+
+    @FXML
+    public void handleAttachFileClick() {
+        Alert alert = new Alert(Alert.AlertType.NONE, "It's gonna be implemented someday, I swear...", ButtonType.OK);
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void handleSaveDraftClick() {
+        Email email = setEmailProperties();
+
+        Thread saveEmailAsDraft = new Thread(() -> {
+            model.saveDraft(email);
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.NONE, "E-mail saved as draft!", ButtonType.OK);
+                alert.showAndWait();
+                Stage stage = (Stage) saveDraft.getScene().getWindow();
+                stage.close();
+            });
+        });
+        saveEmailAsDraft.setDaemon(true);
+        saveEmailAsDraft.start();
+    }
+
+    @FXML
+    public void deleteEmail() {
+        Alert alert = new Alert(Alert.AlertType.NONE, "Are you sure you want to delete this draft?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+            Stage stage = (Stage) delete.getScene().getWindow();
+            stage.close();
+        }
+    }
+
+    private Email setEmailProperties() {
+        Email email = new Email();
+
+        email.setSender("Simple User <simple.user@yahoo.com>");
+        email.setSubject(subject.getText());
+        email.setReceivers(Arrays.asList(receivers.getText().split("\\s*,\\s*")));email.setMark(String.valueOf(EmailMarks.UNMARKED));
+        email.setDate(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+        email.setBody(emailBody.getText());
+
+        return email;
     }
 }
