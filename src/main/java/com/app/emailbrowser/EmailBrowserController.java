@@ -53,15 +53,8 @@ public class EmailBrowserController {
     @FXML
     private void initialize() {
         setButtonsWidthToFillHbox();
+        disableButtonsWhenEmailNotSelected();
         getEmailList();
-    }
-
-    @FXML
-    private void setButtonsWidthToFillHbox() {
-        Button[] operations = {addressBook, newEmail, reply, replyToAll, forward, delete, mark, save};
-        for (Button operation : operations) {
-            operation.prefWidthProperty().bind(operationsPane.widthProperty().divide(operations.length));
-        }
     }
 
     @FXML
@@ -95,8 +88,6 @@ public class EmailBrowserController {
             });
             loadEmails.setDaemon(true);
             loadEmails.start();
-
-            disableEmailOperationsButtons(false);
         }
     }
 
@@ -148,8 +139,20 @@ public class EmailBrowserController {
         });
         deleteEmail.setDaemon(true);
         deleteEmail.start();
+    }
 
-        disableEmailOperationsButtons(true);
+    private void setButtonsWidthToFillHbox() {
+        Button[] operations = {addressBook, newEmail, reply, replyToAll, forward, delete, mark, save};
+        for (Button operation : operations) {
+            operation.prefWidthProperty().bind(operationsPane.widthProperty().divide(operations.length));
+        }
+    }
+
+    private void disableButtonsWhenEmailNotSelected() {
+        Button[] operations = {reply, replyToAll, forward, delete, mark, save};
+        for (Button operation : operations) {
+            operation.disableProperty().bind(emailList.getSelectionModel().selectedItemProperty().isNull());
+        }
     }
 
     private void showEmailBody(Email email) {
@@ -178,12 +181,5 @@ public class EmailBrowserController {
                             email.getDate();
         }
         emailList.getItems().add(emailDisplayedInList);
-    }
-
-    private void disableEmailOperationsButtons(boolean disabled) {
-        Button[] emailOperations = {reply, replyToAll, forward, delete, mark, save};
-        for (Button operation : emailOperations) {
-            operation.setDisable(disabled);
-        }
     }
 }
