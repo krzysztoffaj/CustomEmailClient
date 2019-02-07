@@ -55,11 +55,15 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
     }
 
     @Override
-    public void moveEmailToOtherMailbox(String selectedEmail, String destinationMailbox) {
+    public void moveOrCopyEmailToOtherMailbox(String selectedEmail, String destinationMailbox) {
         Path source = Paths.get(selectedEmail);
         Path destination = Paths.get(workingDirectory, "emails", destinationMailbox);
         try {
-            Files.move(source, destination.resolve(source.getFileName()));
+            if (destinationMailbox.equals("Saved")) {
+                Files.copy(source, destination.resolve(source.getFileName()));
+            } else if (destinationMailbox.equals("Deleted")) {
+                Files.move(source, destination.resolve(source.getFileName()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

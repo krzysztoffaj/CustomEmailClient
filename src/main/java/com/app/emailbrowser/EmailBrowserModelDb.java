@@ -22,7 +22,7 @@
 //    }
 //
 //    @Override
-//    public void moveEmailToOtherMailbox(String selectedEmail) {
+//    public void moveOrCopyEmailToOtherMailbox(String selectedEmail) {
 //
 //    }
 //}

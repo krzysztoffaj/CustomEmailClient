@@ -122,24 +122,23 @@ public class EmailBrowserController {
 
     @FXML
     private void handleDeleteClick() {
-        moveSelectedEmail("Deleted");
+        moveOrCopySelectedEmail("Deleted");
     }
 
     @FXML
     private void handleSaveClick() {
-        moveSelectedEmail("Saved");
+        moveOrCopySelectedEmail("Saved");
     }
 
-    private void moveSelectedEmail(String destinationMailbox) {
+    private void moveOrCopySelectedEmail(String destinationMailbox) {
         String operation = getVerbFromNoun(destinationMailbox);
 
         backgroundOperation.setText(operation + " email...");
-        System.out.println(backgroundOperation.getText());
         backgroundOperationProgress.setVisible(true);
 
         String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, getSelectedEmail());
         Thread moveEmail = new Thread(() -> {
-            model.moveEmailToOtherMailbox(emailIdentifier, destinationMailbox);
+            model.moveOrCopyEmailToOtherMailbox(emailIdentifier, destinationMailbox);
             Platform.runLater(() -> {
                 backgroundOperation.setText("");
                 backgroundOperationProgress.setVisible(false);
@@ -187,7 +186,7 @@ public class EmailBrowserController {
 
     private void addEmailToList(Email email) {
         String emailDisplayedInList;
-        if (currentMailbox.equals("Sent")) {
+        if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
             emailDisplayedInList =
                             email.getReceiversFormatted() + "\n" +
                             email.getSubject() + "\n" +

@@ -13,5 +13,5 @@ public interface EmailBrowserModel {
 
     String prepareEmailIdentifier(String mailbox, String emailIdentifier);
 
-    void moveEmailToOtherMailbox(String selectedEmail, String destination);
+    void moveOrCopyEmailToOtherMailbox(String selectedEmail, String destination);
 }
