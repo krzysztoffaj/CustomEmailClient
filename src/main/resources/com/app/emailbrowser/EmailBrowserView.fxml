@@ -68,7 +68,7 @@
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
                 <Button fx:id="mark" mnemonicParsing="false" text="Mark"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
-                <Button fx:id="save" mnemonicParsing="false" text="Save"
+                <Button fx:id="save" mnemonicParsing="false" onAction="#handleSaveClick" text="Save"
                         maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
             </HBox>
 

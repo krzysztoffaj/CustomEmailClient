@@ -70,11 +70,10 @@ public class EmailBrowserController {
 
     @FXML
     private void handleSelectedEmail() {
-        backgroundOperation.setText("Loading email...");
-        backgroundOperationProgress.setVisible(true);
-
-        String selectedEmail = emailList.getSelectionModel().getSelectedItem();
+        String selectedEmail = getSelectedEmail();
         if (selectedEmail != null) {
+            backgroundOperation.setText("Loading email...");
+            backgroundOperationProgress.setVisible(true);
             String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
 
             Thread loadEmails = new Thread(() -> {
@@ -123,13 +122,24 @@ public class EmailBrowserController {
 
     @FXML
     private void handleDeleteClick() {
-        backgroundOperation.setText("Deleting email...");
+        moveSelectedEmail("Deleted");
+    }
+
+    @FXML
+    private void handleSaveClick() {
+        moveSelectedEmail("Saved");
+    }
+
+    private void moveSelectedEmail(String destinationMailbox) {
+        String operation = getVerbFromNoun(destinationMailbox);
+
+        backgroundOperation.setText(operation + " email...");
+        System.out.println(backgroundOperation.getText());
         backgroundOperationProgress.setVisible(true);
 
-        String selectedEmail = emailList.getSelectionModel().getSelectedItem();
-        String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
-        Thread deleteEmail = new Thread(() -> {
-            model.moveEmailToDeleted(emailIdentifier);
+        String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, getSelectedEmail());
+        Thread moveEmail = new Thread(() -> {
+            model.moveEmailToOtherMailbox(emailIdentifier, destinationMailbox);
             Platform.runLater(() -> {
                 backgroundOperation.setText("");
                 backgroundOperationProgress.setVisible(false);
@@ -137,8 +147,16 @@ public class EmailBrowserController {
                 getEmailList();
             });
         });
-        deleteEmail.setDaemon(true);
-        deleteEmail.start();
+        moveEmail.setDaemon(true);
+        moveEmail.start();
+    }
+
+    private String getVerbFromNoun(String source) {
+        return source.substring(0, source.length() - 2) + "ing";
+    }
+
+    private String getSelectedEmail() {
+        return emailList.getSelectionModel().getSelectedItem();
     }
 
     private void setButtonsWidthToFillHbox() {
