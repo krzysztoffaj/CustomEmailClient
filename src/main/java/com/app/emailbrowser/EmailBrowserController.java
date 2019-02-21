@@ -54,6 +54,12 @@ public class EmailBrowserController {
         primaryStage.show();
     }
 
+    public EmailBrowserController(IEmailService emailService, IUserService userService) {
+        this.emailService = emailService;
+        this.userService = userService;
+        getEmailList();
+    }
+
     @FXML
     private void initialize(IEmailService emailService, IUserService userService) {
         this.emailService = emailService;
@@ -98,23 +104,27 @@ public class EmailBrowserController {
 
     @FXML
     private void getEmailList() {
-        this.emailService.getEmails();
+        final List<Email> emails = this.emailService.getEmails();
+
         backgroundOperation.setText("Loading emails...");
         backgroundOperationProgress.setVisible(true);
 
         emailList.getItems().clear();
-        Thread loadEmail = new Thread(() -> {
-            List<Email> emails = model.getEmails(currentMailbox);
-            Platform.runLater(() -> {
-                for (Email email : emails) {
-                    addEmailToList(email);
-                }
-                backgroundOperation.setText("");
-                backgroundOperationProgress.setVisible(false);
-            });
-        });
-        loadEmail.setDaemon(true);
-        loadEmail.start();
+        for(Email email: emails){
+            addEmailToList(email);
+        }
+//        Thread loadEmail = new Thread(() -> {
+//            List<Email> emails = model.getEmails(currentMailbox);
+//            Platform.runLater(() -> {
+//                for (Email email : emails) {
+//                    addEmailToList(email);
+//                }
+//                backgroundOperation.setText("");
+//                backgroundOperationProgress.setVisible(false);
+//            });
+//        });
+//        loadEmail.setDaemon(true);
+//        loadEmail.start();
     }
 
     @FXML

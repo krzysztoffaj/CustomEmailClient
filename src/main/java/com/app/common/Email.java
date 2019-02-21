@@ -2,14 +2,28 @@ package com.app.common;
 
 import java.util.List;
 
-public class Email implements IEntityId {
-
+public class Email implements EntityId {
+    private int id;
     private String sender;
     private List<String> receivers;
     private String subject;
     private String mark;
     private String dateTime;
     private String body;
+
+    public Email(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getSender() {
         return sender;
@@ -61,16 +75,5 @@ public class Email implements IEntityId {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    @Override
-    public int getId() {
-
-
-    }
-
-    @Override
-    public void setId(int id) {
-
     }
 }

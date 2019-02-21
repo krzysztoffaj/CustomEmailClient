@@ -1,7 +1,7 @@
 package com.app.services;
 
-import com.app.repository.IEmailRepository;
 import com.app.common.Email;
+import com.app.repository.IEmailRepository;
 
 import java.util.List;
 
@@ -10,12 +10,10 @@ public class EmailService implements IEmailService{
 
     public EmailService(IEmailRepository emailRepository) {
         this.emailRepository = emailRepository;
-
     }
-    public List<Email> getEmails(){
+
+    @Override
+    public List<Email> getEmails() {
         return emailRepository.getAll();
     }
-
-
-
 }
