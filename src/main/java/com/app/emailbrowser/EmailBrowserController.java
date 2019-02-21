@@ -3,6 +3,8 @@ package com.app.emailbrowser;
 import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
 import com.app.emailcomposer.EmailComposerController;
+import com.app.services.IEmailService;
+import com.app.services.IUserService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -39,6 +41,8 @@ public class EmailBrowserController {
     private String currentMailbox = "Inbox";
 
     private final EmailBrowserModel model = new EmailBrowserModelTxt();
+    private IEmailService emailService;
+    private IUserService userService;
 
     @FXML
     public static void setupStage(Stage primaryStage) throws IOException {
@@ -51,7 +55,9 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void initialize() {
+    private void initialize(IEmailService emailService, IUserService userService) {
+        this.emailService = emailService;
+        this.userService = userService;
         setButtonsWidthToFillHbox();
         disableButtonsWhenEmailNotSelected();
         getEmailList();
@@ -92,6 +98,7 @@ public class EmailBrowserController {
 
     @FXML
     private void getEmailList() {
+        this.emailService.getEmails();
         backgroundOperation.setText("Loading emails...");
         backgroundOperationProgress.setVisible(true);
 
