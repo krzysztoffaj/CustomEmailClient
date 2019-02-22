@@ -43,6 +43,7 @@ public class EmailComposerController {
         secondaryStage.setMinWidth(600);
         secondaryStage.setMinHeight(400);
         secondaryStage.show();
+//        fxmlLoader.setController(this);
     }
 
     @FXML

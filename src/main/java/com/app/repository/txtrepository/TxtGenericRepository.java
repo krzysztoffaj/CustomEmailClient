@@ -1,11 +1,11 @@
 package com.app.repository.txtrepository;
 
 import com.app.common.EntityId;
-import com.app.repository.IGenericRepository;
+import com.app.repository.GenericRepository;
 
 import java.util.List;
 
-public class TxtGenericRepository<T extends EntityId> implements IGenericRepository<T> {
+public class TxtGenericRepository<T extends EntityId> implements GenericRepository<T> {
     @Override
     public List<T> getAll() {
         return null;

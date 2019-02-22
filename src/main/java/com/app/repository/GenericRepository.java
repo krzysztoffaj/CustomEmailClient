@@ -4,7 +4,7 @@ import com.app.common.EntityId;
 
 import java.util.List;
 
-public interface IGenericRepository<T extends EntityId> {
+public interface GenericRepository<T extends EntityId> {
     List<T> getAll();
 
     T get(int id);
