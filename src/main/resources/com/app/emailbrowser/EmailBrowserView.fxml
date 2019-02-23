@@ -10,8 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.app.emailbrowser.EmailBrowserController" spacing="10.0">
+<HBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" spacing="10.0">
 
     <HBox minWidth="-Infinity" VBox.vgrow="ALWAYS">
         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -19,15 +18,15 @@
                 <Insets right="10.0" top="60.0"/>
             </padding>
             <VBox>
-                <Button mnemonicParsing="false" onAction="#handleMailboxesClick" prefHeight="50.0"
+                <Button mnemonicParsing="false" prefHeight="50.0"
                         prefWidth="100.0" text="Inbox"/>
-                <Button mnemonicParsing="false" onAction="#handleMailboxesClick" prefHeight="50.0"
+                <Button mnemonicParsing="false" prefHeight="50.0"
                         prefWidth="100.0" text="Sent"/>
-                <Button mnemonicParsing="false" onAction="#handleMailboxesClick" prefHeight="50.0"
+                <Button mnemonicParsing="false" prefHeight="50.0"
                         prefWidth="100.0" text="Saved"/>
-                <Button mnemonicParsing="false" onAction="#handleMailboxesClick" prefHeight="50.0"
+                <Button mnemonicParsing="false" prefHeight="50.0"
                         prefWidth="100.0" text="Draft"/>
-                <Button mnemonicParsing="false" onAction="#handleMailboxesClick" prefHeight="50.0"
+                <Button mnemonicParsing="false" prefHeight="50.0"
                         prefWidth="100.0" text="Deleted"/>
             </VBox>
             <VBox alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
@@ -41,9 +40,9 @@
         </VBox>
 
         <VBox spacing="10.0">
-            <Button mnemonicParsing="false" onAction="#handleRefreshClick" prefWidth="200.0" minHeight="50"
+            <Button mnemonicParsing="false" prefWidth="200.0" minHeight="50"
                     text="Refresh"/>
-            <ListView fx:id="emailList" onMouseClicked="#handleSelectedEmail" prefWidth="200.0"
+            <ListView fx:id="emailList" prefWidth="200.0"
                       stylesheets="@styles/EmailList.css" VBox.vgrow="ALWAYS">
             </ListView>
         </VBox>
@@ -51,9 +50,9 @@
 
     <VBox spacing="10.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
         <HBox fx:id="operationsPane">
-            <Button fx:id="addressBook" mnemonicParsing="false" onAction="#handleAddressBookClick" text="Address book"
+            <Button fx:id="addressBook" mnemonicParsing="false" text="Address book"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="newEmail" mnemonicParsing="false" onAction="#handleNewEmailClick" text="New email"
+            <Button fx:id="newEmail" mnemonicParsing="false" text="New email"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true"/>
             <Button fx:id="reply" mnemonicParsing="false" text="Reply"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
@@ -61,11 +60,11 @@
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
             <Button fx:id="forward" mnemonicParsing="false" text="Forward"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
-            <Button fx:id="delete" mnemonicParsing="false" onAction="#handleDeleteClick" text="Delete"
+            <Button fx:id="delete" mnemonicParsing="false" text="Delete"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
             <Button fx:id="mark" mnemonicParsing="false" text="Mark"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
-            <Button fx:id="save" mnemonicParsing="false" onAction="#handleSaveClick" text="Save"
+            <Button fx:id="save" mnemonicParsing="false" text="Save"
                     maxHeight="50" minHeight="50.0" textAlignment="CENTER" wrapText="true" disable="true"/>
         </HBox>
 

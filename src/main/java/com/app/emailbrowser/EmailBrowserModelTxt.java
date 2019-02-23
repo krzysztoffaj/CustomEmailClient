@@ -17,7 +17,7 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
     public Email getEmail(String mailbox, String emailPath) {
         try {
             List<String> emailFile = Files.readAllLines(Paths.get(emailPath));
-            Email email = new Email();
+            Email email = new Email(2);
 
             email.setSender(emailFile.get(0));
             email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*,\\s*")));

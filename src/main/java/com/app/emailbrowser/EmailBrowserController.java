@@ -2,7 +2,6 @@ package com.app.emailbrowser;
 
 import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
-import com.app.emailcomposer.EmailComposerController;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -45,29 +44,34 @@ public class EmailBrowserController {
     private UserService userService;
 
     @FXML
-    public static void setupStage(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(EmailBrowserController.class.getResource("/com/app/emailbrowser/EmailBrowserView.fxml"));
-        primaryStage.setTitle("Custom Email Client");
-        primaryStage.setScene(new Scene(root, 1200, 800));
-        primaryStage.setMinWidth(900);
-        primaryStage.setMinHeight(450);
-        primaryStage.show();
+    public void setupStage(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/emailbrowser/EmailBrowserView.fxml"));
+        fxmlLoader.setController(this);
+        stage.setTitle("Custom Email Client");
+        stage.setScene(new Scene(fxmlLoader.load(), 1200, 800));
+        stage.setMinWidth(900);
+        stage.setMinHeight(450);
+        stage.show();
+
+        setButtonsWidthToFillHbox();
+        disableButtonsWhenEmailNotSelected();
+//        getEmailList();
     }
 
     public EmailBrowserController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
-        getEmailList();
+//        getEmailList();
     }
 
-    @FXML
-    private void initialize(EmailService emailService, UserService userService) {
-        this.emailService = emailService;
-        this.userService = userService;
-        setButtonsWidthToFillHbox();
-        disableButtonsWhenEmailNotSelected();
-        getEmailList();
-    }
+//    @FXML
+//    private void initialize() {
+//        this.emailService = emailService;
+//        this.userService = userService;
+//        setButtonsWidthToFillHbox();
+//        disableButtonsWhenEmailNotSelected();
+//        getEmailList();
+//    }
 
     @FXML
     private void handleRefreshClick() {
@@ -103,7 +107,7 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void getEmailList() {
+    public void getEmailList() {
         final List<Email> emails = this.emailService.getEmails();
 
         backgroundOperation.setText("Loading emails...");
@@ -129,7 +133,7 @@ public class EmailBrowserController {
 
     @FXML
     private void handleNewEmailClick() throws IOException {
-        EmailComposerController.setupStage();
+//        EmailComposerController.setupStage();
     }
 
     @FXML
