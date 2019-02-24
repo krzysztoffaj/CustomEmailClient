@@ -1,0 +1,14 @@
+8
+Bill Gates <bill.gates@microsoft.com>
+Simple User <simple.user@yahoo.com>
+Meeting
+MARKED
+2018-08-10 08:09:40
+
+
+Hello,
+
+How are you? Will you attend our meeting?
+
+Best regards,
+Bill Gates

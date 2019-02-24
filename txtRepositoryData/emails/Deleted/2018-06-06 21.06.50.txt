@@ -1,0 +1,13 @@
+2
+Customer Service <customer.service@booking.com>
+Simple User <simple.user@yahoo.com>
+Special wish accepted
+UNMARKED
+2018-06-06 21:06:50
+
+
+Reservation number: 45685197895
+Your special wishes regarding this reservation has been accepted!
+
+Enjoy your stay!
+Booking.com Team
