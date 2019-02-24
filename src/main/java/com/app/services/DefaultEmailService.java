@@ -3,6 +3,7 @@ package com.app.services;
 import com.app.common.Email;
 import com.app.repository.EmailRepository;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class DefaultEmailService implements EmailService {
@@ -14,6 +15,8 @@ public class DefaultEmailService implements EmailService {
 
     @Override
     public List<Email> getEmails() {
-        return emailRepository.getAll();
+        final List<Email> emails = emailRepository.getAll();
+        emails.sort(Comparator.comparing(Email::getDate).reversed());
+        return emails;
     }
 }

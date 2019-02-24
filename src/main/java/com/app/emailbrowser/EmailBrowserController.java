@@ -61,17 +61,7 @@ public class EmailBrowserController {
     public EmailBrowserController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
-//        getEmailList();
     }
-
-//    @FXML
-//    private void initialize() {
-//        this.emailService = emailService;
-//        this.userService = userService;
-//        setButtonsWidthToFillHbox();
-//        disableButtonsWhenEmailNotSelected();
-//        getEmailList();
-//    }
 
     @FXML
     private void handleRefreshClick() {
@@ -107,11 +97,11 @@ public class EmailBrowserController {
     }
 
     @FXML
-    public void getEmailList() {
-        final List<Email> emails = this.emailService.getEmails();
+    private void getEmailList() {
+        final List<Email> emails = emailService.getEmails();
 
-        backgroundOperation.setText("Loading emails...");
-        backgroundOperationProgress.setVisible(true);
+//        backgroundOperation.setText("Loading emails...");
+//        backgroundOperationProgress.setVisible(true);
 
         emailList.getItems().clear();
         for(Email email: emails){

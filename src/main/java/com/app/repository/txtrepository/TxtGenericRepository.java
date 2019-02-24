@@ -27,6 +27,11 @@ public class TxtGenericRepository<T extends EntityId> implements GenericReposito
     }
 
     @Override
+    public T findByText(String text) {
+        return null;
+    }
+
+    @Override
     public T update(T item) {
         return null;
     }
