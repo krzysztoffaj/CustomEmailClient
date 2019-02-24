@@ -3,6 +3,7 @@ package com.app.repository.txtrepository;
 import com.app.common.EntityId;
 import com.app.repository.GenericRepository;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 public class TxtGenericRepository<T extends EntityId> implements GenericRepository<T> {
@@ -13,7 +14,10 @@ public class TxtGenericRepository<T extends EntityId> implements GenericReposito
 
     @Override
     public T get(int id) {
-        return null;
+        final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
+        final String emailDirectory = String.valueOf(Paths.get(workingDirectory, "emails"));
+
+        
     }
 
     @Override
