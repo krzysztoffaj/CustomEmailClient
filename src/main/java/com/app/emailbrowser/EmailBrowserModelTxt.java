@@ -23,7 +23,7 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
             email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*,\\s*")));
             email.setSubject(emailFile.get(2));
             email.setMark(emailFile.get(3));
-            email.setDate((emailFile.get(4)));
+            email.setDateTime((emailFile.get(4)));
             email.setBody(prepareEmailBody(emailFile));
 
             return email;
@@ -41,7 +41,7 @@ public class EmailBrowserModelTxt implements EmailBrowserModel {
                 emails.add(getEmail(mailbox, file.getPath()));
             }
         }
-        emails.sort(Comparator.comparing(Email::getDate).reversed());
+//        emails.sort(Comparator.comparing(Email::setDateTime).reversed());
         return emails;
     }
 

@@ -16,7 +16,9 @@ public class DefaultEmailService implements EmailService {
     @Override
     public List<Email> getEmails() {
         final List<Email> emails = emailRepository.getAll();
-        emails.sort(Comparator.comparing(Email::getDate).reversed());
+//        emails.sort(Comparator.comparing(Email::getDate).reversed());
+//        emailRepository.get(1);
+
         return emails;
     }
 }

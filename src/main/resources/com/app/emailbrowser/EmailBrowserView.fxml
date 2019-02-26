@@ -49,7 +49,7 @@
     <VBox spacing="10.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
         <HBox fx:id="operationsPane">
             <Button fx:id="addressBook" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Address book" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="newEmail" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="New email" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="newEmail" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="New emailAddress" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="reply" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Reply" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="replyToAll" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Reply to all" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="forward" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Forward" textAlignment="CENTER" wrapText="true" />

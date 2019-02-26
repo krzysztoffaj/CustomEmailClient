@@ -7,9 +7,12 @@ public class Email implements EntityId {
     private String sender;
     private List<String> receivers;
     private String subject;
+    private String mailbox;
     private String mark;
     private String dateTime;
     private String body;
+
+    public Email() {}
 
     public Email(int id) {
         this.id = id;
@@ -53,20 +56,28 @@ public class Email implements EntityId {
         this.subject = subject;
     }
 
+    public String getMailbox() {
+        return mailbox;
+    }
+
+    public void setMailbox(String mailbox) {
+        this.mailbox = mailbox;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public String getMark() {
         return mark;
     }
 
     public void setMark(String mark) {
         this.mark = mark;
-    }
-
-    public String getDate() {
-        return dateTime;
-    }
-
-    public void setDate(String dateTime) {
-        this.dateTime = dateTime;
     }
 
     public String getBody() {

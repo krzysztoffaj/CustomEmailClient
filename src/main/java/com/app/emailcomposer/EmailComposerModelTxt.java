@@ -23,13 +23,13 @@ public class EmailComposerModelTxt implements EmailComposerModel {
 
     private void handleEmailOperation(Email email, String emailDestination) {
         String newEmailPath = String.valueOf(Paths.get(emailDestination,
-                email.getDate().replace(":", ".") + ".txt"));
+                email.getDateTime().replace(":", ".") + ".txt"));
         try (PrintWriter newEmailFile = new PrintWriter(newEmailPath)) {
             newEmailFile.println(email.getSender());
             newEmailFile.println(email.getReceiversFormatted());
             newEmailFile.println(email.getSubject());
             newEmailFile.println(email.getMark());
-            newEmailFile.println(email.getDate());
+            newEmailFile.println(email.getDateTime());
             newEmailFile.println();
             newEmailFile.println();
             newEmailFile.println(email.getBody());

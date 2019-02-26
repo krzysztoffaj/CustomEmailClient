@@ -55,7 +55,7 @@ public class EmailBrowserController {
 
         setButtonsWidthToFillHbox();
         disableButtonsWhenEmailNotSelected();
-//        getEmailList();
+        getEmailList();
     }
 
     public EmailBrowserController(EmailService emailService, UserService userService) {
@@ -103,10 +103,11 @@ public class EmailBrowserController {
 //        backgroundOperation.setText("Loading emails...");
 //        backgroundOperationProgress.setVisible(true);
 
-        emailList.getItems().clear();
+//        emailList.getItems().clear();
         for(Email email: emails){
             addEmailToList(email);
         }
+
 //        Thread loadEmail = new Thread(() -> {
 //            List<Email> emails = model.getEmails(currentMailbox);
 //            Platform.runLater(() -> {
@@ -192,7 +193,7 @@ public class EmailBrowserController {
         emailDetails.getItems().add("From:\t" + email.getSender());
         emailDetails.getItems().add("To:\t\t" + email.getReceiversFormatted());
         emailDetails.getItems().add("Subject:\t" + email.getSubject());
-        emailDetails.getItems().add("Date:\t" + email.getDate());
+        emailDetails.getItems().add("Date:\t" + email.getDateTime());
     }
 
     private void addEmailToList(Email email) {
@@ -201,12 +202,12 @@ public class EmailBrowserController {
             emailDisplayedInList =
                             email.getReceiversFormatted() + "\n" +
                             email.getSubject() + "\n" +
-                            email.getDate();
+                            email.getDateTime();
         } else {
             emailDisplayedInList =
                             email.getSender() + "\n" +
                             email.getSubject() + "\n" +
-                            email.getDate();
+                            email.getDateTime();
         }
         emailList.getItems().add(emailDisplayedInList);
     }
