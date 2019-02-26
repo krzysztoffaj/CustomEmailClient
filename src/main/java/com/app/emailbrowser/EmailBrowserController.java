@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -17,25 +16,29 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class EmailBrowserController {
     @FXML
-    Text backgroundOperation;
-    @FXML
-    ProgressBar backgroundOperationProgress;
-    @FXML
-    ListView<String> emailList;
+    private Button inbox, sent, saved, draft, deleted;
 
     @FXML
-    ListView<String> emailDetails;
+    private Text backgroundOperation;
     @FXML
-    TextArea emailBody;
+    private ProgressBar backgroundOperationProgress;
+    @FXML
+    private ListView<String> emailList;
 
     @FXML
-    HBox operationsPane;
+    private ListView<String> emailDetails;
     @FXML
-    Button addressBook, newEmail, reply, replyToAll, forward, delete, mark, save;
+    private TextArea emailBody;
+
+    @FXML
+    private HBox operationsPane;
+    @FXML
+    private Button addressBook, newEmail, reply, replyToAll, forward, delete, mark, save;
 
     private String currentMailbox = "Inbox";
 
@@ -54,6 +57,7 @@ public class EmailBrowserController {
         stage.show();
 
         setButtonsWidthToFillHbox();
+        setMailboxButtonsHandlers();
         disableButtonsWhenEmailNotSelected();
         getEmailList();
     }
@@ -76,24 +80,25 @@ public class EmailBrowserController {
 
     @FXML
     private void handleSelectedEmail() {
-        String selectedEmail = getSelectedEmail();
-        if (selectedEmail != null) {
-            backgroundOperation.setText("Loading email...");
-            backgroundOperationProgress.setVisible(true);
-            String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
 
-            Thread loadEmails = new Thread(() -> {
-                Email email = model.getEmail(currentMailbox, emailIdentifier);
-                Platform.runLater(() -> {
-                    EmailBrowserController.this.showEmailDetails(email);
-                    EmailBrowserController.this.showEmailBody(email);
-                    backgroundOperation.setText("");
-                    backgroundOperationProgress.setVisible(false);
-                });
-            });
-            loadEmails.setDaemon(true);
-            loadEmails.start();
-        }
+//        String selectedEmail = getSelectedEmail();
+//        if (selectedEmail != null) {
+//            backgroundOperation.setText("Loading email...");
+//            backgroundOperationProgress.setVisible(true);
+//            String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
+//
+//            Thread loadEmails = new Thread(() -> {
+//                Email email = model.getEmail(currentMailbox, emailIdentifier);
+//                Platform.runLater(() -> {
+//                    EmailBrowserController.this.showEmailDetails(email);
+//                    EmailBrowserController.this.showEmailBody(email);
+//                    backgroundOperation.setText("");
+//                    backgroundOperationProgress.setVisible(false);
+//                });
+//            });
+//            loadEmails.setDaemon(true);
+//            loadEmails.start();
+//        }
     }
 
     @FXML
@@ -103,8 +108,11 @@ public class EmailBrowserController {
 //        backgroundOperation.setText("Loading emails...");
 //        backgroundOperationProgress.setVisible(true);
 
-//        emailList.getItems().clear();
-        for(Email email: emails){
+        emailList.getItems().clear();
+        for (Email email : emails.stream()
+                                .filter(x -> x.getMailbox()
+                                .equals(currentMailbox)).collect(Collectors.toList()))
+        {
             addEmailToList(email);
         }
 
@@ -174,6 +182,16 @@ public class EmailBrowserController {
         Button[] operations = {addressBook, newEmail, reply, replyToAll, forward, delete, mark, save};
         for (Button operation : operations) {
             operation.prefWidthProperty().bind(operationsPane.widthProperty().divide(operations.length));
+        }
+    }
+
+    private void setMailboxButtonsHandlers() {
+        Button[] mailboxes = {inbox, sent, saved, draft, deleted};
+        for (Button mailbox : mailboxes) {
+            mailbox.setOnAction(event -> {
+                currentMailbox = mailbox.getText();
+                getEmailList();
+            });
         }
     }
 

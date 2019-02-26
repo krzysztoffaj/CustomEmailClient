@@ -1,6 +1,5 @@
 package com.app.repository.txtrepository;
 
-import com.app.common.Email;
 import com.app.common.EntityId;
 import com.app.repository.GenericRepository;
 
@@ -21,35 +20,21 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     @Override
     public List<T> getAll() {
         List<T> all = new ArrayList<>();
-//        try {
-//            Files.walk(Paths.get(genericTypeDirectory + "/inbox/"))
-//                    .filter(p -> p.toString().endsWith(".txt"))
-//                    .forEach(x -> all.add(getGenericInstance()));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        for (T t : all) {
-//            System.out.println(t);
-//        }
-
-
-        all.add(get(3));
-
+        File[] files = new File(genericTypeDirectory).listFiles();
+        for (File file : files) {
+            all.add(castType(file));
+        }
         return all;
     }
 
     @Override
     public T get(int id) {
         File[] files = new File(genericTypeDirectory).listFiles();
-        T object;
         for (File file : files) {
-            if(id == Integer.parseInt(file.getName())) {
-                object = castType(file);
-                return object;
+            if (id == Integer.parseInt(file.getName())) {
+                return castType(file);
             }
         }
-
         return null;
     }
 
@@ -78,7 +63,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     }
 
-    List<String> getAllLines(File file) {
+    List<String> readAllLinesLazily(File file) {
         List<String> fileContent = new ArrayList<>();
         try {
             Files.lines(file.toPath()).forEach(fileContent::add);
@@ -89,7 +74,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         return fileContent;
     }
 
-    @SuppressWarnings("deprecated")
+    @SuppressWarnings({"deprecation", "unchecked"})
     private T getGenericInstance() {
         T instance = null;
         try {

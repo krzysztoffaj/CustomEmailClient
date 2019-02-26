@@ -4,10 +4,6 @@ import com.app.common.Email;
 import com.app.repository.EmailRepository;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +12,7 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
     @Override
     public Email castType(File file) {
         Email email = new Email(Integer.parseInt(file.getName()));
-        List<String> emailFile = getAllLines(file);
+        List<String> emailFile = readAllLinesLazily(file);
 
         email.setSender(emailFile.get(0));
         email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*,\\s*")));
