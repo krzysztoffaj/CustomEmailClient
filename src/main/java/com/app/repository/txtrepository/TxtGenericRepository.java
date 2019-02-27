@@ -7,9 +7,14 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public abstract class TxtGenericRepository<T extends EntityId> implements GenericRepository<T> {
     private final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
@@ -20,22 +25,19 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     @Override
     public List<T> getAll() {
         List<T> all = new ArrayList<>();
-        File[] files = new File(genericTypeDirectory).listFiles();
-        for (File file : files) {
-            all.add(castType(file));
+        try {
+            Files.list(Paths.get(genericTypeDirectory))
+                    .forEach(path -> all.add(castType(new File(String.valueOf(path)))));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return all;
     }
 
     @Override
     public T get(int id) {
-        File[] files = new File(genericTypeDirectory).listFiles();
-        for (File file : files) {
-            if (id == Integer.parseInt(file.getName())) {
-                return castType(file);
-            }
-        }
-        return null;
+        String desiredFilePath = String.valueOf(Paths.get(genericTypeDirectory, String.valueOf(id)));
+        return castType(new File(desiredFilePath));
     }
 
     @Override
