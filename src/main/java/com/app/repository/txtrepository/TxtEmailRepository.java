@@ -4,6 +4,7 @@ import com.app.common.Email;
 import com.app.repository.EmailRepository;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +24,19 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         email.setBody(prepareEmailBody(emailFile));
 
         return email;
+    }
+
+    @Override
+    public void addItem(Email email, PrintWriter writer) {
+        writer.println(email.getSender());
+        writer.println(email.getReceiversFormatted());
+        writer.println(email.getSubject());
+        writer.println(email.getMailbox());
+        writer.println(email.getMark());
+        writer.println(email.getDateTime());
+        writer.println();
+        writer.println();
+        writer.println(email.getBody());
     }
 
     private String prepareEmailBody(List<String> emailFile) {

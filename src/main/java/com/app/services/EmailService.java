@@ -5,6 +5,7 @@ import com.app.common.Email;
 import java.util.List;
 
 public interface EmailService {
-
     List<Email> getEmails();
+
+    List<Email> findByText(String text);
 }

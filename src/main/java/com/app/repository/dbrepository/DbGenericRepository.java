@@ -27,11 +27,6 @@ public class DbGenericRepository<T extends EntityId> implements GenericRepositor
     }
 
     @Override
-    public T findByText(String text) {
-        return null;
-    }
-
-    @Override
     public T update(T item) {
         return null;
     }

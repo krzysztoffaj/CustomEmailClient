@@ -13,8 +13,6 @@ public interface GenericRepository<T extends EntityId> {
 
     Iterable<T> addRange(Iterable<T> items);
 
-    T findByText(String text);
-
     T update(T item);
 
     void remove(T item);
