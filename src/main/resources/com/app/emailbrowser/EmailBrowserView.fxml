@@ -36,10 +36,10 @@
         </VBox>
 
         <VBox spacing="10.0">
-            <Button minHeight="50" mnemonicParsing="false" prefWidth="200.0" text="Refresh"/>
+            <Button fx:id="refresh" minHeight="50" mnemonicParsing="false" prefWidth="200.0" text="Refresh"/>
             <HBox prefWidth="200.0">
-                <TextField/>
-                <Button mnemonicParsing="false" prefWidth="100.0" text="Search"/>
+                <TextField fx:id="searchInput"/>
+                <Button fx:id="search" mnemonicParsing="false" prefWidth="100.0" text="Search"/>
             </HBox>
             <ListView fx:id="emailList" prefWidth="200.0" stylesheets="@styles/EmailList.css" VBox.vgrow="ALWAYS">
             </ListView>

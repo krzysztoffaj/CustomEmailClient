@@ -4,9 +4,7 @@ import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
 import com.app.services.EmailService;
 import com.app.services.UserService;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,6 +25,13 @@ public class EmailBrowserController {
     private Text backgroundOperation;
     @FXML
     private ProgressBar backgroundOperationProgress;
+
+    @FXML
+    private Button refresh;
+    @FXML
+    private TextField searchInput;
+    @FXML
+    private Button search;
     @FXML
     private ListView<String> emailList;
 
@@ -42,7 +47,6 @@ public class EmailBrowserController {
 
     private String currentMailbox = "Inbox";
 
-    private final EmailBrowserModel model = new EmailBrowserModelTxt();
     private EmailService emailService;
     private UserService userService;
 
@@ -60,6 +64,8 @@ public class EmailBrowserController {
         setMailboxButtonsHandlers();
         disableButtonsWhenEmailNotSelected();
         getEmailList();
+        setActionForRefreshButton();
+        setActionForSearchButton();
     }
 
     public EmailBrowserController(EmailService emailService, UserService userService) {
@@ -67,16 +73,18 @@ public class EmailBrowserController {
         this.userService = userService;
     }
 
-    @FXML
-    private void handleRefreshClick() {
-        getEmailList();
+    private void setActionForRefreshButton() {
+        refresh.setOnAction(e -> getEmailList());
     }
 
-    @FXML
-    private void handleMailboxesClick(ActionEvent event) {
-        currentMailbox = ((Button) event.getSource()).getText();
-        getEmailList();
+    private void setActionForSearchButton() {
+        search.setOnAction(e -> {
+            emailList.getItems().clear();
+            final List<Email> emailsFound = emailService.findByText(searchInput.getText());
+            emailsFound.forEach(this::addEmailToList);
+        });
     }
+
 
     @FXML
     private void handleSelectedEmail() {
@@ -140,35 +148,35 @@ public class EmailBrowserController {
         AddressBookController.setupStage();
     }
 
-    @FXML
-    private void handleDeleteClick() {
-        moveOrCopySelectedEmail("Deleted");
-    }
+//    @FXML
+//    private void handleDeleteClick() {
+//        moveOrCopySelectedEmail("Deleted");
+//    }
+//
+//    @FXML
+//    private void handleSaveClick() {
+//        moveOrCopySelectedEmail("Saved");
+//    }
 
-    @FXML
-    private void handleSaveClick() {
-        moveOrCopySelectedEmail("Saved");
-    }
-
-    private void moveOrCopySelectedEmail(String destinationMailbox) {
-        String operation = getVerbFromNoun(destinationMailbox);
-
-        backgroundOperation.setText(operation + " email...");
-        backgroundOperationProgress.setVisible(true);
-
-        String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, getSelectedEmail());
-        Thread moveEmail = new Thread(() -> {
-            model.moveOrCopyEmailToOtherMailbox(emailIdentifier, destinationMailbox);
-            Platform.runLater(() -> {
-                backgroundOperation.setText("");
-                backgroundOperationProgress.setVisible(false);
-
-                getEmailList();
-            });
-        });
-        moveEmail.setDaemon(true);
-        moveEmail.start();
-    }
+//    private void moveOrCopySelectedEmail(String destinationMailbox) {
+//        String operation = getVerbFromNoun(destinationMailbox);
+//
+//        backgroundOperation.setText(operation + " email...");
+//        backgroundOperationProgress.setVisible(true);
+//
+//        String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, getSelectedEmail());
+//        Thread moveEmail = new Thread(() -> {
+//            model.moveOrCopyEmailToOtherMailbox(emailIdentifier, destinationMailbox);
+//            Platform.runLater(() -> {
+//                backgroundOperation.setText("");
+//                backgroundOperationProgress.setVisible(false);
+//
+//                getEmailList();
+//            });
+//        });
+//        moveEmail.setDaemon(true);
+//        moveEmail.start();
+//    }
 
     private String getVerbFromNoun(String source) {
         return source.substring(0, source.length() - 2) + "ing";
