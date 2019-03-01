@@ -110,8 +110,8 @@ public class EmailBrowserController {
 
         emailList.getItems().clear();
         for (Email email : emails.stream()
-                                .filter(x -> x.getMailbox()
-                                .equals(currentMailbox)).collect(Collectors.toList()))
+                                    .filter(x -> x.getMailbox().equals(currentMailbox))
+                                    .collect(Collectors.toList()))
         {
             addEmailToList(email);
         }
@@ -218,14 +218,14 @@ public class EmailBrowserController {
         String emailDisplayedInList;
         if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
             emailDisplayedInList =
-                            email.getReceiversFormatted() + "\n" +
-                            email.getSubject() + "\n" +
-                            email.getDateTime();
+                    email.getReceiversFormatted() + "\n" +
+                    email.getSubject() + "\n" +
+                    email.getDateTime();
         } else {
             emailDisplayedInList =
-                            email.getSender() + "\n" +
-                            email.getSubject() + "\n" +
-                            email.getDateTime();
+                    email.getSender() + "\n" +
+                    email.getSubject() + "\n" +
+                    email.getDateTime();
         }
         emailList.getItems().add(emailDisplayedInList);
     }

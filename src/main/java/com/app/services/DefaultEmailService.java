@@ -23,25 +23,20 @@ public class DefaultEmailService implements EmailService {
 
     @Override
     public List<Email> findByText(String text) {
-        List<Email> allEmails = getEmails();
-        List<Email> itemsFound = new ArrayList<>();
+        List<Email> emailsFound = new ArrayList<>();
 
-        StringBuilder builder;
-        for (Email email : allEmails) {
-            builder = new StringBuilder();
-            builder.append(email.getSender());
-            builder.append(email.getReceiversFormatted());
-            builder.append(email.getSubject());
-            builder.append(email.getBody());
-            if(builder.toString().contains(text)) {
-                itemsFound.add(email);
+        getEmails().forEach(email -> {
+            String searchRange =
+                    email.getSender() +
+                    email.getReceiversFormatted() +
+                    email.getSubject() +
+                    email.getBody();
+            if (searchRange.contains(text)) {
+                emailsFound.add(email);
             }
-        }
+        });
 
-        for (Email email : itemsFound) {
-            System.out.println(email.getId());
-        }
-
-        return itemsFound;
+        return emailsFound;
     }
 }
+git
