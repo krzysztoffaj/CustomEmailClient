@@ -39,4 +39,3 @@ public class DefaultEmailService implements EmailService {
         return emailsFound;
     }
 }
-git
