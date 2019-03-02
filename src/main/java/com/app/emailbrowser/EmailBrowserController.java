@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class EmailBrowserController {
@@ -33,10 +32,10 @@ public class EmailBrowserController {
     @FXML
     private Button search;
     @FXML
-    private ListView<String> emailList;
+    private ListView<Email> emailList;
 
     @FXML
-    private ListView<String> emailDetails;
+    private TextArea emailDetails;
     @FXML
     private TextArea emailBody;
 
@@ -66,6 +65,8 @@ public class EmailBrowserController {
         getEmailList();
         setActionForRefreshButton();
         setActionForSearchButton();
+
+        temp();
     }
 
     public EmailBrowserController(EmailService emailService, UserService userService) {
@@ -81,10 +82,33 @@ public class EmailBrowserController {
         search.setOnAction(e -> {
             emailList.getItems().clear();
             final List<Email> emailsFound = emailService.findByText(searchInput.getText());
-            emailsFound.forEach(this::addEmailToList);
+            emailsFound.forEach(email -> emailList.getItems().add(email));
         });
     }
 
+
+    private void temp() {
+        emailList.setCellFactory(param -> new ListCell<Email>() {
+            @Override
+            protected void updateItem(Email email, boolean empty) {
+                super.updateItem(email, empty);
+
+                if (empty || email == null) {
+                    setText(null);
+                } else {
+                    setText(
+                            email.getSender() + "\n" +
+                            email.getSubject() + "\n" +
+                            email.getDateTime());
+                }
+            }
+        });
+
+        emailList.setOnMouseClicked(e -> {
+            showEmailDetails(getSelectedEmail());
+            showEmailBody(getSelectedEmail());
+        });
+    }
 
     @FXML
     private void handleSelectedEmail() {
@@ -111,18 +135,14 @@ public class EmailBrowserController {
 
     @FXML
     private void getEmailList() {
-        final List<Email> emails = emailService.getEmails();
 
 //        backgroundOperation.setText("Loading emails...");
 //        backgroundOperationProgress.setVisible(true);
 
         emailList.getItems().clear();
-        for (Email email : emails.stream()
-                                    .filter(x -> x.getMailbox().equals(currentMailbox))
-                                    .collect(Collectors.toList()))
-        {
-            addEmailToList(email);
-        }
+        emailService.getEmails().stream()
+                .filter(x -> x.getMailbox().equals(currentMailbox))
+                .forEach(e -> emailList.getItems().add(e));
 
 //        Thread loadEmail = new Thread(() -> {
 //            List<Email> emails = model.getEmails(currentMailbox);
@@ -182,7 +202,7 @@ public class EmailBrowserController {
         return source.substring(0, source.length() - 2) + "ing";
     }
 
-    private String getSelectedEmail() {
+    private Email getSelectedEmail() {
         return emailList.getSelectionModel().getSelectedItem();
     }
 
@@ -211,30 +231,32 @@ public class EmailBrowserController {
     }
 
     private void showEmailBody(Email email) {
+        emailBody.clear();
         emailBody.setText(email.getBody());
     }
 
     private void showEmailDetails(Email email) {
-        emailDetails.getItems().clear();
-        emailDetails.getItems().add("From:\t" + email.getSender());
-        emailDetails.getItems().add("To:\t\t" + email.getReceiversFormatted());
-        emailDetails.getItems().add("Subject:\t" + email.getSubject());
-        emailDetails.getItems().add("Date:\t" + email.getDateTime());
+        emailDetails.clear();
+        emailDetails.setText(
+                "From:\t" + email.getSender() + "\n" +
+                "To:\t\t" + email.getReceiversFormatted() + "\n" +
+                "Subject:\t" + email.getSubject() + "\n" +
+                "Date:\t" + email.getDateTime());
     }
 
-    private void addEmailToList(Email email) {
-        String emailDisplayedInList;
-        if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
-            emailDisplayedInList =
-                    email.getReceiversFormatted() + "\n" +
-                    email.getSubject() + "\n" +
-                    email.getDateTime();
-        } else {
-            emailDisplayedInList =
-                    email.getSender() + "\n" +
-                    email.getSubject() + "\n" +
-                    email.getDateTime();
-        }
-        emailList.getItems().add(emailDisplayedInList);
-    }
+//    private void addEmailToList(Email email) {
+//        String emailDisplayedInList;
+//        if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
+//            emailDisplayedInList =
+//                    email.getReceiversFormatted() + "\n" +
+//                    email.getSubject() + "\n" +
+//                    email.getDateTime();
+//        } else {
+//            emailDisplayedInList =
+//                    email.getSender() + "\n" +
+//                    email.getSubject() + "\n" +
+//                    email.getDateTime();
+//        }
+//        emailList.getItems().add(emailDisplayedInList);
+//    }
 }
