@@ -8,4 +8,6 @@ public interface EmailService {
     List<Email> getEmails();
 
     List<Email> findByText(String text);
+
+    void sendEmail(Email email);
 }

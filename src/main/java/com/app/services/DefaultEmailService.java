@@ -38,4 +38,9 @@ public class DefaultEmailService implements EmailService {
 
         return emailsFound;
     }
+
+    @Override
+    public void sendEmail(Email email) {
+
+    }
 }

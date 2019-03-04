@@ -10,10 +10,10 @@
 <?import javafx.scene.text.Text?>
 
 <VBox spacing="10.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.172-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.emailcomposer.EmailComposerController">
+      xmlns:fx="http://javafx.com/fxml/1" >
 
     <HBox>
-        <Button fx:id="send" mnemonicParsing="false" onAction="#handleSendClick" text="Send"
+        <Button fx:id="send" mnemonicParsing="false" text="Send"
                 maxHeight="40" minHeight="40.0" minWidth="150" textAlignment="CENTER">
             <HBox.margin>
                 <Insets right="50.0"/>
@@ -25,11 +25,11 @@
         <HBox fx:id="additionalOperations" HBox.hgrow="ALWAYS">
             <Button fx:id="addressBook" mnemonicParsing="false" text="Address book"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="attachFile" mnemonicParsing="false" onAction="#handleAttachFileClick" text="Attach a file"
+            <Button fx:id="attachFile" mnemonicParsing="false" text="Attach a file"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="saveDraft" mnemonicParsing="false" onAction="#handleSaveDraftClick" text="Save as draft"
+            <Button fx:id="saveDraft" mnemonicParsing="false" text="Save as draft"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteEmail" text="Delete"
+            <Button fx:id="delete" mnemonicParsing="false" text="Delete"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
         </HBox>
         <padding>

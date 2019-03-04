@@ -2,8 +2,10 @@ package com.app.emailbrowser;
 
 import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
+import com.app.emailcomposer.EmailComposerController;
 import com.app.services.EmailService;
 import com.app.services.UserService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,7 +15,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
 
 
 public class EmailBrowserController {
@@ -59,14 +60,18 @@ public class EmailBrowserController {
         stage.setMinHeight(450);
         stage.show();
 
+        setEmailListCells();
         setButtonsWidthToFillHbox();
-        setMailboxButtonsHandlers();
         disableButtonsWhenEmailNotSelected();
-        getEmailList();
-        setActionForRefreshButton();
-        setActionForSearchButton();
 
-        temp();
+        handleMailboxesButtons();
+        handleRefreshButton();
+        handleSearchButton();
+        handleEmailListClicks();
+        handleAddressBookClick();
+        handleNewEmailClick();
+
+        getEmailList();
     }
 
     public EmailBrowserController(EmailService emailService, UserService userService) {
@@ -74,20 +79,27 @@ public class EmailBrowserController {
         this.userService = userService;
     }
 
-    private void setActionForRefreshButton() {
+    private void handleRefreshButton() {
         refresh.setOnAction(e -> getEmailList());
     }
 
-    private void setActionForSearchButton() {
+    private void handleSearchButton() {
         search.setOnAction(e -> {
+            enableProgressBarAndDisplayOperation("Searching...");
             emailList.getItems().clear();
-            final List<Email> emailsFound = emailService.findByText(searchInput.getText());
-            emailsFound.forEach(email -> emailList.getItems().add(email));
+
+            Thread search = new Thread(() -> Platform.runLater(() -> {
+                emailService.findByText(searchInput.getText())
+                        .forEach(email -> emailList.getItems().add(email));
+                disableProgressBar();
+            }));
+            search.setDaemon(true);
+            search.start();
         });
     }
 
 
-    private void temp() {
+    private void setEmailListCells() {
         emailList.setCellFactory(param -> new ListCell<Email>() {
             @Override
             protected void updateItem(Email email, boolean empty) {
@@ -96,14 +108,13 @@ public class EmailBrowserController {
                 if (empty || email == null) {
                     setText(null);
                 } else {
-                    setText(
-                            email.getSender() + "\n" +
-                            email.getSubject() + "\n" +
-                            email.getDateTime());
+                    setText(getDataForEmailList(email));
                 }
             }
         });
+    }
 
+    private void handleEmailListClicks() {
         emailList.setOnMouseClicked(e -> {
             showEmailDetails(getSelectedEmail());
             showEmailBody(getSelectedEmail());
@@ -111,61 +122,36 @@ public class EmailBrowserController {
     }
 
     @FXML
-    private void handleSelectedEmail() {
-
-//        String selectedEmail = getSelectedEmail();
-//        if (selectedEmail != null) {
-//            backgroundOperation.setText("Loading email...");
-//            backgroundOperationProgress.setVisible(true);
-//            String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, selectedEmail);
-//
-//            Thread loadEmails = new Thread(() -> {
-//                Email email = model.getEmail(currentMailbox, emailIdentifier);
-//                Platform.runLater(() -> {
-//                    EmailBrowserController.this.showEmailDetails(email);
-//                    EmailBrowserController.this.showEmailBody(email);
-//                    backgroundOperation.setText("");
-//                    backgroundOperationProgress.setVisible(false);
-//                });
-//            });
-//            loadEmails.setDaemon(true);
-//            loadEmails.start();
-//        }
-    }
-
-    @FXML
     private void getEmailList() {
-
-//        backgroundOperation.setText("Loading emails...");
-//        backgroundOperationProgress.setVisible(true);
-
+        enableProgressBarAndDisplayOperation("Loading emails...");
         emailList.getItems().clear();
-        emailService.getEmails().stream()
-                .filter(x -> x.getMailbox().equals(currentMailbox))
-                .forEach(e -> emailList.getItems().add(e));
 
-//        Thread loadEmail = new Thread(() -> {
-//            List<Email> emails = model.getEmails(currentMailbox);
-//            Platform.runLater(() -> {
-//                for (Email email : emails) {
-//                    addEmailToList(email);
-//                }
-//                backgroundOperation.setText("");
-//                backgroundOperationProgress.setVisible(false);
-//            });
-//        });
-//        loadEmail.setDaemon(true);
-//        loadEmail.start();
+        Thread loadEmail = new Thread(() -> Platform.runLater(() -> {
+            emailService.getEmails().stream()
+                    .filter(x -> x.getMailbox().equals(currentMailbox))
+                    .forEach(e -> emailList.getItems().add(e));
+            disableProgressBar();
+        }));
+        loadEmail.setDaemon(true);
+        loadEmail.start();
     }
 
-    @FXML
-    private void handleNewEmailClick() throws IOException {
-//        EmailComposerController.setupStage();
+    private void handleNewEmailClick() {
+        newEmail.setOnAction(e -> {
+            new EmailComposerController(
+                    this.emailService,
+                    this.userService
+            ).setupStage();
+        });
     }
 
-    @FXML
-    private void handleAddressBookClick() throws IOException {
-        AddressBookController.setupStage();
+    private void handleAddressBookClick() {
+        addressBook.setOnAction(e -> {
+            new AddressBookController(
+                    this.emailService,
+                    this.userService
+            ).setupStage();
+        });
     }
 
 //    @FXML
@@ -198,10 +184,6 @@ public class EmailBrowserController {
 //        moveEmail.start();
 //    }
 
-    private String getVerbFromNoun(String source) {
-        return source.substring(0, source.length() - 2) + "ing";
-    }
-
     private Email getSelectedEmail() {
         return emailList.getSelectionModel().getSelectedItem();
     }
@@ -213,7 +195,7 @@ public class EmailBrowserController {
         }
     }
 
-    private void setMailboxButtonsHandlers() {
+    private void handleMailboxesButtons() {
         Button[] mailboxes = {inbox, sent, saved, draft, deleted};
         for (Button mailbox : mailboxes) {
             mailbox.setOnAction(event -> {
@@ -244,19 +226,26 @@ public class EmailBrowserController {
                 "Date:\t" + email.getDateTime());
     }
 
-//    private void addEmailToList(Email email) {
-//        String emailDisplayedInList;
-//        if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
-//            emailDisplayedInList =
-//                    email.getReceiversFormatted() + "\n" +
-//                    email.getSubject() + "\n" +
-//                    email.getDateTime();
-//        } else {
-//            emailDisplayedInList =
-//                    email.getSender() + "\n" +
-//                    email.getSubject() + "\n" +
-//                    email.getDateTime();
-//        }
-//        emailList.getItems().add(emailDisplayedInList);
-//    }
+    private String getDataForEmailList(Email email) {
+        if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
+            return email.getReceiversFormatted() + "\n" +
+                   email.getSubject() + "\n" +
+                   email.getDateTime();
+        } else {
+            return email.getSender() + "\n" +
+                   email.getSubject() + "\n" +
+                   email.getDateTime();
+        }
+    }
+
+    private void enableProgressBarAndDisplayOperation(String operation) {
+        backgroundOperation.setText(operation);
+        backgroundOperationProgress.setVisible(true);
+    }
+
+    private void disableProgressBar() {
+        backgroundOperation.setText("");
+        backgroundOperationProgress.setVisible(false);
+    }
+
 }
