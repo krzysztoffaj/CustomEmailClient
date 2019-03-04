@@ -10,4 +10,10 @@ public interface EmailService {
     List<Email> findByText(String text);
 
     void sendEmail(Email email);
+
+    void saveEmail(Email email);
+
+    void deleteEmail(Email email);
+
+    void saveDraft(Email email);
 }

@@ -70,6 +70,8 @@ public class EmailBrowserController {
         handleEmailListClicks();
         handleAddressBookClick();
         handleNewEmailClick();
+        handleDeleteClick();
+        handleSaveClick();
 
         getEmailList();
     }
@@ -98,7 +100,6 @@ public class EmailBrowserController {
         });
     }
 
-
     private void setEmailListCells() {
         emailList.setCellFactory(param -> new ListCell<Email>() {
             @Override
@@ -117,7 +118,7 @@ public class EmailBrowserController {
     private void handleEmailListClicks() {
         emailList.setOnMouseClicked(e -> {
             showEmailDetails(getSelectedEmail());
-            showEmailBody(getSelectedEmail());
+            emailBody.setText(getSelectedEmail().getBody());
         });
     }
 
@@ -154,35 +155,35 @@ public class EmailBrowserController {
         });
     }
 
-//    @FXML
-//    private void handleDeleteClick() {
-//        moveOrCopySelectedEmail("Deleted");
-//    }
-//
-//    @FXML
-//    private void handleSaveClick() {
-//        moveOrCopySelectedEmail("Saved");
-//    }
+    private void handleDeleteClick() {
+        delete.setOnAction(e -> {
+            enableProgressBarAndDisplayOperation("Deleting email...");
+            Thread deleteEmail = new Thread(() -> {
+                emailService.deleteEmail(getSelectedEmail());
+                Platform.runLater(() -> {
+                    getEmailList();
+                    disableProgressBar();
+                });
+            });
+            deleteEmail.setDaemon(true);
+            deleteEmail.start();
+        });
+    }
 
-//    private void moveOrCopySelectedEmail(String destinationMailbox) {
-//        String operation = getVerbFromNoun(destinationMailbox);
-//
-//        backgroundOperation.setText(operation + " email...");
-//        backgroundOperationProgress.setVisible(true);
-//
-//        String emailIdentifier = model.prepareEmailIdentifier(currentMailbox, getSelectedEmail());
-//        Thread moveEmail = new Thread(() -> {
-//            model.moveOrCopyEmailToOtherMailbox(emailIdentifier, destinationMailbox);
-//            Platform.runLater(() -> {
-//                backgroundOperation.setText("");
-//                backgroundOperationProgress.setVisible(false);
-//
-//                getEmailList();
-//            });
-//        });
-//        moveEmail.setDaemon(true);
-//        moveEmail.start();
-//    }
+    private void handleSaveClick() {
+        save.setOnAction(e -> {
+            enableProgressBarAndDisplayOperation("Saving email...");
+            Thread saveEmail = new Thread(() -> {
+                emailService.saveEmail(getSelectedEmail());
+                Platform.runLater(() -> {
+                    getEmailList();
+                    disableProgressBar();
+                });
+            });
+            saveEmail.setDaemon(true);
+            saveEmail.start();
+        });
+    }
 
     private Email getSelectedEmail() {
         return emailList.getSelectionModel().getSelectedItem();
@@ -213,12 +214,10 @@ public class EmailBrowserController {
     }
 
     private void showEmailBody(Email email) {
-        emailBody.clear();
         emailBody.setText(email.getBody());
     }
 
     private void showEmailDetails(Email email) {
-        emailDetails.clear();
         emailDetails.setText(
                 "From:\t" + email.getSender() + "\n" +
                 "To:\t\t" + email.getReceiversFormatted() + "\n" +
@@ -247,5 +246,4 @@ public class EmailBrowserController {
         backgroundOperation.setText("");
         backgroundOperationProgress.setVisible(false);
     }
-
 }

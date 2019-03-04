@@ -46,6 +46,9 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     @Override
     public T add(T item) {
+        if(item.getId() == 0) {
+            item.setId(getNextId());
+        }
         try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypeDirectory, String.valueOf(item.getId()))))) {
             addItem(item, writer);
         } catch (FileNotFoundException e) {
@@ -61,7 +64,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     @Override
     public T update(T item) {
-        return null;
+        return add(item);
     }
 
     @Override

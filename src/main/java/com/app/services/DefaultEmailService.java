@@ -3,9 +3,7 @@ package com.app.services;
 import com.app.common.Email;
 import com.app.repository.EmailRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class DefaultEmailService implements EmailService {
     private EmailRepository emailRepository;
@@ -41,6 +39,24 @@ public class DefaultEmailService implements EmailService {
 
     @Override
     public void sendEmail(Email email) {
+        emailRepository.add(email);
+    }
 
+    @Override
+    public void saveEmail(Email email) {
+        email.setMailbox("Saved");
+        emailRepository.update(email);
+    }
+
+    @Override
+    public void deleteEmail(Email email) {
+        email.setMailbox("Deleted");
+        emailRepository.update(email);
+    }
+
+    @Override
+    public void saveDraft(Email email) {
+        email.setMailbox("Draft");
+        emailRepository.add(email);
     }
 }
