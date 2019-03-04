@@ -52,7 +52,7 @@ public class EmailBrowserController {
 
     @FXML
     public void setupStage(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/emailbrowser/EmailBrowserView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/emailbrowser/EmailBrowser.fxml"));
         fxmlLoader.setController(this);
         stage.setTitle("Custom Email Client");
         stage.setScene(new Scene(fxmlLoader.load(), 1200, 800));

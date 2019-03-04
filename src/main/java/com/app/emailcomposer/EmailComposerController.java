@@ -46,7 +46,7 @@ public class EmailComposerController {
     @FXML
     public void setupStage() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(EmailComposerController.class.getResource("/com/app/emailcomposer/EmailComposerView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(EmailComposerController.class.getResource("/com/app/emailcomposer/EmailComposer.fxml"));
             fxmlLoader.setController(this);
             Stage secondaryStage = new Stage();
             secondaryStage.setTitle("Email composer");
