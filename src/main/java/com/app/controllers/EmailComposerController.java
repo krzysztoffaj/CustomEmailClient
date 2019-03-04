@@ -1,6 +1,5 @@
-package com.app.emailcomposer;
+package com.app.controllers;
 
-import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
 import com.app.common.EmailMarks;
 import com.app.services.EmailService;
@@ -46,7 +45,7 @@ public class EmailComposerController {
     @FXML
     public void setupStage() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(EmailComposerController.class.getResource("/com/app/emailcomposer/EmailComposer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(EmailComposerController.class.getResource("/com/app/views/EmailComposer.fxml"));
             fxmlLoader.setController(this);
             Stage secondaryStage = new Stage();
             secondaryStage.setTitle("Email composer");

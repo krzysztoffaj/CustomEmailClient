@@ -1,4 +1,4 @@
-package com.app.addressbook;
+package com.app.controllers;
 
 import com.app.services.EmailService;
 import com.app.services.UserService;
@@ -21,7 +21,7 @@ public class AddressBookController {
     @FXML
     public void setupStage() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(AddressBookController.class.getResource("/com/app/addressbook/AddressBook.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(AddressBookController.class.getResource("/com/app/views/AddressBook.fxml"));
             Stage secondaryStage = new Stage();
             secondaryStage.setTitle("Address book");
             secondaryStage.setScene(new Scene(fxmlLoader.load(), 800, 600));

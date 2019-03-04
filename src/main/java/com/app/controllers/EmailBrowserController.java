@@ -1,8 +1,6 @@
-package com.app.emailbrowser;
+package com.app.controllers;
 
-import com.app.addressbook.AddressBookController;
 import com.app.common.Email;
-import com.app.emailcomposer.EmailComposerController;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -52,7 +50,7 @@ public class EmailBrowserController {
 
     @FXML
     public void setupStage(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/emailbrowser/EmailBrowser.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/app/views/EmailBrowser.fxml"));
         fxmlLoader.setController(this);
         stage.setTitle("Custom Email Client");
         stage.setScene(new Scene(fxmlLoader.load(), 1200, 800));

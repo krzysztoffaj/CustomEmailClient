@@ -41,7 +41,7 @@
                 <TextField fx:id="searchInput"/>
                 <Button fx:id="search" mnemonicParsing="false" prefWidth="100.0" text="Search"/>
             </HBox>
-            <ListView fx:id="emailList" prefWidth="200.0" stylesheets="@styles/EmailList.css" VBox.vgrow="ALWAYS">
+            <ListView fx:id="emailList" prefWidth="200.0" stylesheets="@../styles/EmailList.css" VBox.vgrow="ALWAYS">
             </ListView>
         </VBox>
     </HBox>
@@ -68,7 +68,7 @@
 
         <TextArea fx:id="emailDetails" minHeight="90.0" prefHeight="90.0" editable="false"/>
 
-        <TextArea fx:id="emailBody" editable="false" stylesheets="@/com/app/common/styles/EmailBody.css" wrapText="true"
+        <TextArea fx:id="emailBody" editable="false" stylesheets="@/com/app/styles/EmailBody.css" wrapText="true"
                   VBox.vgrow="ALWAYS">
             <padding>
                 <Insets bottom="10.0" left="10.0" top="10.0"/>
