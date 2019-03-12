@@ -210,10 +210,6 @@ public class EmailBrowserController {
         }
     }
 
-    private void showEmailBody(Email email) {
-        emailBodyArea.setText(email.getBody());
-    }
-
     private void showEmailDetails(Email email) {
         emailDetailsArea.setText(
                 "From:\t" + email.getSender() + "\n" +

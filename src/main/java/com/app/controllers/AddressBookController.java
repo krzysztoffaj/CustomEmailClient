@@ -4,6 +4,7 @@ import com.app.common.User;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -12,18 +13,34 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class AddressBookController {
     @FXML
-    private TableView<User> usersTable;
+    private TableView<User> userTable;
     @FXML
     private TableColumn<User, String> firstNameCol, lastNameCol, emailCol;
 
     @FXML
-    private Button addUserBtn, editUserBtn, deleteUserBtn, addReceiverBtn, removeReceiverBtn;
+    private Button addUserBtn, editUserBtn, deleteUserBtn;
+
+    @FXML
+    private TextField searchInputField;
+    @FXML
+    private Button searchBtn;
+
+    @FXML
+    private Button addReceiverBtn, removeReceiverBtn;
+
+    @FXML
+    private TextField receiversField;
+
+    @FXML
+    private Button okBtn, cancelBtn;
 
     private EmailService emailService;
     private UserService userService;
@@ -44,6 +61,12 @@ public class AddressBookController {
             secondaryStage.setMinWidth(600);
             secondaryStage.setMinHeight(400);
             secondaryStage.show();
+
+            disableButtonsWhenUserNotSelected();
+
+            handleSearchButton();
+            handleAddReceiverClick();
+            handleRemoveReceiverClick();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -51,19 +74,27 @@ public class AddressBookController {
 
     @FXML
     private void initialize() {
-        usersTable.setItems(FXCollections.observableList(userService.getUsers()));
+        getUserList();
         firstNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
         lastNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
         emailCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmailAddress()));
     }
 
     private void getUserList() {
-
+        Thread loadEmail = new Thread(() -> {
+            final List<User> users = userService.getUsers();
+            Platform.runLater(() -> userTable.setItems(FXCollections.observableList(users)));
+        });
+        loadEmail.setDaemon(true);
+        loadEmail.start();
     }
 
     private void handleAddUserClick() {
         addUserBtn.setOnAction(e -> {
-
+            new AddressBookController(
+                    this.emailService,
+                    this.userService
+            ).setupStage();
         });
     }
 
@@ -79,15 +110,44 @@ public class AddressBookController {
         });
     }
 
+    private void handleSearchButton() {
+        searchBtn.setOnAction(e -> {
+            userTable.getItems().clear();
+            Thread search = new Thread(() -> Platform.runLater(() -> {
+                userService.findByText(searchInputField.getText())
+                        .forEach(email -> userTable.getItems().add(email));
+            }));
+            search.setDaemon(true);
+            search.start();
+        });
+    }
+
     private void handleAddReceiverClick() {
         addReceiverBtn.setOnAction(e -> {
-
+            if(receiversField.getText().equals("")) {
+                receiversField.setText(getSelectedUser().getEmailAddress());
+            } else {
+                receiversField.setText(receiversField.getText() + ", " + getSelectedUser().getEmailAddress());
+            }
         });
     }
 
     private void handleRemoveReceiverClick() {
         removeReceiverBtn.setOnAction(e -> {
-
+            if(receiversField.getText().contains(getSelectedUser().getEmailAddress())) {
+                receiversField.setText(receiversField.getText().replace(getSelectedUser().getEmailAddress(), ""));
+            }
         });
+    }
+
+    private void disableButtonsWhenUserNotSelected() {
+        Button[] operations = {editUserBtn, deleteUserBtn, addReceiverBtn, removeReceiverBtn};
+        for (Button operation : operations) {
+            operation.disableProperty().bind(userTable.getSelectionModel().selectedItemProperty().isNull());
+        }
+    }
+
+    private User getSelectedUser() {
+        return userTable.getSelectionModel().getSelectedItem();
     }
 }
