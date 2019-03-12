@@ -22,7 +22,7 @@ public class EmailComposerController {
     @FXML
     Button sendBtn;
     @FXML
-    HBox additionalOperations;
+    HBox additionalOperationsBox;
     @FXML
     Button addressBookBtn, attachFileBtn, saveDraftBtn, deleteBtn;
 
@@ -69,7 +69,7 @@ public class EmailComposerController {
     private void setButtonsWidthToFillHbox() {
         Button[] operations = {addressBookBtn, attachFileBtn, saveDraftBtn, deleteBtn};
         for (Button operation : operations) {
-            operation.prefWidthProperty().bind(additionalOperations.widthProperty().divide(operations.length));
+            operation.prefWidthProperty().bind(additionalOperationsBox.widthProperty().divide(operations.length));
         }
     }
 

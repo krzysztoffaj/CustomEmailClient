@@ -13,7 +13,7 @@
       xmlns:fx="http://javafx.com/fxml/1">
 
     <HBox>
-        <Button fx:id="send" mnemonicParsing="false" text="Send"
+        <Button fx:id="sendBtn" mnemonicParsing="false" text="Send"
                 maxHeight="40" minHeight="40.0" minWidth="150" textAlignment="CENTER">
             <HBox.margin>
                 <Insets right="50.0"/>
@@ -22,14 +22,14 @@
                 <Font size="20.0"/>
             </font>
         </Button>
-        <HBox fx:id="additionalOperations" HBox.hgrow="ALWAYS">
-            <Button fx:id="addressBook" mnemonicParsing="false" text="Address book"
+        <HBox fx:id="additionalOperationsBox" HBox.hgrow="ALWAYS">
+            <Button fx:id="addressBookBtn" mnemonicParsing="false" text="Address book"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="attachFile" mnemonicParsing="false" text="Attach a file"
+            <Button fx:id="attachFileBtn" mnemonicParsing="false" text="Attach a file"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="saveDraft" mnemonicParsing="false" text="Save as draft"
+            <Button fx:id="saveDraftBtn" mnemonicParsing="false" text="Save as draft"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
-            <Button fx:id="delete" mnemonicParsing="false" text="Delete"
+            <Button fx:id="deleteBtn" mnemonicParsing="false" text="Delete"
                     maxHeight="40" minHeight="40.0" textAlignment="CENTER" wrapText="true"/>
         </HBox>
         <padding>
@@ -54,12 +54,12 @@
             </padding>
         </VBox>
         <VBox HBox.hgrow="ALWAYS">
-            <TextField fx:id="receivers"/>
-            <TextField fx:id="subject"/>
+            <TextField fx:id="receiversField"/>
+            <TextField fx:id="subjectField"/>
         </VBox>
     </HBox>
 
-    <TextArea fx:id="emailBody" stylesheets="@/com/app/styles/EmailBody.css" wrapText="true" VBox.vgrow="ALWAYS">
+    <TextArea fx:id="emailBodyArea" stylesheets="@/com/app/styles/EmailBody.css" wrapText="true" VBox.vgrow="ALWAYS">
         <padding>
             <Insets bottom="10.0" left="10.0" top="10.0"/>
         </padding>
