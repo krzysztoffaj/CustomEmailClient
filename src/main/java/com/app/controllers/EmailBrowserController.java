@@ -120,7 +120,6 @@ public class EmailBrowserController {
         });
     }
 
-    @FXML
     private void getEmailList() {
         enableProgressBarAndDisplayOperation("Loading emails...");
         emailList.getItems().clear();

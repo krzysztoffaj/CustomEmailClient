@@ -12,7 +12,6 @@
 <?import javafx.scene.text.Text?>
 
 <HBox spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
-
     <HBox minWidth="-Infinity" VBox.vgrow="ALWAYS">
         <VBox prefHeight="200.0" prefWidth="100.0">
             <padding>

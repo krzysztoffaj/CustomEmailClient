@@ -5,12 +5,20 @@ import com.app.repository.UserRepository;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class TxtUserRepository extends TxtGenericRepository<User> implements UserRepository {
 
     @Override
     public User castType(File file) {
-        return null;
+        User user = new User(Integer.parseInt(file.getName()));
+        List<String> userFile = readAllLinesLazily(file);
+
+        user.setFirstName(userFile.get(0));
+        user.setLastName(userFile.get(1));
+        user.setEmailAddress(userFile.get(2));
+
+        return user;
     }
 
     @Override
