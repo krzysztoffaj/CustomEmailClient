@@ -18,15 +18,15 @@
                 <Insets right="10.0" top="60.0" />
             </padding>
             <VBox fx:id="mailboxes">
-                <Button fx:id="inbox" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Inbox" />
-                <Button fx:id="sent" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Sent" />
-                <Button fx:id="saved" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Saved" />
-                <Button fx:id="draft" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Draft" />
-                <Button fx:id="deleted" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Deleted" />
+                <Button fx:id="inboxBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Inbox" />
+                <Button fx:id="sentBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Sent" />
+                <Button fx:id="savedBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Saved" />
+                <Button fx:id="draftBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Draft" />
+                <Button fx:id="deletedBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Deleted" />
             </VBox>
             <VBox alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
-                <Text fx:id="backgroundOperation" />
-                <ProgressBar fx:id="backgroundOperationProgress">
+                <Text fx:id="backgroundOperationTxt" />
+                <ProgressBar fx:id="backgroundOperationPb">
                     <padding>
                         <Insets top="10.0" />
                     </padding>
@@ -35,10 +35,10 @@
         </VBox>
 
         <VBox spacing="10.0">
-            <Button fx:id="refresh" minHeight="50" mnemonicParsing="false" prefWidth="200.0" text="Refresh" />
+            <Button fx:id="refreshBtn" minHeight="50" mnemonicParsing="false" prefWidth="200.0" text="Refresh" />
             <HBox prefWidth="200.0" spacing="5">
-                <TextField fx:id="searchInput" />
-                <Button fx:id="search" mnemonicParsing="false" prefWidth="60.0" text="Search" />
+                <TextField fx:id="searchInputField" />
+                <Button fx:id="searchBtn" mnemonicParsing="false" prefWidth="60.0" text="Search" />
             </HBox>
             <ListView fx:id="emailList" prefWidth="200.0" stylesheets="@../styles/EmailList.css" VBox.vgrow="ALWAYS">
             </ListView>
@@ -46,20 +46,20 @@
     </HBox>
 
     <VBox spacing="10.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-        <HBox fx:id="operationsPane">
-            <Button fx:id="addressBook" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Address book" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="newEmail" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="New email" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="reply" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Reply" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="replyToAll" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Reply to all" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="forward" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Forward" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="delete" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Delete" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="mark" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Mark" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="save" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Save" textAlignment="CENTER" wrapText="true" />
+        <HBox fx:id="operationsBox">
+            <Button fx:id="addressBookBtn" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Address book" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="newEmailBtn" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="New email" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="replyBtn" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Reply" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="replyToAllBtn" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Reply to all" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="forwardBtn" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Forward" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="deleteBtn" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Delete" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="markBtn" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Mark" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="saveBtn" disable="true" maxHeight="50" minHeight="50.0" mnemonicParsing="false" text="Save" textAlignment="CENTER" wrapText="true" />
         </HBox>
 
-        <TextArea fx:id="emailDetails" editable="false" minHeight="90.0" prefHeight="90.0" />
+        <TextArea fx:id="emailDetailsArea" editable="false" minHeight="90.0" prefHeight="90.0" />
 
-        <TextArea fx:id="emailBody" editable="false" stylesheets="@/com/app/styles/EmailBody.css" wrapText="true" VBox.vgrow="ALWAYS">
+        <TextArea fx:id="emailBodyArea" editable="false" stylesheets="@/com/app/styles/EmailBody.css" wrapText="true" VBox.vgrow="ALWAYS">
             <padding>
                 <Insets bottom="10.0" left="10.0" top="10.0" />
             </padding>

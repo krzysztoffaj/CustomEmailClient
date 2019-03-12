@@ -20,19 +20,19 @@ import java.util.Calendar;
 
 public class EmailComposerController {
     @FXML
-    Button send;
+    Button sendBtn;
     @FXML
     HBox additionalOperations;
     @FXML
-    Button addressBook, attachFile, saveDraft, delete;
+    Button addressBookBtn, attachFileBtn, saveDraftBtn, deleteBtn;
 
     @FXML
-    TextField receivers;
+    TextField receiversField;
     @FXML
-    TextField subject;
+    TextField subjectField;
 
     @FXML
-    TextArea emailBody;
+    TextArea emailBodyArea;
 
     private EmailService emailService;
     private UserService userService;
@@ -67,14 +67,14 @@ public class EmailComposerController {
     }
 
     private void setButtonsWidthToFillHbox() {
-        Button[] operations = {addressBook, attachFile, saveDraft, delete};
+        Button[] operations = {addressBookBtn, attachFileBtn, saveDraftBtn, deleteBtn};
         for (Button operation : operations) {
             operation.prefWidthProperty().bind(additionalOperations.widthProperty().divide(operations.length));
         }
     }
 
     private void handleSendClick() {
-        send.setOnAction(e -> {
+        sendBtn.setOnAction(e -> {
             Email email = setEmailProperties();
 
             if (emailProperlyFormatted(email)) {
@@ -83,7 +83,7 @@ public class EmailComposerController {
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
                         alert.showAndWait();
-                        Stage stage = (Stage) send.getScene().getWindow();
+                        Stage stage = (Stage) sendBtn.getScene().getWindow();
                         stage.close();
                     });
                 });
@@ -94,7 +94,7 @@ public class EmailComposerController {
     }
 
     private void handleAddressBook() {
-        addressBook.setOnAction(e -> {
+        addressBookBtn.setOnAction(e -> {
             new AddressBookController(
                     this.emailService,
                     this.userService
@@ -103,14 +103,14 @@ public class EmailComposerController {
     }
 
     private void handleAttachFileClick() {
-        attachFile.setOnAction(e -> {
+        attachFileBtn.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.NONE, "It's gonna be implemented someday, I swear...", ButtonType.OK);
             alert.showAndWait();
         });
     }
 
     private void handleSaveDraftClick() {
-        saveDraft.setOnAction(e -> {
+        saveDraftBtn.setOnAction(e -> {
             Email email = setEmailProperties();
 
             Thread saveEmailAsDraft = new Thread(() -> {
@@ -118,7 +118,7 @@ public class EmailComposerController {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.NONE, "E-mail saved as draft!", ButtonType.OK);
                     alert.showAndWait();
-                    Stage stage = (Stage) saveDraft.getScene().getWindow();
+                    Stage stage = (Stage) saveDraftBtn.getScene().getWindow();
                     stage.close();
                 });
             });
@@ -128,11 +128,11 @@ public class EmailComposerController {
     }
 
     private void handleDeleteClick() {
-        delete.setOnAction(e -> {
+        deleteBtn.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.NONE, "Are you sure you want to delete this draft?", ButtonType.YES, ButtonType.NO);
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES) {
-                Stage stage = (Stage) delete.getScene().getWindow();
+                Stage stage = (Stage) deleteBtn.getScene().getWindow();
                 stage.close();
             }
         });
@@ -142,18 +142,18 @@ public class EmailComposerController {
         Email email = new Email();
 
         email.setSender("Simple User <simple.user@yahoo.com>");
-        email.setSubject(subject.getText());
-        email.setReceivers(Arrays.asList(receivers.getText().split("\\s*,\\s*")));
+        email.setSubject(subjectField.getText());
+        email.setReceivers(Arrays.asList(receiversField.getText().split("\\s*,\\s*")));
         email.setMailbox("Sent");
         email.setMark(String.valueOf(EmailMarks.UNMARKED));
         email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-        email.setBody(emailBody.getText());
+        email.setBody(emailBodyArea.getText());
 
         return email;
     }
 
     private boolean emailProperlyFormatted(Email email) {
-        if (receivers.getText().equals("")) {
+        if (receiversField.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
             alert.showAndWait();
             return false;

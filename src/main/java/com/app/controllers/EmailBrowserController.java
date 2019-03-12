@@ -17,31 +17,31 @@ import java.io.IOException;
 
 public class EmailBrowserController {
     @FXML
-    private Button inbox, sent, saved, draft, deleted;
+    private Button inboxBtn, sentBtn, savedBtn, draftBtn, deletedBtn;
 
     @FXML
-    private Text backgroundOperation;
+    private Text backgroundOperationTxt;
     @FXML
-    private ProgressBar backgroundOperationProgress;
+    private ProgressBar backgroundOperationPb;
 
     @FXML
-    private Button refresh;
+    private Button refreshBtn;
     @FXML
-    private TextField searchInput;
+    private TextField searchInputField;
     @FXML
-    private Button search;
+    private Button searchBtn;
     @FXML
     private ListView<Email> emailList;
 
     @FXML
-    private TextArea emailDetails;
+    private TextArea emailDetailsArea;
     @FXML
-    private TextArea emailBody;
+    private TextArea emailBodyArea;
 
     @FXML
-    private HBox operationsPane;
+    private HBox operationsBox;
     @FXML
-    private Button addressBook, newEmail, reply, replyToAll, forward, delete, mark, save;
+    private Button addressBookBtn, newEmailBtn, replyBtn, replyToAllBtn, forwardBtn, deleteBtn, markBtn, saveBtn;
 
     private String currentMailbox = "Inbox";
 
@@ -80,16 +80,16 @@ public class EmailBrowserController {
     }
 
     private void handleRefreshButton() {
-        refresh.setOnAction(e -> getEmailList());
+        refreshBtn.setOnAction(e -> getEmailList());
     }
 
     private void handleSearchButton() {
-        search.setOnAction(e -> {
+        searchBtn.setOnAction(e -> {
             enableProgressBarAndDisplayOperation("Searching...");
             emailList.getItems().clear();
 
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                emailService.findByText(searchInput.getText())
+                emailService.findByText(searchInputField.getText())
                         .forEach(email -> emailList.getItems().add(email));
                 disableProgressBar();
             }));
@@ -116,7 +116,7 @@ public class EmailBrowserController {
     private void handleEmailListClicks() {
         emailList.setOnMouseClicked(e -> {
             showEmailDetails(getSelectedEmail());
-            emailBody.setText(getSelectedEmail().getBody());
+            emailBodyArea.setText(getSelectedEmail().getBody());
         });
     }
 
@@ -135,7 +135,7 @@ public class EmailBrowserController {
     }
 
     private void handleNewEmailClick() {
-        newEmail.setOnAction(e -> {
+        newEmailBtn.setOnAction(e -> {
             new EmailComposerController(
                     this.emailService,
                     this.userService
@@ -144,7 +144,7 @@ public class EmailBrowserController {
     }
 
     private void handleAddressBookClick() {
-        addressBook.setOnAction(e -> {
+        addressBookBtn.setOnAction(e -> {
             new AddressBookController(
                     this.emailService,
                     this.userService
@@ -153,7 +153,7 @@ public class EmailBrowserController {
     }
 
     private void handleDeleteClick() {
-        delete.setOnAction(e -> {
+        deleteBtn.setOnAction(e -> {
             enableProgressBarAndDisplayOperation("Deleting email...");
             Thread deleteEmail = new Thread(() -> {
                 emailService.deleteEmail(getSelectedEmail());
@@ -168,7 +168,7 @@ public class EmailBrowserController {
     }
 
     private void handleSaveClick() {
-        save.setOnAction(e -> {
+        saveBtn.setOnAction(e -> {
             enableProgressBarAndDisplayOperation("Saving email...");
             Thread saveEmail = new Thread(() -> {
                 emailService.saveEmail(getSelectedEmail());
@@ -187,14 +187,14 @@ public class EmailBrowserController {
     }
 
     private void setButtonsWidthToFillHbox() {
-        Button[] operations = {addressBook, newEmail, reply, replyToAll, forward, delete, mark, save};
+        Button[] operations = {addressBookBtn, newEmailBtn, replyBtn, replyToAllBtn, forwardBtn, deleteBtn, markBtn, saveBtn};
         for (Button operation : operations) {
-            operation.prefWidthProperty().bind(operationsPane.widthProperty().divide(operations.length));
+            operation.prefWidthProperty().bind(operationsBox.widthProperty().divide(operations.length));
         }
     }
 
     private void handleMailboxesButtons() {
-        Button[] mailboxes = {inbox, sent, saved, draft, deleted};
+        Button[] mailboxes = {inboxBtn, sentBtn, savedBtn, draftBtn, deletedBtn};
         for (Button mailbox : mailboxes) {
             mailbox.setOnAction(event -> {
                 currentMailbox = mailbox.getText();
@@ -204,18 +204,18 @@ public class EmailBrowserController {
     }
 
     private void disableButtonsWhenEmailNotSelected() {
-        Button[] operations = {reply, replyToAll, forward, delete, mark, save};
+        Button[] operations = {replyBtn, replyToAllBtn, forwardBtn, deleteBtn, markBtn, saveBtn};
         for (Button operation : operations) {
             operation.disableProperty().bind(emailList.getSelectionModel().selectedItemProperty().isNull());
         }
     }
 
     private void showEmailBody(Email email) {
-        emailBody.setText(email.getBody());
+        emailBodyArea.setText(email.getBody());
     }
 
     private void showEmailDetails(Email email) {
-        emailDetails.setText(
+        emailDetailsArea.setText(
                 "From:\t" + email.getSender() + "\n" +
                 "To:\t\t" + email.getReceiversFormatted() + "\n" +
                 "Subject:\t" + email.getSubject() + "\n" +
@@ -235,12 +235,12 @@ public class EmailBrowserController {
     }
 
     private void enableProgressBarAndDisplayOperation(String operation) {
-        backgroundOperation.setText(operation);
-        backgroundOperationProgress.setVisible(true);
+        backgroundOperationTxt.setText(operation);
+        backgroundOperationPb.setVisible(true);
     }
 
     private void disableProgressBar() {
-        backgroundOperation.setText("");
-        backgroundOperationProgress.setVisible(false);
+        backgroundOperationTxt.setText("");
+        backgroundOperationPb.setVisible(false);
     }
 }
