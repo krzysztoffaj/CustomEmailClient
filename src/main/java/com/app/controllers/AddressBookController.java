@@ -55,15 +55,18 @@ public class AddressBookController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(AddressBookController.class.getResource("/com/app/views/AddressBook.fxml"));
             fxmlLoader.setController(this);
-            Stage secondaryStage = new Stage();
-            secondaryStage.setTitle("Address book");
-            secondaryStage.setScene(new Scene(fxmlLoader.load(), 800, 600));
-            secondaryStage.setMinWidth(600);
-            secondaryStage.setMinHeight(400);
-            secondaryStage.show();
+            Stage stage = new Stage();
+            stage.setTitle("Address book");
+            stage.setScene(new Scene(fxmlLoader.load(), 800, 600));
+            stage.setMinWidth(600);
+            stage.setMinHeight(400);
+            stage.show();
 
             disableButtonsWhenUserNotSelected();
 
+            handleAddUserClick();
+            handleEditUserClick();
+            handleDeleteUserClick();
             handleSearchButton();
             handleAddReceiverClick();
             handleRemoveReceiverClick();
@@ -91,8 +94,7 @@ public class AddressBookController {
 
     private void handleAddUserClick() {
         addUserBtn.setOnAction(e -> {
-            new AddressBookController(
-                    this.emailService,
+            new UserEditorController(
                     this.userService
             ).setupStage();
         });
@@ -100,7 +102,10 @@ public class AddressBookController {
 
     private void handleEditUserClick() {
         editUserBtn.setOnAction(e -> {
-
+            new UserEditorController(
+                    this.userService,
+                    getSelectedUser()
+            ).setupStage();
         });
     }
 
@@ -124,7 +129,7 @@ public class AddressBookController {
 
     private void handleAddReceiverClick() {
         addReceiverBtn.setOnAction(e -> {
-            if(receiversField.getText().equals("")) {
+            if (receiversField.getText().equals("")) {
                 receiversField.setText(getSelectedUser().getEmailAddress());
             } else {
                 receiversField.setText(receiversField.getText() + ", " + getSelectedUser().getEmailAddress());
@@ -134,7 +139,7 @@ public class AddressBookController {
 
     private void handleRemoveReceiverClick() {
         removeReceiverBtn.setOnAction(e -> {
-            if(receiversField.getText().contains(getSelectedUser().getEmailAddress())) {
+            if (receiversField.getText().contains(getSelectedUser().getEmailAddress())) {
                 receiversField.setText(receiversField.getText().replace(getSelectedUser().getEmailAddress(), ""));
             }
         });

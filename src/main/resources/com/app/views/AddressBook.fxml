@@ -15,7 +15,7 @@
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
     </padding>
     <HBox alignment="CENTER" spacing="10">
-        <Button fx:id="addressBookBtn" mnemonicParsing="false" text="Add new user"/>
+        <Button fx:id="addUserBtn" mnemonicParsing="false" text="Add new user"/>
         <Button fx:id="editUserBtn" mnemonicParsing="false" text="Edit selected user"/>
         <Button fx:id="deleteUserBtn" mnemonicParsing="false" text="Delete selected user"/>
     </HBox>

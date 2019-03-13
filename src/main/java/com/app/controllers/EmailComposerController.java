@@ -47,12 +47,12 @@ public class EmailComposerController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(EmailComposerController.class.getResource("/com/app/views/EmailComposer.fxml"));
             fxmlLoader.setController(this);
-            Stage secondaryStage = new Stage();
-            secondaryStage.setTitle("Email composer");
-            secondaryStage.setScene(new Scene(fxmlLoader.load(), 1000, 750));
-            secondaryStage.setMinWidth(600);
-            secondaryStage.setMinHeight(400);
-            secondaryStage.show();
+            Stage stage = new Stage();
+            stage.setTitle("Email composer");
+            stage.setScene(new Scene(fxmlLoader.load(), 1000, 750));
+            stage.setMinWidth(600);
+            stage.setMinHeight(400);
+            stage.show();
 
             setButtonsWidthToFillHbox();
 
