@@ -32,7 +32,7 @@ public class DbGenericRepository<T extends EntityId> implements GenericRepositor
     }
 
     @Override
-    public void remove(T item) {
+    public void delete(T item) {
 
     }
 }

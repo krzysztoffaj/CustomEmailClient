@@ -68,7 +68,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     }
 
     @Override
-    public void remove(T item) {
+    public void delete(T item) {
         try {
             Files.delete(Paths.get(genericTypeDirectory, String.valueOf(item.getId())));
         } catch (IOException e) {

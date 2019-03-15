@@ -22,7 +22,9 @@ public class TxtUserRepository extends TxtGenericRepository<User> implements Use
     }
 
     @Override
-    public void addItem(User item, PrintWriter writer) {
-
+    public void addItem(User user, PrintWriter writer) {
+        writer.println(user.getFirstName());
+        writer.println(user.getLastName());
+        writer.println(user.getEmailAddress());
     }
 }

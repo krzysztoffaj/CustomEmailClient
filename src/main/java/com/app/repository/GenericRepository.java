@@ -15,5 +15,5 @@ public interface GenericRepository<T extends EntityId> {
 
     T update(T item);
 
-    void remove(T item);
+    void delete(T item);
 }

@@ -34,4 +34,19 @@ public class DefaultUserService implements UserService {
 
         return usersFound;
     }
+
+    @Override
+    public void addUser(User user) {
+        userRepository.add(user);
+    }
+
+    @Override
+    public void editUser(User user) {
+        userRepository.update(user);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
 }
