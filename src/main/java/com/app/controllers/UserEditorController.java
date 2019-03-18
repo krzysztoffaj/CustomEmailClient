@@ -22,15 +22,18 @@ public class UserEditorController {
     @FXML
     private Button okBtn, cancelBtn;
 
+    private AddressBookController controller;
     private UserService userService;
     private User user;
 
-    public UserEditorController(UserService userService) {
+    public UserEditorController(AddressBookController controller, UserService userService) {
+        this.controller = controller;
         this.userService = userService;
         user = new User();
     }
 
-    public UserEditorController(UserService userService, User user) {
+    public UserEditorController(AddressBookController controller, UserService userService, User user) {
+        this.controller = controller;
         this.userService = userService;
         this.user = user;
     }
@@ -76,7 +79,7 @@ public class UserEditorController {
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.NONE, "Success!", ButtonType.OK);
                         alert.showAndWait();
-
+                        controller.getUserList();
                         ((Stage) okBtn.getScene().getWindow()).close();
                     });
                 });
@@ -94,6 +97,7 @@ public class UserEditorController {
         user.setFirstName(firstNameField.getText() == null ? "" : firstNameField.getText());
         user.setLastName(lastNameField.getText() == null ? "" : lastNameField.getText());
         user.setEmailAddress(emailField.getText() == null ? "" : emailField.getText());
+        user.setInAddressBook(true);
     }
 
     private boolean userProperlyFormatted() {

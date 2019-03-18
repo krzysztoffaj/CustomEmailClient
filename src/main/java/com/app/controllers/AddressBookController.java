@@ -83,11 +83,13 @@ public class AddressBookController {
         emailCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmailAddress()));
     }
 
-    private void getUserList() {
-        Thread loadEmail = new Thread(() -> {
-            final List<User> users = userService.getUsers();
-            Platform.runLater(() -> userTable.setItems(FXCollections.observableList(users)));
-        });
+    public void getUserList() {
+        userTable.getItems().clear();
+        Thread loadEmail = new Thread(() -> Platform.runLater(() -> {
+            userService.getUsers().stream()
+                    .filter(User::isInAddressBook)
+                    .forEach(user -> userTable.getItems().add(user));
+        }));
         loadEmail.setDaemon(true);
         loadEmail.start();
     }
@@ -95,6 +97,7 @@ public class AddressBookController {
     private void handleAddUserClick() {
         addUserBtn.setOnAction(e -> {
             new UserEditorController(
+                    this,
                     this.userService
             ).setupStage();
         });
@@ -103,6 +106,7 @@ public class AddressBookController {
     private void handleEditUserClick() {
         editUserBtn.setOnAction(e -> {
             new UserEditorController(
+                    this,
                     this.userService,
                     getSelectedUser()
             ).setupStage();
@@ -111,7 +115,8 @@ public class AddressBookController {
 
     private void handleDeleteUserClick() {
         deleteUserBtn.setOnAction(e -> {
-
+            userService.deleteUser(getSelectedUser());
+            getUserList();
         });
     }
 

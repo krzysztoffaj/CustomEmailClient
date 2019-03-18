@@ -47,6 +47,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void deleteUser(User user) {
-        userRepository.delete(user);
+        user.setInAddressBook(false);
+        userRepository.update(user);
     }
 }

@@ -5,6 +5,7 @@ public class User implements EntityId{
     private String firstName;
     private String lastName;
     private String emailAddress;
+    private boolean isInAddressBook;
 
     public User() {}
 
@@ -44,5 +45,13 @@ public class User implements EntityId{
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public boolean isInAddressBook() {
+        return isInAddressBook;
+    }
+
+    public void setInAddressBook(boolean inAddressBook) {
+        isInAddressBook = inAddressBook;
     }
 }
