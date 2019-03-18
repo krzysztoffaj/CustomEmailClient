@@ -146,6 +146,7 @@ public class EmailBrowserController {
     private void handleAddressBookClick() {
         addressBookBtn.setOnAction(e -> {
             new AddressBookController(
+                    null,
                     this.emailService,
                     this.userService
             ).setupStage();

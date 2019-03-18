@@ -4,9 +4,7 @@ import com.app.common.User;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 
 public class AddressBookController {
     @FXML
@@ -42,10 +39,12 @@ public class AddressBookController {
     @FXML
     private Button okBtn, cancelBtn;
 
+    private EmailComposerController emailComposerController;
     private EmailService emailService;
     private UserService userService;
 
-    public AddressBookController(EmailService emailService, UserService userService) {
+    public AddressBookController(EmailComposerController emailComposerController, EmailService emailService, UserService userService) {
+        this.emailComposerController = emailComposerController;
         this.emailService = emailService;
         this.userService = userService;
     }
@@ -63,6 +62,9 @@ public class AddressBookController {
             stage.show();
 
             disableButtonsWhenUserNotSelected();
+            if (emailComposerController == null) {
+                disableReceiversOperations();
+            }
 
             handleAddUserClick();
             handleEditUserClick();
@@ -70,6 +72,8 @@ public class AddressBookController {
             handleSearchButton();
             handleAddReceiverClick();
             handleRemoveReceiverClick();
+            handleOkClick();
+            handleCancelClick();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -134,20 +138,35 @@ public class AddressBookController {
 
     private void handleAddReceiverClick() {
         addReceiverBtn.setOnAction(e -> {
-            if (receiversField.getText().equals("")) {
-                receiversField.setText(getSelectedUser().getEmailAddress());
-            } else {
-                receiversField.setText(receiversField.getText() + ", " + getSelectedUser().getEmailAddress());
-            }
+            receiversField.appendText(receiverWithSeparator(getSelectedUser().getEmailAddress()));
         });
     }
 
     private void handleRemoveReceiverClick() {
         removeReceiverBtn.setOnAction(e -> {
-            if (receiversField.getText().contains(getSelectedUser().getEmailAddress())) {
-                receiversField.setText(receiversField.getText().replace(getSelectedUser().getEmailAddress(), ""));
+            if (receiversField.getText().contains(receiverWithSeparator(getSelectedUser().getEmailAddress()))) {
+                receiversField.setText(receiversField.getText().replace(receiverWithSeparator(getSelectedUser().getEmailAddress()), ""));
             }
         });
+    }
+
+    private void handleOkClick() {
+        okBtn.setOnAction(e -> {
+            if (emailComposerController != null) {
+                emailComposerController.appendToReceiversField(receiversField.getText());
+            }
+            ((Stage) okBtn.getScene().getWindow()).close();
+        });
+    }
+
+    private void handleCancelClick() {
+        cancelBtn.setOnAction(e -> {
+            ((Stage) cancelBtn.getScene().getWindow()).close();
+        });
+    }
+
+    private String receiverWithSeparator(String receiver) {
+        return (receiver + ", ");
     }
 
     private void disableButtonsWhenUserNotSelected() {
@@ -155,6 +174,14 @@ public class AddressBookController {
         for (Button operation : operations) {
             operation.disableProperty().bind(userTable.getSelectionModel().selectedItemProperty().isNull());
         }
+    }
+
+    private void disableReceiversOperations() {
+        addReceiverBtn.disableProperty().unbind();
+        addReceiverBtn.setDisable(true);
+        removeReceiverBtn.disableProperty().unbind();
+        removeReceiverBtn.setDisable(true);
+        receiversField.setDisable(true);
     }
 
     private User getSelectedUser() {

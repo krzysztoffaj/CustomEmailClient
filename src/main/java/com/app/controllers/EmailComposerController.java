@@ -96,6 +96,7 @@ public class EmailComposerController {
     private void handleAddressBook() {
         addressBookBtn.setOnAction(e -> {
             new AddressBookController(
+                    this,
                     this.emailService,
                     this.userService
             ).setupStage();
@@ -118,8 +119,7 @@ public class EmailComposerController {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.NONE, "E-mail saved as draft!", ButtonType.OK);
                     alert.showAndWait();
-                    Stage stage = (Stage) saveDraftBtn.getScene().getWindow();
-                    stage.close();
+                    ((Stage) saveDraftBtn.getScene().getWindow()).close();
                 });
             });
             saveEmailAsDraft.setDaemon(true);
@@ -164,5 +164,13 @@ public class EmailComposerController {
             return false;
         }
         return true;
+    }
+
+    public void appendToReceiversField(String input) {
+        if (receiversField.getText().equals("")) {
+            receiversField.setText(input);
+        } else {
+            receiversField.setText(receiversField.getText() + ", " + input);
+        }
     }
 }

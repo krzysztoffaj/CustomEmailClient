@@ -22,18 +22,18 @@ public class UserEditorController {
     @FXML
     private Button okBtn, cancelBtn;
 
-    private AddressBookController controller;
+    private AddressBookController addressBookController;
     private UserService userService;
     private User user;
 
-    public UserEditorController(AddressBookController controller, UserService userService) {
-        this.controller = controller;
+    public UserEditorController(AddressBookController addressBookController, UserService userService) {
+        this.addressBookController = addressBookController;
         this.userService = userService;
         user = new User();
     }
 
-    public UserEditorController(AddressBookController controller, UserService userService, User user) {
-        this.controller = controller;
+    public UserEditorController(AddressBookController addressBookController, UserService userService, User user) {
+        this.addressBookController = addressBookController;
         this.userService = userService;
         this.user = user;
     }
@@ -79,7 +79,7 @@ public class UserEditorController {
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.NONE, "Success!", ButtonType.OK);
                         alert.showAndWait();
-                        controller.getUserList();
+                        addressBookController.getUserList();
                         ((Stage) okBtn.getScene().getWindow()).close();
                     });
                 });
