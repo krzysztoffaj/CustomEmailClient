@@ -59,4 +59,46 @@ public class DefaultEmailService implements EmailService {
         email.setMailbox("Draft");
         emailRepository.add(email);
     }
+
+    @Override
+    public Email createEmailCopy(Email email) {
+        Email emailCopy = new Email();
+
+        emailCopy.setSender(email.getSender());
+        emailCopy.setReceivers(email.getReceivers());
+        emailCopy.setSubject(email.getSubject());
+        emailCopy.setMailbox(email.getMailbox());
+        emailCopy.setMark(email.getMark());
+        emailCopy.setDateTime(email.getDateTime());
+        emailCopy.setBody(email.getBody());
+
+        return emailCopy;
+    }
+
+    @Override
+    public Email prepareReplyEmail(Email email) {
+        Email emailCopy = createEmailCopy(email);
+        emailCopy.setSubject("RE: " + email.getSubject());
+        emailCopy.setReceivers(Collections.singletonList(email.getSender()));
+        return emailCopy;
+    }
+
+    @Override
+    public Email prepareReplyToAllEmail(Email email) {
+        Email emailCopy = createEmailCopy(email);
+        emailCopy.setSubject("RE: " + email.getSubject());
+        List<String> receivers = new ArrayList<>();
+        receivers.add(email.getSender());
+        receivers.addAll(email.getReceivers());
+        emailCopy.setReceivers(receivers);
+        return emailCopy;
+    }
+
+    @Override
+    public Email prepareForwardEmail(Email email) {
+        Email emailCopy = createEmailCopy(email);
+        emailCopy.setSubject("FW: " + email.getSubject());
+        emailCopy.setReceivers(new ArrayList<>());
+        return emailCopy;
+    }
 }

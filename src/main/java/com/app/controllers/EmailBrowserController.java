@@ -68,6 +68,9 @@ public class EmailBrowserController {
         handleEmailListClicks();
         handleAddressBookClick();
         handleNewEmailClick();
+        handleReplyClick();
+        handleReplyToAllClick();
+        handleForwardClick();
         handleDeleteClick();
         handleSaveClick();
 
@@ -134,6 +137,16 @@ public class EmailBrowserController {
         loadEmail.start();
     }
 
+    private void handleAddressBookClick() {
+        addressBookBtn.setOnAction(e -> {
+            new AddressBookController(
+                    null,
+                    this.emailService,
+                    this.userService
+            ).setupStage();
+        });
+    }
+
     private void handleNewEmailClick() {
         newEmailBtn.setOnAction(e -> {
             new EmailComposerController(
@@ -143,12 +156,32 @@ public class EmailBrowserController {
         });
     }
 
-    private void handleAddressBookClick() {
-        addressBookBtn.setOnAction(e -> {
-            new AddressBookController(
-                    null,
+    private void handleReplyClick() {
+        replyBtn.setOnAction(e -> {
+            new EmailComposerController(
                     this.emailService,
-                    this.userService
+                    this.userService,
+                    emailService.prepareReplyEmail(getSelectedEmail())
+            ).setupStage();
+        });
+    }
+
+    private void handleReplyToAllClick() {
+        replyToAllBtn.setOnAction(e -> {
+            new EmailComposerController(
+                    this.emailService,
+                    this.userService,
+                    emailService.prepareReplyToAllEmail(getSelectedEmail())
+            ).setupStage();
+        });
+    }
+
+    private void handleForwardClick() {
+        forwardBtn.setOnAction(e -> {
+            new EmailComposerController(
+                    this.emailService,
+                    this.userService,
+                    emailService.prepareForwardEmail(getSelectedEmail())
             ).setupStage();
         });
     }
@@ -165,6 +198,12 @@ public class EmailBrowserController {
             });
             deleteEmail.setDaemon(true);
             deleteEmail.start();
+        });
+    }
+
+    private void handleMarkClick() {
+        markBtn.setOnAction(e -> {
+
         });
     }
 

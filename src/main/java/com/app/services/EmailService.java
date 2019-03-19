@@ -16,4 +16,12 @@ public interface EmailService {
     void deleteEmail(Email email);
 
     void saveDraft(Email email);
+
+    Email createEmailCopy(Email email);
+
+    Email prepareReplyEmail(Email email);
+
+    Email prepareReplyToAllEmail(Email email);
+
+    Email prepareForwardEmail(Email email);
 }

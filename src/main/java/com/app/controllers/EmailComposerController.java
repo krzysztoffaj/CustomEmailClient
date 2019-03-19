@@ -36,10 +36,18 @@ public class EmailComposerController {
 
     private EmailService emailService;
     private UserService userService;
+    private Email email;
 
     public EmailComposerController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
+        email = new Email();
+    }
+
+    public EmailComposerController(EmailService emailService, UserService userService, Email email) {
+        this.emailService = emailService;
+        this.userService = userService;
+        this.email = email;
     }
 
     @FXML
@@ -55,6 +63,7 @@ public class EmailComposerController {
             stage.show();
 
             setButtonsWidthToFillHbox();
+            setReceiversSubjectAndBody();
 
             handleSendClick();
             handleAddressBook();
@@ -115,7 +124,7 @@ public class EmailComposerController {
             Email email = setEmailProperties();
 
             Thread saveEmailAsDraft = new Thread(() -> {
-            emailService.saveDraft(email);
+                emailService.saveDraft(email);
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.NONE, "E-mail saved as draft!", ButtonType.OK);
                     alert.showAndWait();
@@ -139,8 +148,6 @@ public class EmailComposerController {
     }
 
     private Email setEmailProperties() {
-        Email email = new Email();
-
         email.setSender("Simple User <simple.user@yahoo.com>");
         email.setSubject(subjectField.getText());
         email.setReceivers(Arrays.asList(receiversField.getText().split("\\s*,\\s*")));
@@ -172,5 +179,24 @@ public class EmailComposerController {
         } else {
             receiversField.setText(receiversField.getText() + ", " + input);
         }
+    }
+
+    private void setReceiversSubjectAndBody() {
+        if(email.getReceivers() != null) {
+            receiversField.setText(email.getReceiversFormatted());
+            subjectField.setText(email.getSubject());
+            setPassedEmailBody();
+        }
+    }
+
+    private void setPassedEmailBody() {
+        emailBodyArea.setText(
+                "\n\n" +
+                "__________________________________________________\n\n" +
+                "From:\t" + email.getSender() + "\n" +
+                "Subject:\t" + email.getSubject() + "\n" +
+                "Date:\t" + email.getDateTime() + "\n\n" +
+                email.getBody()
+        );
     }
 }
