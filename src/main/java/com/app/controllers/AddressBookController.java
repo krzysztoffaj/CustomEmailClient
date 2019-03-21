@@ -128,7 +128,8 @@ public class AddressBookController {
         searchBtn.setOnAction(e -> {
             userTable.getItems().clear();
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                userService.findByText(searchInputField.getText())
+                userService.findByText(searchInputField.getText()).stream()
+                        .filter(User::isInAddressBook)
                         .forEach(email -> userTable.getItems().add(email));
             }));
             search.setDaemon(true);

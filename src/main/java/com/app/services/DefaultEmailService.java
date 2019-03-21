@@ -29,7 +29,7 @@ public class DefaultEmailService implements EmailService {
                     email.getReceiversFormatted() +
                     email.getSubject() +
                     email.getBody();
-            if (searchRange.contains(text)) {
+            if (searchRange.toLowerCase().contains(text.toLowerCase())) {
                 emailsFound.add(email);
             }
         });
@@ -100,5 +100,36 @@ public class DefaultEmailService implements EmailService {
         emailCopy.setSubject("FW: " + email.getSubject());
         emailCopy.setReceivers(new ArrayList<>());
         return emailCopy;
+    }
+
+    @Override
+    public String originalEmailDetails(Email email) {
+        return "\n\n" +
+               "__________________________________________________\n\n" +
+               "From:\t" + email.getSender() + "\n" +
+               "Subject:\t" + email.getSubject() + "\n" +
+               "Date:\t" + email.getDateTime() + "\n\n" +
+               email.getBody();
+    }
+
+    @Override
+    public String emailDetails(Email email) {
+        return "From:\t" + email.getSender() + "\n" +
+               "To:\t\t" + email.getReceiversFormatted() + "\n" +
+               "Subject:\t" + email.getSubject() + "\n" +
+               "Date:\t" + email.getDateTime();
+    }
+
+    @Override
+    public String emailInfoOnList(Email email, String mailbox) {
+        if (mailbox.equals("Sent") || mailbox.equals("Draft")) {
+            return email.getReceiversFormatted() + "\n" +
+                   email.getSubject() + "\n" +
+                   email.getDateTime();
+        } else {
+            return email.getSender() + "\n" +
+                   email.getSubject() + "\n" +
+                   email.getDateTime();
+        }
     }
 }

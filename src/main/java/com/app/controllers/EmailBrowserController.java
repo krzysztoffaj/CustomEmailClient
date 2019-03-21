@@ -92,7 +92,8 @@ public class EmailBrowserController {
             emailList.getItems().clear();
 
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                emailService.findByText(searchInputField.getText())
+                emailService.findByText(searchInputField.getText()).stream()
+                        .filter(x -> x.getMailbox().equals(currentMailbox))
                         .forEach(email -> emailList.getItems().add(email));
                 disableProgressBar();
             }));
@@ -110,7 +111,7 @@ public class EmailBrowserController {
                 if (empty || email == null) {
                     setText(null);
                 } else {
-                    setText(getDataForEmailList(email));
+                    setText(emailService.emailInfoOnList(email, currentMailbox));
                 }
             }
         });
@@ -118,8 +119,10 @@ public class EmailBrowserController {
 
     private void handleEmailListClicks() {
         emailList.setOnMouseClicked(e -> {
-            showEmailDetails(getSelectedEmail());
-            emailBodyArea.setText(getSelectedEmail().getBody());
+            if(selectedEmail() != null) {
+                emailDetailsArea.setText(emailService.emailDetails(selectedEmail()));
+                emailBodyArea.setText(selectedEmail().getBody());
+            }
         });
     }
 
@@ -161,7 +164,7 @@ public class EmailBrowserController {
             new EmailComposerController(
                     this.emailService,
                     this.userService,
-                    emailService.prepareReplyEmail(getSelectedEmail())
+                    emailService.prepareReplyEmail(selectedEmail())
             ).setupStage();
         });
     }
@@ -171,7 +174,7 @@ public class EmailBrowserController {
             new EmailComposerController(
                     this.emailService,
                     this.userService,
-                    emailService.prepareReplyToAllEmail(getSelectedEmail())
+                    emailService.prepareReplyToAllEmail(selectedEmail())
             ).setupStage();
         });
     }
@@ -181,7 +184,7 @@ public class EmailBrowserController {
             new EmailComposerController(
                     this.emailService,
                     this.userService,
-                    emailService.prepareForwardEmail(getSelectedEmail())
+                    emailService.prepareForwardEmail(selectedEmail())
             ).setupStage();
         });
     }
@@ -190,7 +193,7 @@ public class EmailBrowserController {
         deleteBtn.setOnAction(e -> {
             enableProgressBarAndDisplayOperation("Deleting email...");
             Thread deleteEmail = new Thread(() -> {
-                emailService.deleteEmail(getSelectedEmail());
+                emailService.deleteEmail(selectedEmail());
                 Platform.runLater(() -> {
                     getEmailList();
                     disableProgressBar();
@@ -211,7 +214,7 @@ public class EmailBrowserController {
         saveBtn.setOnAction(e -> {
             enableProgressBarAndDisplayOperation("Saving email...");
             Thread saveEmail = new Thread(() -> {
-                emailService.saveEmail(getSelectedEmail());
+                emailService.saveEmail(selectedEmail());
                 Platform.runLater(() -> {
                     getEmailList();
                     disableProgressBar();
@@ -222,7 +225,7 @@ public class EmailBrowserController {
         });
     }
 
-    private Email getSelectedEmail() {
+    private Email selectedEmail() {
         return emailList.getSelectionModel().getSelectedItem();
     }
 
@@ -247,26 +250,6 @@ public class EmailBrowserController {
         Button[] operations = {replyBtn, replyToAllBtn, forwardBtn, deleteBtn, markBtn, saveBtn};
         for (Button operation : operations) {
             operation.disableProperty().bind(emailList.getSelectionModel().selectedItemProperty().isNull());
-        }
-    }
-
-    private void showEmailDetails(Email email) {
-        emailDetailsArea.setText(
-                "From:\t" + email.getSender() + "\n" +
-                "To:\t\t" + email.getReceiversFormatted() + "\n" +
-                "Subject:\t" + email.getSubject() + "\n" +
-                "Date:\t" + email.getDateTime());
-    }
-
-    private String getDataForEmailList(Email email) {
-        if (currentMailbox.equals("Sent") || currentMailbox.equals("Draft")) {
-            return email.getReceiversFormatted() + "\n" +
-                   email.getSubject() + "\n" +
-                   email.getDateTime();
-        } else {
-            return email.getSender() + "\n" +
-                   email.getSubject() + "\n" +
-                   email.getDateTime();
         }
     }
 

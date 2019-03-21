@@ -185,18 +185,7 @@ public class EmailComposerController {
         if(email.getReceivers() != null) {
             receiversField.setText(email.getReceiversFormatted());
             subjectField.setText(email.getSubject());
-            setPassedEmailBody();
+            emailBodyArea.setText(emailService.originalEmailDetails(email));
         }
-    }
-
-    private void setPassedEmailBody() {
-        emailBodyArea.setText(
-                "\n\n" +
-                "__________________________________________________\n\n" +
-                "From:\t" + email.getSender() + "\n" +
-                "Subject:\t" + email.getSubject() + "\n" +
-                "Date:\t" + email.getDateTime() + "\n\n" +
-                email.getBody()
-        );
     }
 }

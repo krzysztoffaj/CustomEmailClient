@@ -24,4 +24,10 @@ public interface EmailService {
     Email prepareReplyToAllEmail(Email email);
 
     Email prepareForwardEmail(Email email);
+
+    String originalEmailDetails(Email email);
+
+    String emailDetails(Email email);
+
+    String emailInfoOnList(Email email, String mailbox);
 }
