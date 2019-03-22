@@ -1,11 +1,11 @@
 package com.app.common;
 
-import java.util.List;
+import java.util.Set;
 
 public class Email implements EntityId {
     private int id;
     private String sender;
-    private List<String> receivers;
+    private Set<String> receivers;
     private String subject;
     private String mailbox;
     private String mark;
@@ -36,7 +36,7 @@ public class Email implements EntityId {
         this.sender = sender;
     }
 
-    public List<String> getReceivers() {
+    public Set<String> getReceivers() {
         return receivers;
     }
 
@@ -44,7 +44,7 @@ public class Email implements EntityId {
         return getReceivers().toString().replace("[", "").replace("]", "");
     }
 
-    public void setReceivers(List<String> receivers) {
+    public void setReceivers(Set<String> receivers) {
         this.receivers = receivers;
     }
 

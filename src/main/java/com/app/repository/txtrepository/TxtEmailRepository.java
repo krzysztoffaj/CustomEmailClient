@@ -6,6 +6,7 @@ import com.app.repository.EmailRepository;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class TxtEmailRepository extends TxtGenericRepository<Email> implements EmailRepository {
@@ -16,7 +17,7 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         List<String> emailFile = readAllLinesLazily(file);
 
         email.setSender(emailFile.get(0));
-        email.setReceivers(Arrays.asList(emailFile.get(1).split("\\s*,\\s*")));
+        email.setReceivers(new HashSet<>(Arrays.asList(emailFile.get(1).split("\\s* \\s*"))));
         email.setSubject(emailFile.get(2));
         email.setMailbox(emailFile.get(3));
         email.setMark(emailFile.get(4));

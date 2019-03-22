@@ -3,6 +3,7 @@ package com.app.services;
 import com.app.common.User;
 import com.app.repository.UserRepository;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,5 +50,13 @@ public class DefaultUserService implements UserService {
     public void deleteUser(User user) {
         user.setInAddressBook(false);
         userRepository.update(user);
+    }
+
+    @Override
+    public String displayedUser(User user) {
+        return MessageFormat.format("{0} {1} <{2}>",
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmailAddress());
     }
 }

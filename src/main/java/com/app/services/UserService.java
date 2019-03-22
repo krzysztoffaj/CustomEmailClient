@@ -14,4 +14,6 @@ public interface UserService {
     void editUser(User user);
 
     void deleteUser(User user);
+
+    String displayedUser(User user);
 }

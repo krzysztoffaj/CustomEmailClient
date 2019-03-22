@@ -13,10 +13,7 @@ import java.lang.reflect.ParameterizedType;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public abstract class TxtGenericRepository<T extends EntityId> implements GenericRepository<T> {
     private final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
@@ -121,7 +118,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         Email email = new Email(id);
 
         email.setSender("whatever@gmail.com");
-        email.setReceivers(Arrays.asList("tak@gmail.com", "nie@gmail.com"));
+        email.setReceivers(Set.of("tak@gmail.com", "nie@gmail.com"));
         email.setSubject("Mock testing");
         email.setMailbox("Deleted");
         email.setMark(String.valueOf(EmailMarks.UNMARKED));

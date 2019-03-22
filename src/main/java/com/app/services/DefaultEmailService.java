@@ -78,19 +78,23 @@ public class DefaultEmailService implements EmailService {
     @Override
     public Email prepareReplyEmail(Email email) {
         Email emailCopy = createEmailCopy(email);
+
         emailCopy.setSubject("RE: " + email.getSubject());
-        emailCopy.setReceivers(Collections.singletonList(email.getSender()));
+        emailCopy.setReceivers(Set.of(email.getSender()));
+
         return emailCopy;
     }
 
     @Override
     public Email prepareReplyToAllEmail(Email email) {
         Email emailCopy = createEmailCopy(email);
+
         emailCopy.setSubject("RE: " + email.getSubject());
-        List<String> receivers = new ArrayList<>();
+        Set<String> receivers = new HashSet<>();
         receivers.add(email.getSender());
         receivers.addAll(email.getReceivers());
         emailCopy.setReceivers(receivers);
+
         return emailCopy;
     }
 
@@ -98,7 +102,7 @@ public class DefaultEmailService implements EmailService {
     public Email prepareForwardEmail(Email email) {
         Email emailCopy = createEmailCopy(email);
         emailCopy.setSubject("FW: " + email.getSubject());
-        emailCopy.setReceivers(new ArrayList<>());
+        emailCopy.setReceivers(new HashSet<>());
         return emailCopy;
     }
 

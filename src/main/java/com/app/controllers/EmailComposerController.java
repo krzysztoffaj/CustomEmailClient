@@ -14,8 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
+import java.util.*;
 
 
 public class EmailComposerController {
@@ -150,7 +149,7 @@ public class EmailComposerController {
     private Email setEmailProperties() {
         email.setSender("Simple User <simple.user@yahoo.com>");
         email.setSubject(subjectField.getText());
-        email.setReceivers(Arrays.asList(receiversField.getText().split("\\s*,\\s*")));
+        email.setReceivers(new HashSet<>(Arrays.asList(receiversField.getText().split("\\s* \\s*"))));
         email.setMailbox("Sent");
         email.setMark(String.valueOf(EmailMarks.UNMARKED));
         email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
