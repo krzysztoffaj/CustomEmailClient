@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.common.Email;
 import com.app.common.EmailMarks;
+import com.app.common.User;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -64,7 +65,7 @@ public class EmailComposerController {
             setButtonsWidthToFillHbox();
             setReceiversSubjectAndBody();
 
-            handleSendClick();
+//            handleSendClick();
             handleAddressBook();
             handleAttachFileClick();
             handleSaveDraftClick();
@@ -81,25 +82,25 @@ public class EmailComposerController {
         }
     }
 
-    private void handleSendClick() {
-        sendBtn.setOnAction(e -> {
-            Email email = setEmailProperties();
-
-            if (emailProperlyFormatted(email)) {
-                Thread sendEmail = new Thread(() -> {
-                    emailService.sendEmail(email);
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
-                        alert.showAndWait();
-                        Stage stage = (Stage) sendBtn.getScene().getWindow();
-                        stage.close();
-                    });
-                });
-                sendEmail.setDaemon(true);
-                sendEmail.start();
-            }
-        });
-    }
+//    private void handleSendClick() {
+//        sendBtn.setOnAction(e -> {
+//            Email email = setEmailProperties();
+//
+//            if (emailProperlyFormatted(email)) {
+//                Thread sendEmail = new Thread(() -> {
+//                    emailService.sendEmail(email);
+//                    Platform.runLater(() -> {
+//                        Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
+//                        alert.showAndWait();
+//                        Stage stage = (Stage) sendBtn.getScene().getWindow();
+//                        stage.close();
+//                    });
+//                });
+//                sendEmail.setDaemon(true);
+//                sendEmail.start();
+//            }
+//        });
+//    }
 
     private void handleAddressBook() {
         addressBookBtn.setOnAction(e -> {
@@ -120,7 +121,7 @@ public class EmailComposerController {
 
     private void handleSaveDraftClick() {
         saveDraftBtn.setOnAction(e -> {
-            Email email = setEmailProperties();
+//            Email email = setEmailProperties();
 
             Thread saveEmailAsDraft = new Thread(() -> {
                 emailService.saveDraft(email);
@@ -146,31 +147,31 @@ public class EmailComposerController {
         });
     }
 
-    private Email setEmailProperties() {
-        email.setSender("Simple User <simple.user@yahoo.com>");
-        email.setSubject(subjectField.getText());
-        email.setReceivers(new HashSet<>(Arrays.asList(receiversField.getText().split("\\s* \\s*"))));
-        email.setMailbox("Sent");
-        email.setMark(String.valueOf(EmailMarks.UNMARKED));
-        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-        email.setBody(emailBodyArea.getText());
+//    private Email setEmailProperties() {
+//        email.setSender("Simple User <simple.user@yahoo.com>");
+//        email.setSubject(subjectField.getText());
+//        email.setReceivers(new HashSet<User>(Arrays.asList(receiversField.getText().split("\\s* \\s*"))));
+//        email.setMailbox("Sent");
+//        email.setMark(String.valueOf(EmailMarks.UNMARKED));
+//        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+//        email.setBody(emailBodyArea.getText());
+//
+//        return email;
+//    }
 
-        return email;
-    }
-
-    private boolean emailProperlyFormatted(Email email) {
-        if (receiversField.getText().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
-            alert.showAndWait();
-            return false;
-        } else if (!email.getReceivers().stream().allMatch(s -> s.contains("@")) ||
-                !email.getReceivers().stream().allMatch(s -> s.contains("."))) {
-            Alert alert = new Alert(Alert.AlertType.NONE, "Invalid receivers entry.", ButtonType.OK);
-            alert.showAndWait();
-            return false;
-        }
-        return true;
-    }
+//    private boolean emailProperlyFormatted(Email email) {
+//        if (receiversField.getText().equals("")) {
+//            Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
+//            alert.showAndWait();
+//            return false;
+//        } else if (!email.getReceivers().stream().allMatch(s -> s.contains("@")) ||
+//                !email.getReceivers().stream().allMatch(s -> s.contains("."))) {
+//            Alert alert = new Alert(Alert.AlertType.NONE, "Invalid receivers entry.", ButtonType.OK);
+//            alert.showAndWait();
+//            return false;
+//        }
+//        return true;
+//    }
 
     public void appendToReceiversField(String input) {
         if (receiversField.getText().equals("")) {
@@ -182,7 +183,7 @@ public class EmailComposerController {
 
     private void setReceiversSubjectAndBody() {
         if(email.getReceivers() != null) {
-            receiversField.setText(email.getReceiversFormatted());
+            receiversField.setText(String.valueOf(email.getReceivers()));
             subjectField.setText(email.getSubject());
             emailBodyArea.setText(emailService.originalEmailDetails(email));
         }

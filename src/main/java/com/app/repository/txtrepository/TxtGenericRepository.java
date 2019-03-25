@@ -1,7 +1,5 @@
 package com.app.repository.txtrepository;
 
-import com.app.common.Email;
-import com.app.common.EmailMarks;
 import com.app.common.EntityId;
 import com.app.repository.GenericRepository;
 
@@ -12,7 +10,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.ParameterizedType;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class TxtGenericRepository<T extends EntityId> implements GenericRepository<T> {
@@ -114,17 +111,17 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         }
     }
 
-    private Email getMockedEmail(int id) {
-        Email email = new Email(id);
-
-        email.setSender("whatever@gmail.com");
-        email.setReceivers(Set.of("tak@gmail.com", "nie@gmail.com"));
-        email.setSubject("Mock testing");
-        email.setMailbox("Deleted");
-        email.setMark(String.valueOf(EmailMarks.UNMARKED));
-        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-        email.setBody("How you doin'?");
-
-        return email;
-    }
+//    private Email getMockedEmail(int id) {
+//        Email email = new Email(id);
+//
+//        email.setSender("whatever@gmail.com");
+//        email.setReceivers(Set.of("tak@gmail.com", "nie@gmail.com"));
+//        email.setSubject("Mock testing");
+//        email.setMailbox("Deleted");
+//        email.setMark(String.valueOf(EmailMarks.UNMARKED));
+//        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+//        email.setBody("How you doin'?");
+//
+//        return email;
+//    }
 }

@@ -4,8 +4,8 @@ import java.util.Set;
 
 public class Email implements EntityId {
     private int id;
-    private String sender;
-    private Set<String> receivers;
+    private User sender;
+    private Set<User> receivers;
     private String subject;
     private String mailbox;
     private String mark;
@@ -28,23 +28,19 @@ public class Email implements EntityId {
         this.id = id;
     }
 
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public Set<String> getReceivers() {
+    public Set<User> getReceivers() {
         return receivers;
     }
 
-    public String getReceiversFormatted() {
-        return getReceivers().toString().replace("[", "").replace("]", "");
-    }
-
-    public void setReceivers(Set<String> receivers) {
+    public void setReceivers(Set<User> receivers) {
         this.receivers = receivers;
     }
 

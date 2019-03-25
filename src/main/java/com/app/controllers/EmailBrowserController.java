@@ -225,6 +225,16 @@ public class EmailBrowserController {
         });
     }
 
+    private void handleMailboxesButtons() {
+        Button[] mailboxes = {inboxBtn, sentBtn, savedBtn, draftBtn, deletedBtn};
+        for (Button mailbox : mailboxes) {
+            mailbox.setOnAction(event -> {
+                currentMailbox = mailbox.getText();
+                getEmailList();
+            });
+        }
+    }
+
     private Email selectedEmail() {
         return emailList.getSelectionModel().getSelectedItem();
     }
@@ -233,16 +243,6 @@ public class EmailBrowserController {
         Button[] operations = {addressBookBtn, newEmailBtn, replyBtn, replyToAllBtn, forwardBtn, deleteBtn, markBtn, saveBtn};
         for (Button operation : operations) {
             operation.prefWidthProperty().bind(operationsBox.widthProperty().divide(operations.length));
-        }
-    }
-
-    private void handleMailboxesButtons() {
-        Button[] mailboxes = {inboxBtn, sentBtn, savedBtn, draftBtn, deletedBtn};
-        for (Button mailbox : mailboxes) {
-            mailbox.setOnAction(event -> {
-                currentMailbox = mailbox.getText();
-                getEmailList();
-            });
         }
     }
 

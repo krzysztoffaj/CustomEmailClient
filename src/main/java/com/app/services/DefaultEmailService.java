@@ -1,15 +1,18 @@
 package com.app.services;
 
 import com.app.common.Email;
+import com.app.common.User;
 import com.app.repository.EmailRepository;
 
 import java.util.*;
 
 public class DefaultEmailService implements EmailService {
     private EmailRepository emailRepository;
+    private UserService userService;
 
-    public DefaultEmailService(EmailRepository emailRepository) {
+    public DefaultEmailService(EmailRepository emailRepository, UserService userService) {
         this.emailRepository = emailRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -26,7 +29,7 @@ public class DefaultEmailService implements EmailService {
         getEmails().forEach(email -> {
             String searchRange =
                     email.getSender() +
-                    email.getReceiversFormatted() +
+                    email.getReceivers().toString() +
                     email.getSubject() +
                     email.getBody();
             if (searchRange.toLowerCase().contains(text.toLowerCase())) {
@@ -90,7 +93,7 @@ public class DefaultEmailService implements EmailService {
         Email emailCopy = createEmailCopy(email);
 
         emailCopy.setSubject("RE: " + email.getSubject());
-        Set<String> receivers = new HashSet<>();
+        Set<User> receivers = new HashSet<>();
         receivers.add(email.getSender());
         receivers.addAll(email.getReceivers());
         emailCopy.setReceivers(receivers);
@@ -118,20 +121,37 @@ public class DefaultEmailService implements EmailService {
 
     @Override
     public String emailDetails(Email email) {
-        return "From:\t" + email.getSender() + "\n" +
-               "To:\t\t" + email.getReceiversFormatted() + "\n" +
+        return "From:\t" + userService.displayedUser(email.getSender()) + "\n" +
+               "To:\t\t" + getReceiversFormatted(email) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
                "Date:\t" + email.getDateTime();
     }
 
+
+    private String getReceiversFormatted(Email email) {
+        StringBuilder builder = new StringBuilder();
+        int receiversCount = 0;
+        for (User receiver : email.getReceivers()) {
+            receiversCount++;
+            if(receiversCount < email.getReceivers().size()) {
+                builder.append(userService.displayedUser(receiver)).append(", ");
+            } else {
+                builder.append(userService.displayedUser(receiver));
+            }
+        }
+        return builder.toString();
+    }
+
+
+
     @Override
     public String emailInfoOnList(Email email, String mailbox) {
         if (mailbox.equals("Sent") || mailbox.equals("Draft")) {
-            return email.getReceiversFormatted() + "\n" +
+            return getReceiversFormatted(email) + "\n" +
                    email.getSubject() + "\n" +
                    email.getDateTime();
         } else {
-            return email.getSender() + "\n" +
+            return userService.displayedUser(email.getSender()) + "\n" +
                    email.getSubject() + "\n" +
                    email.getDateTime();
         }
