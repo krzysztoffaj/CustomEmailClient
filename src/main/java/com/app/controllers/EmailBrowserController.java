@@ -162,9 +162,9 @@ public class EmailBrowserController {
     private void handleReplyClick() {
         replyBtn.setOnAction(e -> {
             new EmailComposerController(
+                    emailService.prepareReplyEmail(selectedEmail()),
                     this.emailService,
-                    this.userService,
-                    emailService.prepareReplyEmail(selectedEmail())
+                    this.userService
             ).setupStage();
         });
     }
@@ -172,9 +172,9 @@ public class EmailBrowserController {
     private void handleReplyToAllClick() {
         replyToAllBtn.setOnAction(e -> {
             new EmailComposerController(
+                    emailService.prepareReplyToAllEmail(selectedEmail()),
                     this.emailService,
-                    this.userService,
-                    emailService.prepareReplyToAllEmail(selectedEmail())
+                    this.userService
             ).setupStage();
         });
     }
@@ -182,9 +182,9 @@ public class EmailBrowserController {
     private void handleForwardClick() {
         forwardBtn.setOnAction(e -> {
             new EmailComposerController(
+                    emailService.prepareForwardEmail(selectedEmail()),
                     this.emailService,
-                    this.userService,
-                    emailService.prepareForwardEmail(selectedEmail())
+                    this.userService
             ).setupStage();
         });
     }

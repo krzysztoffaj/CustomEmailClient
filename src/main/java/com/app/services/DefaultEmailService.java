@@ -139,4 +139,13 @@ public class DefaultEmailService implements EmailService {
                    email.getDateTime();
         }
     }
+
+    @Override
+    public Set<User> getReceiversFromTextField(String input) {
+        Set<User> receivers = new HashSet<>();
+        for (String s : input.split("\\s*,\\s*")) {
+//            receivers.add(new User())
+        }
+        return null;
+    }
 }

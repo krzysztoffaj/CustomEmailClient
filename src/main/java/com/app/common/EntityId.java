@@ -1,7 +1,7 @@
 package com.app.common;
 
 public interface EntityId {
-    public int getId();
+    int getId();
 
-    public void setId(int id);
+    void setId(int id);
 }

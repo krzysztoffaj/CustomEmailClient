@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
+    User getUser(int id);
+
     List<User> getUsers();
 
     List<User> findByText(String text);
@@ -19,4 +21,6 @@ public interface UserService {
     String displayedUser(User user);
 
     String getReceiversFormatted(Set<User> receivers);
+
+    boolean checkIfExistsWithEmailAddress(String emailAddress);
 }

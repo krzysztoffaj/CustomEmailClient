@@ -1,8 +1,10 @@
 package com.app.services;
 
 import com.app.common.Email;
+import com.app.common.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EmailService {
     List<Email> getEmails();
@@ -30,4 +32,6 @@ public interface EmailService {
     String emailDetails(Email email);
 
     String emailInfoOnList(Email email, String mailbox);
+
+    Set<User> getReceiversFromTextField(String input);
 }

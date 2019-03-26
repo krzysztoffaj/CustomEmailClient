@@ -16,6 +16,11 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    public User getUser(int id) {
+        return userRepository.get(id);
+    }
+
+    @Override
     public List<User> getUsers() {
         return userRepository.getAll();
     }
@@ -74,5 +79,10 @@ public class DefaultUserService implements UserService {
             }
         }
         return builder.toString();
+    }
+
+    @Override
+    public boolean checkIfExistsWithEmailAddress(String emailAddress) {
+        return getUsers().stream().anyMatch(usr -> usr.getEmailAddress().equals(emailAddress));
     }
 }

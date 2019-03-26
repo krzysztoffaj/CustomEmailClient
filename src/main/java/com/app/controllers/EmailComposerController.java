@@ -2,7 +2,6 @@ package com.app.controllers;
 
 import com.app.common.Email;
 import com.app.common.EmailMarks;
-import com.app.common.User;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -38,16 +37,18 @@ public class EmailComposerController {
     private UserService userService;
     private Email email;
 
+    private final static int DEFAULT_SENDER_ID = 1;
+
     public EmailComposerController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
         email = new Email();
     }
 
-    public EmailComposerController(EmailService emailService, UserService userService, Email email) {
+    public EmailComposerController(Email email, EmailService emailService, UserService userService) {
+        this.email = email;
         this.emailService = emailService;
         this.userService = userService;
-        this.email = email;
     }
 
     @FXML
@@ -65,7 +66,7 @@ public class EmailComposerController {
             setButtonsWidthToFillHbox();
             setReceiversSubjectAndBody();
 
-//            handleSendClick();
+            handleSendClick();
             handleAddressBook();
             handleAttachFileClick();
             handleSaveDraftClick();
@@ -82,25 +83,25 @@ public class EmailComposerController {
         }
     }
 
-//    private void handleSendClick() {
-//        sendBtn.setOnAction(e -> {
-//            Email email = setEmailProperties();
-//
-//            if (emailProperlyFormatted(email)) {
-//                Thread sendEmail = new Thread(() -> {
-//                    emailService.sendEmail(email);
-//                    Platform.runLater(() -> {
-//                        Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
-//                        alert.showAndWait();
-//                        Stage stage = (Stage) sendBtn.getScene().getWindow();
-//                        stage.close();
-//                    });
-//                });
-//                sendEmail.setDaemon(true);
-//                sendEmail.start();
-//            }
-//        });
-//    }
+    private void handleSendClick() {
+        sendBtn.setOnAction(e -> {
+            Email email = setEmailProperties();
+
+            if (emailProperlyFormatted(email)) {
+                Thread sendEmail = new Thread(() -> {
+                    emailService.sendEmail(email);
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
+                        alert.showAndWait();
+                        Stage stage = (Stage) sendBtn.getScene().getWindow();
+                        stage.close();
+                    });
+                });
+                sendEmail.setDaemon(true);
+                sendEmail.start();
+            }
+        });
+    }
 
     private void handleAddressBook() {
         addressBookBtn.setOnAction(e -> {
@@ -121,7 +122,7 @@ public class EmailComposerController {
 
     private void handleSaveDraftClick() {
         saveDraftBtn.setOnAction(e -> {
-//            Email email = setEmailProperties();
+            Email email = setEmailProperties();
 
             Thread saveEmailAsDraft = new Thread(() -> {
                 emailService.saveDraft(email);
@@ -147,31 +148,32 @@ public class EmailComposerController {
         });
     }
 
-//    private Email setEmailProperties() {
-//        email.setSender("Simple User <simple.user@yahoo.com>");
-//        email.setSubject(subjectField.getText());
-//        email.setReceivers(new HashSet<User>(Arrays.asList(receiversField.getText().split("\\s* \\s*"))));
-//        email.setMailbox("Sent");
-//        email.setMark(String.valueOf(EmailMarks.UNMARKED));
-//        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-//        email.setBody(emailBodyArea.getText());
-//
-//        return email;
-//    }
+    private Email setEmailProperties() {
+        email.setSender(userService.getUser(DEFAULT_SENDER_ID));
+        email.setSubject(subjectField.getText());
+//        email.setReceivers(new HashSet<>(email.getReceivers()));
+        System.out.println(userService.checkIfExistsWithEmailAddress("another.tester@gmail.com"));
+        email.setMailbox("Sent");
+        email.setMark(String.valueOf(EmailMarks.UNMARKED));
+        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+        email.setBody(emailBodyArea.getText());
 
-//    private boolean emailProperlyFormatted(Email email) {
-//        if (receiversField.getText().equals("")) {
-//            Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
-//            alert.showAndWait();
-//            return false;
-//        } else if (!email.getReceivers().stream().allMatch(s -> s.contains("@")) ||
-//                !email.getReceivers().stream().allMatch(s -> s.contains("."))) {
-//            Alert alert = new Alert(Alert.AlertType.NONE, "Invalid receivers entry.", ButtonType.OK);
-//            alert.showAndWait();
-//            return false;
-//        }
-//        return true;
-//    }
+        return email;
+    }
+
+    private boolean emailProperlyFormatted(Email email) {
+        if (receiversField.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        } else if (!email.getReceivers().stream().allMatch(s -> s.getEmailAddress().contains("@")) ||
+                !email.getReceivers().stream().allMatch(s -> s.getEmailAddress().contains("."))) {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Invalid receivers entry.", ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
 
     public void appendToReceiversField(String input) {
         if (receiversField.getText().equals("")) {
