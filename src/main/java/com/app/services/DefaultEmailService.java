@@ -122,32 +122,15 @@ public class DefaultEmailService implements EmailService {
     @Override
     public String emailDetails(Email email) {
         return "From:\t" + userService.displayedUser(email.getSender()) + "\n" +
-               "To:\t\t" + getReceiversFormatted(email) + "\n" +
+               "To:\t\t" + userService.getReceiversFormatted(email.getReceivers()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
                "Date:\t" + email.getDateTime();
     }
 
-
-    private String getReceiversFormatted(Email email) {
-        StringBuilder builder = new StringBuilder();
-        int receiversCount = 0;
-        for (User receiver : email.getReceivers()) {
-            receiversCount++;
-            if(receiversCount < email.getReceivers().size()) {
-                builder.append(userService.displayedUser(receiver)).append(", ");
-            } else {
-                builder.append(userService.displayedUser(receiver));
-            }
-        }
-        return builder.toString();
-    }
-
-
-
     @Override
     public String emailInfoOnList(Email email, String mailbox) {
         if (mailbox.equals("Sent") || mailbox.equals("Draft")) {
-            return getReceiversFormatted(email) + "\n" +
+            return userService.getReceiversFormatted(email.getReceivers()) + "\n" +
                    email.getSubject() + "\n" +
                    email.getDateTime();
         } else {

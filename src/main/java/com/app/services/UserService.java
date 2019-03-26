@@ -3,6 +3,7 @@ package com.app.services;
 import com.app.common.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     List<User> getUsers();
@@ -16,4 +17,6 @@ public interface UserService {
     void deleteUser(User user);
 
     String displayedUser(User user);
+
+    String getReceiversFormatted(Set<User> receivers);
 }

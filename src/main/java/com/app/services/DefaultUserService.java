@@ -6,6 +6,7 @@ import com.app.repository.UserRepository;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DefaultUserService implements UserService {
     private UserRepository userRepository;
@@ -58,5 +59,20 @@ public class DefaultUserService implements UserService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmailAddress());
+    }
+
+    @Override
+    public String getReceiversFormatted(Set<User> receivers) {
+        StringBuilder builder = new StringBuilder();
+        int receiversCount = 0;
+        for (User receiver : receivers) {
+            receiversCount++;
+            if(receiversCount < receivers.size()) {
+                builder.append(displayedUser(receiver)).append(", ");
+            } else {
+                builder.append(displayedUser(receiver));
+            }
+        }
+        return builder.toString();
     }
 }
