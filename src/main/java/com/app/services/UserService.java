@@ -22,5 +22,5 @@ public interface UserService {
 
     String getReceiversFormatted(Set<User> receivers);
 
-    boolean checkIfExistsWithEmailAddress(String emailAddress);
+    User getUserWithEmailAddressOrCreate(String emailAddress);
 }

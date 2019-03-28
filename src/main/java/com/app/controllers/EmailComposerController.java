@@ -85,9 +85,9 @@ public class EmailComposerController {
 
     private void handleSendClick() {
         sendBtn.setOnAction(e -> {
-            Email email = setEmailProperties();
-
             if (emailProperlyFormatted(email)) {
+                Email email = setEmailProperties();
+
                 Thread sendEmail = new Thread(() -> {
                     emailService.sendEmail(email);
                     Platform.runLater(() -> {
@@ -151,8 +151,7 @@ public class EmailComposerController {
     private Email setEmailProperties() {
         email.setSender(userService.getUser(DEFAULT_SENDER_ID));
         email.setSubject(subjectField.getText());
-//        email.setReceivers(new HashSet<>(email.getReceivers()));
-        System.out.println(userService.checkIfExistsWithEmailAddress("another.tester@gmail.com"));
+        email.setReceivers(emailService.getReceiversFromTextField(receiversField.getText()));
         email.setMailbox("Sent");
         email.setMark(String.valueOf(EmailMarks.UNMARKED));
         email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
@@ -166,8 +165,11 @@ public class EmailComposerController {
             Alert alert = new Alert(Alert.AlertType.NONE, "Please specify receivers.", ButtonType.OK);
             alert.showAndWait();
             return false;
-        } else if (!email.getReceivers().stream().allMatch(s -> s.getEmailAddress().contains("@")) ||
-                !email.getReceivers().stream().allMatch(s -> s.getEmailAddress().contains("."))) {
+        }
+
+        String[] receiversEntered = receiversField.getText().split("\\s*,\\s*");
+
+        if (Arrays.stream(receiversEntered).anyMatch(receiver -> receiver.contains(" ") || !receiver.contains("@") || !receiver.contains("."))) {
             Alert alert = new Alert(Alert.AlertType.NONE, "Invalid receivers entry.", ButtonType.OK);
             alert.showAndWait();
             return false;
@@ -184,7 +186,7 @@ public class EmailComposerController {
     }
 
     private void setReceiversSubjectAndBody() {
-        if(email.getReceivers() != null) {
+        if (email.getReceivers() != null) {
             receiversField.setText(String.valueOf(email.getReceivers()));
             subjectField.setText(email.getSubject());
             emailBodyArea.setText(emailService.originalEmailDetails(email));

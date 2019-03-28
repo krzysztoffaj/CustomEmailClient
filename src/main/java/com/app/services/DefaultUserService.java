@@ -61,9 +61,9 @@ public class DefaultUserService implements UserService {
     @Override
     public String displayedUser(User user) {
         return MessageFormat.format("{0} {1} <{2}>",
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmailAddress());
+                                    user.getFirstName(),
+                                    user.getLastName(),
+                                    user.getEmailAddress());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class DefaultUserService implements UserService {
         int receiversCount = 0;
         for (User receiver : receivers) {
             receiversCount++;
-            if(receiversCount < receivers.size()) {
+            if (receiversCount < receivers.size()) {
                 builder.append(displayedUser(receiver)).append(", ");
             } else {
                 builder.append(displayedUser(receiver));
@@ -82,7 +82,18 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public boolean checkIfExistsWithEmailAddress(String emailAddress) {
-        return getUsers().stream().anyMatch(usr -> usr.getEmailAddress().equals(emailAddress));
+    public User getUserWithEmailAddressOrCreate(String emailAddress) {
+        return getUsers().stream()
+                .filter(usr -> usr.getEmailAddress().equals(emailAddress))
+                .findFirst()
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setFirstName("");
+                    newUser.setLastName("");
+                    newUser.setEmailAddress(emailAddress);
+                    newUser.setInAddressBook(true);
+                    userRepository.add(newUser);
+                    return newUser;
+                });
     }
 }

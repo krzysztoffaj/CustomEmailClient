@@ -143,9 +143,9 @@ public class DefaultEmailService implements EmailService {
     @Override
     public Set<User> getReceiversFromTextField(String input) {
         Set<User> receivers = new HashSet<>();
-        for (String s : input.split("\\s*,\\s*")) {
-//            receivers.add(new User())
+        for (String emailAddress : input.split("\\s*,\\s*")) {
+            receivers.add(userService.getUserWithEmailAddressOrCreate(emailAddress));
         }
-        return null;
+        return receivers;
     }
 }
