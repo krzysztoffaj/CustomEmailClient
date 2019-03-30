@@ -13,8 +13,9 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public abstract class TxtGenericRepository<T extends EntityId> implements GenericRepository<T> {
-    private final String workingDirectory = String.valueOf(Paths.get("").toAbsolutePath());
-    private final String genericTypeDirectory = String.valueOf(Paths.get(workingDirectory, "txtRepositoryData", getInstanceSimpleName()));
+    private final String workingPath = String.valueOf(Paths.get("").toAbsolutePath());
+    private final String txtRepositoryDataPath = String.valueOf(Paths.get(workingPath, "txtRepositoryData"));
+    private final String genericTypePath = String.valueOf(Paths.get(txtRepositoryDataPath, getInstanceSimpleName()));
 
     public abstract T castType(File file);
 
@@ -24,7 +25,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     public List<T> getAll() {
         List<T> all = new ArrayList<>();
         try {
-            Files.list(Paths.get(genericTypeDirectory))
+            Files.list(Paths.get(genericTypePath))
                     .forEach(path -> all.add(castType(new File(String.valueOf(path)))));
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,7 +35,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     @Override
     public T get(int id) {
-        String desiredFilePath = String.valueOf(Paths.get(genericTypeDirectory, String.valueOf(id)));
+        String desiredFilePath = String.valueOf(Paths.get(genericTypePath, String.valueOf(id)));
         return castType(new File(desiredFilePath));
     }
 
@@ -43,7 +44,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         if(item.getId() == 0) {
             item.setId(getNextId());
         }
-        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypeDirectory, String.valueOf(item.getId()))))) {
+        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(item.getId()))))) {
             addItem(item, writer);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -64,7 +65,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     @Override
     public void delete(T item) {
         try {
-            Files.delete(Paths.get(genericTypeDirectory, String.valueOf(item.getId())));
+            Files.delete(Paths.get(genericTypePath, String.valueOf(item.getId())));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,7 +102,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     private int getNextId() {
         try {
-            return Files.list(Paths.get(genericTypeDirectory))
+            return Files.list(Paths.get(genericTypePath))
                     .mapToInt(path -> Integer.parseInt(String.valueOf(path.getFileName())))
                     .max()
                     .getAsInt()
@@ -111,7 +112,11 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         }
     }
 
-//    private Email getMockedEmail(int id) {
+    public String getTxtRepositoryDataPath() {
+        return txtRepositoryDataPath;
+    }
+
+    //    private Email getMockedEmail(int id) {
 //        Email email = new Email(id);
 //
 //        email.setSender("whatever@gmail.com");

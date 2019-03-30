@@ -6,6 +6,7 @@ import com.app.repository.EmailRepository;
 import com.app.repository.UserRepository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -39,8 +40,7 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
 
     @Override
     public void addItem(Email email, PrintWriter writer) {
-        writer.println(email.getSender());
-        writer.println(email.getReceivers());
+        writer.println(email.getSender().getId());
         writer.println(email.getSubject());
         writer.println(email.getMailbox());
         writer.println(email.getMark());
@@ -48,6 +48,17 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         writer.println();
         writer.println();
         writer.println(email.getBody());
+        addEmailUserEntry(email);
+    }
+
+    @Override
+    public void addEmailUserEntry(Email email) {
+        String newEntryPath = String.valueOf(Paths.get(getTxtRepositoryDataPath(), "email_user", String.valueOf(email.getId())));
+        try (PrintWriter writer = new PrintWriter(newEntryPath)) {
+            email.getReceivers().forEach(receiver -> writer.println(receiver.getId()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private String prepareEmailBody(List<String> emailFile) {
@@ -58,9 +69,8 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         return stringBuilder.toString();
     }
 
-    private File emailUserFile(File email) {
-        String txtRepoPath = email.getParentFile().getParentFile().getPath();
-        return new File(String.valueOf(Paths.get(txtRepoPath, "email_user", email.getName())));
+    private File emailUserFile(File emailFile) {
+        return new File(String.valueOf(Paths.get(getTxtRepositoryDataPath(), "email_user", emailFile.getName())));
     }
 
     private Set<User> getReceiversFromEmailUserFile(File emailUserFile) {

@@ -86,9 +86,8 @@ public class EmailComposerController {
     private void handleSendClick() {
         sendBtn.setOnAction(e -> {
             if (emailProperlyFormatted(email)) {
-                Email email = setEmailProperties();
-
                 Thread sendEmail = new Thread(() -> {
+                    Email email = setEmailProperties();
                     emailService.sendEmail(email);
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.NONE, "E-mail sent!", ButtonType.OK);
@@ -122,9 +121,8 @@ public class EmailComposerController {
 
     private void handleSaveDraftClick() {
         saveDraftBtn.setOnAction(e -> {
-            Email email = setEmailProperties();
-
-            Thread saveEmailAsDraft = new Thread(() -> {
+            Thread saveEmailDraft = new Thread(() -> {
+                Email email = setEmailProperties();
                 emailService.saveDraft(email);
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.NONE, "E-mail saved as draft!", ButtonType.OK);
@@ -132,8 +130,8 @@ public class EmailComposerController {
                     ((Stage) saveDraftBtn.getScene().getWindow()).close();
                 });
             });
-            saveEmailAsDraft.setDaemon(true);
-            saveEmailAsDraft.start();
+            saveEmailDraft.setDaemon(true);
+            saveEmailDraft.start();
         });
     }
 
