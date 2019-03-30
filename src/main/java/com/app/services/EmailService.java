@@ -29,9 +29,9 @@ public interface EmailService {
 
     String originalEmailDetails(Email email);
 
-    String emailDetails(Email email);
+    String getEmailDetails(Email email);
 
-    String emailInfoOnList(Email email, String mailbox);
+    String getEmailInfoOnList(Email email, String mailbox);
 
     Set<User> getReceiversFromTextField(String input);
 }

@@ -5,15 +5,13 @@ import com.app.common.EntityId;
 import java.util.List;
 
 public interface GenericRepository<T extends EntityId> {
-    List<T> getAll();
-
     T get(int id);
 
-    T add(T item);
+    List<T> getAll();
 
-    Iterable<T> addRange(Iterable<T> items);
+    void add(T item);
 
-    T update(T item);
+    void update(T item);
 
     void delete(T item);
 }

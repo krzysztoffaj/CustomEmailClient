@@ -22,6 +22,12 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     public abstract void addItem(T item, PrintWriter writer);
 
     @Override
+    public T get(int id) {
+        String desiredFilePath = String.valueOf(Paths.get(genericTypePath, String.valueOf(id)));
+        return castType(new File(desiredFilePath));
+    }
+
+    @Override
     public List<T> getAll() {
         List<T> all = new ArrayList<>();
         try {
@@ -34,13 +40,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     }
 
     @Override
-    public T get(int id) {
-        String desiredFilePath = String.valueOf(Paths.get(genericTypePath, String.valueOf(id)));
-        return castType(new File(desiredFilePath));
-    }
-
-    @Override
-    public T add(T item) {
+    public void add(T item) {
         if(item.getId() == 0) {
             item.setId(getNextId());
         }
@@ -49,17 +49,11 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return item;
     }
 
     @Override
-    public Iterable<T> addRange(Iterable<T> items) {
-        return null;
-    }
-
-    @Override
-    public T update(T item) {
-        return add(item);
+    public void update(T item) {
+        add(item);
     }
 
     @Override

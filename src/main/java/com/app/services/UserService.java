@@ -18,7 +18,7 @@ public interface UserService {
 
     void deleteUser(User user);
 
-    String displayedUser(User user);
+    String getFullUserInfo(User user);
 
     String getReceiversFormatted(Set<User> receivers);
 

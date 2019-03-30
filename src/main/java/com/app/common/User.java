@@ -51,7 +51,7 @@ public class User implements EntityId{
         return isInAddressBook;
     }
 
-    public void setInAddressBook(boolean inAddressBook) {
-        isInAddressBook = inAddressBook;
+    public void setInAddressBook(boolean isInAddressBook) {
+        this.isInAddressBook = isInAddressBook;
     }
 }

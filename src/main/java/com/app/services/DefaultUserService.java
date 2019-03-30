@@ -59,7 +59,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public String displayedUser(User user) {
+    public String getFullUserInfo(User user) {
         return MessageFormat.format("{0} {1} <{2}>",
                                     user.getFirstName(),
                                     user.getLastName(),
@@ -73,9 +73,51 @@ public class DefaultUserService implements UserService {
         for (User receiver : receivers) {
             receiversCount++;
             if (receiversCount < receivers.size()) {
-                builder.append(displayedUser(receiver)).append(", ");
+                builder.append(getFullUserInfo(receiver)).append(", ");
             } else {
-                builder.append(displayedUser(receiver));
+                builder.append(getFullUserInfo(receiver));
+            }
+        }
+        return builder.toString();
+    }
+
+    public String listReceiversEmailAddresses(Set<User> receivers) {
+        StringBuilder builder = new StringBuilder();
+        int receiversCount = 0;
+        for (User receiver : receivers) {
+            receiversCount++;
+            if (receiversCount < receivers.size()) {
+                builder.append(receiver.getEmailAddress()).append(", ");
+            } else {
+                builder.append(receiver.getEmailAddress());
+            }
+        }
+        return builder.toString();
+    }
+
+    public String listReceiversFullInfo(Set<User> receivers) {
+        StringBuilder builder = new StringBuilder();
+        int receiversCount = 0;
+        for (User receiver : receivers) {
+            receiversCount++;
+            if (receiversCount < receivers.size()) {
+                builder.append(getFullUserInfo(receiver)).append(", ");
+            } else {
+                builder.append(getFullUserInfo(receiver));
+            }
+        }
+        return builder.toString();
+    }
+
+    private String getReceiversSeparatedByComma(Set<User> receivers, String receiverDisplayPattern) {
+        StringBuilder builder = new StringBuilder();
+        int receiversCount = 0;
+        for (User receiver : receivers) {
+            receiversCount++;
+            if (receiversCount < receivers.size()) {
+                builder.append(receiverDisplayPattern).append(", ");
+            } else {
+                builder.append(receiverDisplayPattern);
             }
         }
         return builder.toString();

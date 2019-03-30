@@ -111,7 +111,7 @@ public class EmailBrowserController {
                 if (empty || email == null) {
                     setText(null);
                 } else {
-                    setText(emailService.emailInfoOnList(email, currentMailbox));
+                    setText(emailService.getEmailInfoOnList(email, currentMailbox));
                 }
             }
         });
@@ -120,7 +120,7 @@ public class EmailBrowserController {
     private void handleEmailListClicks() {
         emailList.setOnMouseClicked(e -> {
             if(selectedEmail() != null) {
-                emailDetailsArea.setText(emailService.emailDetails(selectedEmail()));
+                emailDetailsArea.setText(emailService.getEmailDetails(selectedEmail()));
                 emailBodyArea.setText(selectedEmail().getBody());
             }
         });

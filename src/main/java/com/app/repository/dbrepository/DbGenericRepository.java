@@ -7,28 +7,23 @@ import java.util.List;
 
 public class DbGenericRepository<T extends EntityId> implements GenericRepository<T> {
     @Override
-    public List<T> getAll() {
-        return null;
-    }
-
-    @Override
     public T get(int id) {
         return null;
     }
 
     @Override
-    public T add(T item) {
+    public List<T> getAll() {
         return null;
     }
 
     @Override
-    public Iterable<T> addRange(Iterable<T> items) {
-        return null;
+    public void add(T item) {
+
     }
 
     @Override
-    public T update(T item) {
-        return null;
+    public void update(T item) {
+
     }
 
     @Override

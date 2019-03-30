@@ -28,8 +28,8 @@ public class DefaultEmailService implements EmailService {
 
         getEmails().forEach(email -> {
             String searchRange =
-                    email.getSender() +
-                    email.getReceivers().toString() +
+                    email.getSender().getEmailAddress() +
+                    userService.getReceiversFormatted(email.getReceivers()) +
                     email.getSubject() +
                     email.getBody();
             if (searchRange.toLowerCase().contains(text.toLowerCase())) {
@@ -120,21 +120,21 @@ public class DefaultEmailService implements EmailService {
     }
 
     @Override
-    public String emailDetails(Email email) {
-        return "From:\t" + userService.displayedUser(email.getSender()) + "\n" +
+    public String getEmailDetails(Email email) {
+        return "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
                "To:\t\t" + userService.getReceiversFormatted(email.getReceivers()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
                "Date:\t" + email.getDateTime();
     }
 
     @Override
-    public String emailInfoOnList(Email email, String mailbox) {
+    public String getEmailInfoOnList(Email email, String mailbox) {
         if (mailbox.equals("Sent") || mailbox.equals("Draft")) {
             return userService.getReceiversFormatted(email.getReceivers()) + "\n" +
                    email.getSubject() + "\n" +
                    email.getDateTime();
         } else {
-            return userService.displayedUser(email.getSender()) + "\n" +
+            return userService.getFullUserInfo(email.getSender()) + "\n" +
                    email.getSubject() + "\n" +
                    email.getDateTime();
         }
