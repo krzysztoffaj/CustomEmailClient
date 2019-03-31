@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import com.app.common.Email;
+import com.app.common.EmailResponseOptions;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -72,6 +73,7 @@ public class EmailBrowserController {
         handleReplyToAllClick();
         handleForwardClick();
         handleDeleteClick();
+        handleMarkClick();
         handleSaveClick();
 
         getEmailList();
@@ -162,9 +164,10 @@ public class EmailBrowserController {
     private void handleReplyClick() {
         replyBtn.setOnAction(e -> {
             new EmailComposerController(
-                    emailService.prepareReplyEmail(selectedEmail()),
                     this.emailService,
-                    this.userService
+                    this.userService,
+                    selectedEmail(),
+                    EmailResponseOptions.REPLY
             ).setupStage();
         });
     }
@@ -172,9 +175,10 @@ public class EmailBrowserController {
     private void handleReplyToAllClick() {
         replyToAllBtn.setOnAction(e -> {
             new EmailComposerController(
-                    emailService.prepareReplyToAllEmail(selectedEmail()),
                     this.emailService,
-                    this.userService
+                    this.userService,
+                    selectedEmail(),
+                    EmailResponseOptions.REPLY_TO_ALL
             ).setupStage();
         });
     }
@@ -182,9 +186,10 @@ public class EmailBrowserController {
     private void handleForwardClick() {
         forwardBtn.setOnAction(e -> {
             new EmailComposerController(
-                    emailService.prepareForwardEmail(selectedEmail()),
                     this.emailService,
-                    this.userService
+                    this.userService,
+                    selectedEmail(),
+                    EmailResponseOptions.FORWARD
             ).setupStage();
         });
     }

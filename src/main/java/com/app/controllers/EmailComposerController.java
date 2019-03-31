@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.common.Email;
 import com.app.common.EmailMarks;
+import com.app.common.EmailResponseOptions;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -35,20 +36,33 @@ public class EmailComposerController {
 
     private EmailService emailService;
     private UserService userService;
-    private Email email;
+    private Email originalEmail;
+    private Email composedEmail;
 
     private final static int DEFAULT_SENDER_ID = 1;
 
     public EmailComposerController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
-        email = new Email();
+        composedEmail = new Email();
     }
 
-    public EmailComposerController(Email email, EmailService emailService, UserService userService) {
-        this.email = email;
+    public EmailComposerController(EmailService emailService, UserService userService, Email originalEmail, EmailResponseOptions responseOption) {
         this.emailService = emailService;
         this.userService = userService;
+        this.originalEmail = originalEmail;
+
+        switch (responseOption) {
+            case REPLY:
+                composedEmail = emailService.prepareReplyEmail(originalEmail);
+                break;
+            case REPLY_TO_ALL:
+                composedEmail = emailService.prepareReplyToAllEmail(originalEmail);
+                break;
+            case FORWARD:
+                composedEmail = emailService.prepareForwardEmail(originalEmail);
+                break;
+        }
     }
 
     @FXML
@@ -85,7 +99,7 @@ public class EmailComposerController {
 
     private void handleSendClick() {
         sendBtn.setOnAction(e -> {
-            if (emailProperlyFormatted(email)) {
+            if (emailProperlyFormatted(composedEmail)) {
                 Thread sendEmail = new Thread(() -> {
                     Email email = setEmailProperties();
                     emailService.sendEmail(email);
@@ -147,15 +161,15 @@ public class EmailComposerController {
     }
 
     private Email setEmailProperties() {
-        email.setSender(userService.getUser(DEFAULT_SENDER_ID));
-        email.setSubject(subjectField.getText());
-        email.setReceivers(emailService.getReceiversFromTextField(receiversField.getText()));
-        email.setMailbox("Sent");
-        email.setMark(String.valueOf(EmailMarks.UNMARKED));
-        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-        email.setBody(emailBodyArea.getText());
+        composedEmail.setSender(userService.getUser(DEFAULT_SENDER_ID));
+        composedEmail.setSubject(subjectField.getText());
+        composedEmail.setReceivers(emailService.getReceiversFromTextField(receiversField.getText()));
+        composedEmail.setMailbox("Sent");
+        composedEmail.setMark(String.valueOf(EmailMarks.UNMARKED));
+        composedEmail.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+        composedEmail.setBody(emailBodyArea.getText());
 
-        return email;
+        return composedEmail;
     }
 
     private boolean emailProperlyFormatted(Email email) {
@@ -184,10 +198,10 @@ public class EmailComposerController {
     }
 
     private void setReceiversSubjectAndBody() {
-        if (email.getReceivers() != null) {
-            receiversField.setText(userService.listReceiversEmailAddresses(email.getReceivers()));
-            subjectField.setText(email.getSubject());
-            emailBodyArea.setText(emailService.originalEmailDetails(email));
+        if (composedEmail.getReceivers() != null) {
+            receiversField.setText(userService.listReceiversEmailAddresses(composedEmail.getReceivers()));
+            subjectField.setText(composedEmail.getSubject());
+            emailBodyArea.setText(emailService.originalEmailDetails(originalEmail));
         }
     }
 }

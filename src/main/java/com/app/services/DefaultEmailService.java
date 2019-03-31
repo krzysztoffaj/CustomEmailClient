@@ -114,6 +114,7 @@ public class DefaultEmailService implements EmailService {
         return "\n\n" +
                "__________________________________________________\n\n" +
                "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
+               "To:\t\t" + userService.listReceiversFullInfo(email.getReceivers()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
                "Date:\t" + email.getDateTime() + "\n\n" +
                email.getBody();
