@@ -20,7 +20,9 @@ public interface UserService {
 
     String getFullUserInfo(User user);
 
-    String getReceiversFormatted(Set<User> receivers);
+    String listReceiversEmailAddresses(Set<User> receivers);
+
+    String listReceiversFullInfo(Set<User> receivers);
 
     User getUserWithEmailAddressOrCreate(String emailAddress);
 }

@@ -29,7 +29,7 @@ public class DefaultEmailService implements EmailService {
         getEmails().forEach(email -> {
             String searchRange =
                     email.getSender().getEmailAddress() +
-                    userService.getReceiversFormatted(email.getReceivers()) +
+                    userService.listReceiversFullInfo(email.getReceivers()) +
                     email.getSubject() +
                     email.getBody();
             if (searchRange.toLowerCase().contains(text.toLowerCase())) {
@@ -113,7 +113,7 @@ public class DefaultEmailService implements EmailService {
     public String originalEmailDetails(Email email) {
         return "\n\n" +
                "__________________________________________________\n\n" +
-               "From:\t" + email.getSender() + "\n" +
+               "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
                "Date:\t" + email.getDateTime() + "\n\n" +
                email.getBody();
@@ -122,7 +122,7 @@ public class DefaultEmailService implements EmailService {
     @Override
     public String getEmailDetails(Email email) {
         return "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
-               "To:\t\t" + userService.getReceiversFormatted(email.getReceivers()) + "\n" +
+               "To:\t\t" + userService.listReceiversFullInfo(email.getReceivers()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
                "Date:\t" + email.getDateTime();
     }
@@ -130,7 +130,7 @@ public class DefaultEmailService implements EmailService {
     @Override
     public String getEmailInfoOnList(Email email, String mailbox) {
         if (mailbox.equals("Sent") || mailbox.equals("Draft")) {
-            return userService.getReceiversFormatted(email.getReceivers()) + "\n" +
+            return userService.listReceiversFullInfo(email.getReceivers()) + "\n" +
                    email.getSubject() + "\n" +
                    email.getDateTime();
         } else {

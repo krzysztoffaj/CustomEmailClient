@@ -185,7 +185,7 @@ public class EmailComposerController {
 
     private void setReceiversSubjectAndBody() {
         if (email.getReceivers() != null) {
-            receiversField.setText(String.valueOf(email.getReceivers()));
+            receiversField.setText(userService.listReceiversEmailAddresses(email.getReceivers()));
             subjectField.setText(email.getSubject());
             emailBodyArea.setText(emailService.originalEmailDetails(email));
         }
