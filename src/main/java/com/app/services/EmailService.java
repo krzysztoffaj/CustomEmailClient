@@ -9,7 +9,7 @@ import java.util.Set;
 public interface EmailService {
     List<Email> getEmails();
 
-    List<Email> findByText(String text);
+    List<Email> findEmailByText(String text);
 
     void sendEmail(Email email);
 
@@ -27,7 +27,7 @@ public interface EmailService {
 
     Email prepareForwardEmail(Email email);
 
-    String originalEmailDetails(Email email);
+    String getOriginalEmailDetails(Email email);
 
     String getEmailDetails(Email email);
 

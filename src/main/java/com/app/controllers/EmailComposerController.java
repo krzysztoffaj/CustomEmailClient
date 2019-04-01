@@ -189,7 +189,7 @@ public class EmailComposerController {
         return true;
     }
 
-    public void appendToReceiversField(String input) {
+    void appendToReceiversField(String input) {
         if (receiversField.getText().equals("")) {
             receiversField.setText(input);
         } else {
@@ -201,7 +201,7 @@ public class EmailComposerController {
         if (composedEmail.getReceivers() != null) {
             receiversField.setText(userService.listReceiversEmailAddresses(composedEmail.getReceivers()));
             subjectField.setText(composedEmail.getSubject());
-            emailBodyArea.setText(emailService.originalEmailDetails(originalEmail));
+            emailBodyArea.setText(emailService.getOriginalEmailDetails(originalEmail));
         }
     }
 }

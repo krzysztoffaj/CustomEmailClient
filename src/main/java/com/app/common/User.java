@@ -1,13 +1,14 @@
 package com.app.common;
 
-public class User implements EntityId{
+public class User implements EntityId {
     private int id;
     private String firstName;
     private String lastName;
     private String emailAddress;
     private boolean isInAddressBook;
 
-    public User() {}
+    public User() {
+    }
 
     public User(int id) {
         this.id = id;

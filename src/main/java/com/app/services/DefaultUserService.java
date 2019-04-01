@@ -26,7 +26,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public List<User> findByText(String text) {
+    public List<User> findUserByText(String text) {
         List<User> usersFound = new ArrayList<>();
 
         getUsers().forEach(user -> {
@@ -34,7 +34,7 @@ public class DefaultUserService implements UserService {
                     user.getFirstName() +
                     user.getLastName() +
                     user.getEmailAddress();
-            if (searchRange.contains(text)) {
+            if (searchRange.toLowerCase().contains(text.toLowerCase())) {
                 usersFound.add(user);
             }
         });
@@ -96,32 +96,20 @@ public class DefaultUserService implements UserService {
         return builder.toString();
     }
 
-//    private String getReceiversSeparatedByComma(Set<User> receivers, String receiverDisplayPattern) {
-//        StringBuilder builder = new StringBuilder();
-//        int receiversCount = 0;
-//        for (User receiver : receivers) {
-//            receiversCount++;
-//            if (receiversCount < receivers.size()) {
-//                builder.append(receiverDisplayPattern).append(", ");
-//            } else {
-//                builder.append(receiverDisplayPattern);
-//            }
-//        }
-//        return builder.toString();
-//    }
-
     @Override
-    public User getUserWithEmailAddressOrCreate(String emailAddress) {
+    public User getUserWithEmailAddressOrCreateNew(String emailAddress) {
         return getUsers().stream()
                 .filter(usr -> usr.getEmailAddress().equals(emailAddress))
                 .findFirst()
                 .orElseGet(() -> {
                     User newUser = new User();
+
                     newUser.setFirstName("");
                     newUser.setLastName("");
                     newUser.setEmailAddress(emailAddress);
                     newUser.setInAddressBook(true);
                     userRepository.add(newUser);
+
                     return newUser;
                 });
     }

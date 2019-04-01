@@ -12,7 +12,8 @@ public class Email implements EntityId {
     private String dateTime;
     private String body;
 
-    public Email() {}
+    public Email() {
+    }
 
     public Email(int id) {
         this.id = id;

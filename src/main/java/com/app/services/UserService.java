@@ -10,7 +10,7 @@ public interface UserService {
 
     List<User> getUsers();
 
-    List<User> findByText(String text);
+    List<User> findUserByText(String text);
 
     void addUser(User user);
 
@@ -24,5 +24,5 @@ public interface UserService {
 
     String listReceiversFullInfo(Set<User> receivers);
 
-    User getUserWithEmailAddressOrCreate(String emailAddress);
+    User getUserWithEmailAddressOrCreateNew(String emailAddress);
 }

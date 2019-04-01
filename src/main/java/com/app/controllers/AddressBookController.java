@@ -87,7 +87,7 @@ public class AddressBookController {
         emailCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmailAddress()));
     }
 
-    public void getUserList() {
+    void getUserList() {
         userTable.getItems().clear();
         Thread loadEmail = new Thread(() -> Platform.runLater(() -> {
             userService.getUsers().stream()
@@ -128,7 +128,7 @@ public class AddressBookController {
         searchBtn.setOnAction(e -> {
             userTable.getItems().clear();
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                userService.findByText(searchInputField.getText()).stream()
+                userService.findUserByText(searchInputField.getText()).stream()
                         .filter(User::isInAddressBook)
                         .forEach(email -> userTable.getItems().add(email));
             }));
@@ -139,14 +139,20 @@ public class AddressBookController {
 
     private void handleAddReceiverClick() {
         addReceiverBtn.setOnAction(e -> {
-            receiversField.appendText(receiverWithSeparator(getSelectedUser().getEmailAddress()));
+            if (receiversField.getText().equals("")) {
+                receiversField.appendText(getSelectedUser().getEmailAddress());
+            } else {
+                receiversField.appendText(", " + getSelectedUser().getEmailAddress());
+            }
         });
     }
 
     private void handleRemoveReceiverClick() {
         removeReceiverBtn.setOnAction(e -> {
-            if (receiversField.getText().contains(receiverWithSeparator(getSelectedUser().getEmailAddress()))) {
-                receiversField.setText(receiversField.getText().replace(receiverWithSeparator(getSelectedUser().getEmailAddress()), ""));
+            if (receiversField.getText().contains(getReceiverWithSeparator(getSelectedUser().getEmailAddress()))) {
+                receiversField.setText(receiversField.getText().replace(getReceiverWithSeparator(getSelectedUser().getEmailAddress()), ""));
+            } else if (receiversField.getText().contains(getSelectedUser().getEmailAddress())) {
+                receiversField.setText(receiversField.getText().replace(getSelectedUser().getEmailAddress(), ""));
             }
         });
     }
@@ -166,7 +172,7 @@ public class AddressBookController {
         });
     }
 
-    private String receiverWithSeparator(String receiver) {
+    private String getReceiverWithSeparator(String receiver) {
         return (receiver + ", ");
     }
 

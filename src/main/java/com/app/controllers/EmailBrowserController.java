@@ -94,7 +94,7 @@ public class EmailBrowserController {
             emailList.getItems().clear();
 
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                emailService.findByText(searchInputField.getText()).stream()
+                emailService.findEmailByText(searchInputField.getText()).stream()
                         .filter(x -> x.getMailbox().equals(currentMailbox))
                         .forEach(email -> emailList.getItems().add(email));
                 disableProgressBar();
@@ -121,7 +121,7 @@ public class EmailBrowserController {
 
     private void handleEmailListClicks() {
         emailList.setOnMouseClicked(e -> {
-            if(selectedEmail() != null) {
+            if (selectedEmail() != null) {
                 emailDetailsArea.setText(emailService.getEmailDetails(selectedEmail()));
                 emailBodyArea.setText(selectedEmail().getBody());
             }

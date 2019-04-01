@@ -4,6 +4,7 @@ import com.app.common.Email;
 import com.app.common.User;
 import com.app.repository.EmailRepository;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class DefaultEmailService implements EmailService {
@@ -23,7 +24,7 @@ public class DefaultEmailService implements EmailService {
     }
 
     @Override
-    public List<Email> findByText(String text) {
+    public List<Email> findEmailByText(String text) {
         List<Email> emailsFound = new ArrayList<>();
 
         getEmails().forEach(email -> {
@@ -66,14 +67,15 @@ public class DefaultEmailService implements EmailService {
     @Override
     public Email createEmailCopy(Email email) {
         Email emailCopy = new Email();
-
-        emailCopy.setSender(email.getSender());
-        emailCopy.setReceivers(email.getReceivers());
-        emailCopy.setSubject(email.getSubject());
-        emailCopy.setMailbox(email.getMailbox());
-        emailCopy.setMark(email.getMark());
-        emailCopy.setDateTime(email.getDateTime());
-        emailCopy.setBody(email.getBody());
+        try {
+            for (Field field : email.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                field.set(emailCopy, field.get(email));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        emailCopy.setId(0);
 
         return emailCopy;
     }
@@ -104,13 +106,15 @@ public class DefaultEmailService implements EmailService {
     @Override
     public Email prepareForwardEmail(Email email) {
         Email emailCopy = createEmailCopy(email);
+
         emailCopy.setSubject("FW: " + email.getSubject());
         emailCopy.setReceivers(new HashSet<>());
+
         return emailCopy;
     }
 
     @Override
-    public String originalEmailDetails(Email email) {
+    public String getOriginalEmailDetails(Email email) {
         return "\n\n" +
                "__________________________________________________\n\n" +
                "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
@@ -145,7 +149,7 @@ public class DefaultEmailService implements EmailService {
     public Set<User> getReceiversFromTextField(String input) {
         Set<User> receivers = new HashSet<>();
         for (String emailAddress : input.split("\\s*,\\s*")) {
-            receivers.add(userService.getUserWithEmailAddressOrCreate(emailAddress));
+            receivers.add(userService.getUserWithEmailAddressOrCreateNew(emailAddress));
         }
         return receivers;
     }

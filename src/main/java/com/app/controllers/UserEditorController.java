@@ -66,7 +66,7 @@ public class UserEditorController {
 
     private void handleOkClick() {
         okBtn.setOnAction(e -> {
-            if(userProperlyFormatted()) {
+            if (userProperlyFormatted()) {
                 Thread sendEmail = new Thread(() -> {
                     setUserProperties();
 
@@ -106,7 +106,8 @@ public class UserEditorController {
             alert.showAndWait();
             return false;
         } else if (!emailField.getText().contains("@") ||
-                   !emailField.getText().contains(".")) {
+                   !emailField.getText().contains(".") ||
+                   emailField.getText().contains(" ")) {
             Alert alert = new Alert(Alert.AlertType.NONE, "Invalid e-mail address.", ButtonType.OK);
             alert.showAndWait();
             return false;

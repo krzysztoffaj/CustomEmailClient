@@ -21,6 +21,8 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     public abstract void addItem(T item, PrintWriter writer);
 
+    public abstract void updateItem(T item, PrintWriter writer);
+
     @Override
     public T get(int id) {
         String desiredFilePath = String.valueOf(Paths.get(genericTypePath, String.valueOf(id)));
@@ -41,7 +43,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     @Override
     public void add(T item) {
-        if(item.getId() == 0) {
+        if (item.getId() == 0) {
             item.setId(getNextId());
         }
         try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(item.getId()))))) {
@@ -53,7 +55,11 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     @Override
     public void update(T item) {
-        add(item);
+        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(item.getId()))))) {
+            updateItem(item, writer);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,6 +69,10 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    String getTxtRepositoryDataPath() {
+        return txtRepositoryDataPath;
     }
 
     List<String> readAllLinesLazily(File file) {
@@ -97,30 +107,11 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     private int getNextId() {
         try {
             return Files.list(Paths.get(genericTypePath))
-                    .mapToInt(path -> Integer.parseInt(String.valueOf(path.getFileName())))
-                    .max()
-                    .getAsInt()
-                    + 1;
+                           .mapToInt(path -> Integer.parseInt(String.valueOf(path.getFileName())))
+                           .max()
+                           .getAsInt() + 1;
         } catch (IOException e) {
             return -1;
         }
     }
-
-    public String getTxtRepositoryDataPath() {
-        return txtRepositoryDataPath;
-    }
-
-    //    private Email getMockedEmail(int id) {
-//        Email email = new Email(id);
-//
-//        email.setSender("whatever@gmail.com");
-//        email.setReceivers(Set.of("tak@gmail.com", "nie@gmail.com"));
-//        email.setSubject("Mock testing");
-//        email.setMailbox("Deleted");
-//        email.setMark(String.valueOf(EmailMarks.UNMARKED));
-//        email.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
-//        email.setBody("How you doin'?");
-//
-//        return email;
-//    }
 }
