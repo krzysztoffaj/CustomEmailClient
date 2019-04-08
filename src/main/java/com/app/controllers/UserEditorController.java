@@ -12,9 +12,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
+//@Controller("userEditorController")
 public class UserEditorController {
     @FXML
     private TextField firstNameField, lastNameField, emailField;

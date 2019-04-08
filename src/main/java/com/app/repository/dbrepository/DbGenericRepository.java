@@ -5,7 +5,7 @@ import com.app.repository.GenericRepository;
 
 import java.util.List;
 
-public class DbGenericRepository<T extends EntityId> implements GenericRepository<T> {
+public abstract class DbGenericRepository<T extends EntityId> implements GenericRepository<T> {
     @Override
     public T get(int id) {
         return null;

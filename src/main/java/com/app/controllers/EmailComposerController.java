@@ -12,12 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
+//@Controller("emailComposerController")
 public class EmailComposerController {
     @FXML
     Button sendBtn;
@@ -120,7 +121,6 @@ public class EmailComposerController {
         addressBookBtn.setOnAction(e -> {
             new AddressBookController(
                     this,
-                    this.emailService,
                     this.userService
             ).setupStage();
         });

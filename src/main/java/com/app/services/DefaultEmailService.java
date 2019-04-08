@@ -3,14 +3,18 @@ package com.app.services;
 import com.app.common.Email;
 import com.app.common.User;
 import com.app.repository.EmailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
+@Service("emailService")
 public class DefaultEmailService implements EmailService {
     private EmailRepository emailRepository;
     private UserService userService;
 
+    @Autowired
     public DefaultEmailService(EmailRepository emailRepository, UserService userService) {
         this.emailRepository = emailRepository;
         this.userService = userService;

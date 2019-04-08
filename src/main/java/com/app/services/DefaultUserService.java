@@ -2,15 +2,19 @@ package com.app.services;
 
 import com.app.common.User;
 import com.app.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Service("userService")
 public class DefaultUserService implements UserService {
     private UserRepository userRepository;
 
+    @Autowired
     public DefaultUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

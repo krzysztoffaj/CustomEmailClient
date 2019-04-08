@@ -12,10 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
 
+@Controller("emailBrowserController")
 public class EmailBrowserController {
     @FXML
     private Button inboxBtn, sentBtn, savedBtn, draftBtn, deletedBtn;
@@ -79,6 +82,7 @@ public class EmailBrowserController {
         getEmailList();
     }
 
+    @Autowired
     public EmailBrowserController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
@@ -146,7 +150,6 @@ public class EmailBrowserController {
         addressBookBtn.setOnAction(e -> {
             new AddressBookController(
                     null,
-                    this.emailService,
                     this.userService
             ).setupStage();
         });

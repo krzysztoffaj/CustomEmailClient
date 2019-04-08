@@ -13,9 +13,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
+//@Controller("addressBookController")
 public class AddressBookController {
     @FXML
     private TableView<User> userTable;
@@ -40,12 +43,11 @@ public class AddressBookController {
     private Button okBtn, cancelBtn;
 
     private EmailComposerController emailComposerController;
-    private EmailService emailService;
     private UserService userService;
 
-    public AddressBookController(EmailComposerController emailComposerController, EmailService emailService, UserService userService) {
+    @Autowired
+    public AddressBookController(EmailComposerController emailComposerController, UserService userService) {
         this.emailComposerController = emailComposerController;
-        this.emailService = emailService;
         this.userService = userService;
     }
 
