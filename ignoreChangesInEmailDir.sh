@@ -1,1 +1,0 @@
-git ls-files -z emails/ | xargs -0 git update-index --assume-unchanged

@@ -1,9 +1,0 @@
-Spam <spamer@spam.com>
-Simple User <simple.user@yahoo.com>, Another Receiver <another.receiver@yahoo.com>
-SPAM
-UNREAD
-2018-12-12 12:12:12
-
-
-SPAM
-SPAM

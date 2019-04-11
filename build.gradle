@@ -11,3 +11,7 @@ repositories {
 
 group = 'com.app'
 mainClassName = 'com.app.Main'
+
+dependencies {
+    compile 'org.springframework:spring-context:5.1.5.RELEASE'
+}
