@@ -1,9 +1,8 @@
-package com.app.repository.dbrepository;
+package com.app.repositories.dbrepositories;
 
-import com.app.common.Email;
-import com.app.common.User;
-import com.app.repository.EmailRepository;
-import org.springframework.stereotype.Repository;
+import com.app.models.Email;
+import com.app.models.User;
+import com.app.repositories.EmailRepository;
 
 import java.util.Set;
 

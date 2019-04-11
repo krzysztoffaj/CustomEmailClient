@@ -1,6 +1,6 @@
 package com.app.services;
 
-import com.app.common.User;
+import com.app.models.User;
 
 import java.util.List;
 import java.util.Set;

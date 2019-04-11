@@ -1,4 +1,4 @@
-package com.app.common;
+package com.app.models;
 
 public enum EmailMarks {
     UNREAD,

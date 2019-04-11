@@ -1,6 +1,6 @@
-package com.app.repository;
+package com.app.repositories;
 
-import com.app.common.EntityId;
+import com.app.models.EntityId;
 
 import java.util.List;
 

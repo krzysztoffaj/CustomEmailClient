@@ -1,7 +1,7 @@
 package com.app.services;
 
-import com.app.common.Email;
-import com.app.common.User;
+import com.app.models.Email;
+import com.app.models.User;
 
 import java.util.List;
 import java.util.Set;

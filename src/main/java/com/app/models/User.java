@@ -1,4 +1,4 @@
-package com.app.common;
+package com.app.models;
 
 public class User implements EntityId {
     private int id;

@@ -1,8 +1,8 @@
 package com.app.services;
 
-import com.app.common.Email;
-import com.app.common.User;
-import com.app.repository.EmailRepository;
+import com.app.models.Email;
+import com.app.models.User;
+import com.app.repositories.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,6 @@
 package com.app;
 
 import com.app.controllers.EmailBrowserController;
-import com.app.repository.txtrepository.TxtEmailRepository;
-import com.app.repository.txtrepository.TxtUserRepository;
-import com.app.services.DefaultEmailService;
-import com.app.services.DefaultUserService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;

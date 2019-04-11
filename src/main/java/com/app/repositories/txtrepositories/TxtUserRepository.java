@@ -1,7 +1,7 @@
-package com.app.repository.txtrepository;
+package com.app.repositories.txtrepositories;
 
-import com.app.common.User;
-import com.app.repository.UserRepository;
+import com.app.models.User;
+import com.app.repositories.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;

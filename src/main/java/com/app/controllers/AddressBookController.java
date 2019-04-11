@@ -1,7 +1,6 @@
 package com.app.controllers;
 
-import com.app.common.User;
-import com.app.services.EmailService;
+import com.app.models.User;
 import com.app.services.UserService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,7 +13,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 

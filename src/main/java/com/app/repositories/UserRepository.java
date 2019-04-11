@@ -1,6 +1,6 @@
-package com.app.repository;
+package com.app.repositories;
 
-import com.app.common.User;
+import com.app.models.User;
 
 public interface UserRepository extends GenericRepository<User> {
 

@@ -1,7 +1,7 @@
-package com.app.repository.dbrepository;
+package com.app.repositories.dbrepositories;
 
-import com.app.common.EntityId;
-import com.app.repository.GenericRepository;
+import com.app.models.EntityId;
+import com.app.repositories.GenericRepository;
 
 import java.util.List;
 

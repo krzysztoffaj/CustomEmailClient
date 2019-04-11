@@ -1,8 +1,8 @@
 package com.app.controllers;
 
-import com.app.common.Email;
-import com.app.common.EmailMarks;
-import com.app.common.EmailResponseOptions;
+import com.app.models.Email;
+import com.app.models.EmailMarks;
+import com.app.models.EmailResponseOptions;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;
@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

@@ -1,7 +1,7 @@
 package com.app.controllers;
 
-import com.app.common.Email;
-import com.app.common.EmailResponseOptions;
+import com.app.models.Email;
+import com.app.models.EmailResponseOptions;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;

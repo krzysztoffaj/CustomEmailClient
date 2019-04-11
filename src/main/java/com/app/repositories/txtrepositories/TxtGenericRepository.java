@@ -1,7 +1,7 @@
-package com.app.repository.txtrepository;
+package com.app.repositories.txtrepositories;
 
-import com.app.common.EntityId;
-import com.app.repository.GenericRepository;
+import com.app.models.EntityId;
+import com.app.repositories.GenericRepository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
