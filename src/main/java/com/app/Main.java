@@ -14,13 +14,7 @@ public class Main extends Application {
         ApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
         EmailBrowserController browserController = appContext.getBean("emailBrowserController", EmailBrowserController.class);
-
         browserController.setupStage(stage);
-
-//        new EmailBrowserController(
-//                new DefaultEmailService(new TxtEmailRepository(new TxtUserRepository()), new DefaultUserService(new TxtUserRepository())),
-//                new DefaultUserService(new TxtUserRepository())
-//        ).setupStage(stage);
     }
 
     public static void main(String[] args) {
