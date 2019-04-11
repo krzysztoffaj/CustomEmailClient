@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-//@Controller("userEditorController")
 public class UserEditorController {
     @FXML
     private TextField firstNameField, lastNameField, emailField;

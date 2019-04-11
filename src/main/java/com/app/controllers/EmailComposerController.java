@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-//@Controller("emailComposerController")
 public class EmailComposerController {
     @FXML
     Button sendBtn;

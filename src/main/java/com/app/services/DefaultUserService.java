@@ -2,7 +2,6 @@ package com.app.services;
 
 import com.app.models.User;
 import com.app.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -14,7 +13,6 @@ import java.util.Set;
 public class DefaultUserService implements UserService {
     private UserRepository userRepository;
 
-    @Autowired
     public DefaultUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

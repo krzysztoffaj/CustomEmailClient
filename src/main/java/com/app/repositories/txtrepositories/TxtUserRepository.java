@@ -2,13 +2,11 @@ package com.app.repositories.txtrepositories;
 
 import com.app.models.User;
 import com.app.repositories.UserRepository;
-import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
 
-@Repository("txtUserRepository")
 public class TxtUserRepository extends TxtGenericRepository<User> implements UserRepository {
 
     @Override

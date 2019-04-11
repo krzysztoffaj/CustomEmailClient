@@ -4,8 +4,6 @@ import com.app.models.Email;
 import com.app.models.User;
 import com.app.repositories.EmailRepository;
 import com.app.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,11 +16,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Repository("txtEmailRepository")
 public class TxtEmailRepository extends TxtGenericRepository<Email> implements EmailRepository {
+
     private UserRepository userRepo;
 
-    @Autowired
     public TxtEmailRepository(UserRepository userRepo) {
         this.userRepo = userRepo;
     }

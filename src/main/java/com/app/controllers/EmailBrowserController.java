@@ -12,11 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
-
 
 @Controller("emailBrowserController")
 public class EmailBrowserController {
@@ -82,7 +80,6 @@ public class EmailBrowserController {
         getEmailList();
     }
 
-    @Autowired
     public EmailBrowserController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
