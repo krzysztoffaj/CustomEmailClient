@@ -14,6 +14,14 @@ public class User implements EntityId {
         this.id = id;
     }
 
+    public User(int id, String firstName, String lastName, String emailAddress, boolean isInAddressBook) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.isInAddressBook = isInAddressBook;
+    }
+
     @Override
     public int getId() {
         return id;

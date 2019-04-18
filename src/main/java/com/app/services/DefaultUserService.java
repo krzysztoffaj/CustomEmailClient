@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +25,13 @@ public class DefaultUserService implements UserService {
 
     @Override
     public List<User> getUsers() {
-        return userRepository.getAll();
+        final List<User> users = userRepository.getAll();
+        if(users != null) {
+            users.sort(Comparator.comparing(User::getEmailAddress));
+            return users;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override

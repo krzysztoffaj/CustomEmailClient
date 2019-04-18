@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("emailService")
 public class DefaultEmailService implements EmailService {
@@ -19,26 +20,36 @@ public class DefaultEmailService implements EmailService {
     }
 
     @Override
-    public List<Email> getEmails() {
-        final List<Email> emails = emailRepository.getAll();
-        emails.sort(Comparator.comparing(Email::getDateTime).reversed());
-        return emails;
+    public List<Email> getEmailsInMailbox(String mailbox) {
+        List<Email> emails = emailRepository.getAll();
+        if (emails != null) {
+            return emails
+                    .stream()
+                    .filter(x -> x.getMailbox().equals(mailbox))
+                    .sorted(Comparator.comparing(Email::getDateTime).reversed())
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
-    public List<Email> findEmailByText(String text) {
+    public List<Email> findEmailByText(String mailbox, String text) {
         List<Email> emailsFound = new ArrayList<>();
 
-        getEmails().forEach(email -> {
-            String searchRange =
-                    email.getSender().getEmailAddress() +
-                    userService.listReceiversFullInfo(email.getReceivers()) +
-                    email.getSubject() +
-                    email.getBody();
-            if (searchRange.toLowerCase().contains(text.toLowerCase())) {
-                emailsFound.add(email);
-            }
-        });
+        getEmailsInMailbox(mailbox)
+                .stream()
+                .filter(x -> x.getMailbox().equals(mailbox))
+                .forEach(email -> {
+                    String searchRange =
+                            email.getSender().getEmailAddress() +
+                            userService.listReceiversFullInfo(email.getReceivers()) +
+                            email.getSubject() +
+                            email.getBody();
+                    if (searchRange.toLowerCase().contains(text.toLowerCase())) {
+                        emailsFound.add(email);
+                    }
+                });
 
         return emailsFound;
     }

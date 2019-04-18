@@ -19,6 +19,17 @@ public class Email implements EntityId {
         this.id = id;
     }
 
+    public Email(int id, User sender, Set<User> receivers, String subject, String mailbox, String mark, String dateTime, String body) {
+        this.id = id;
+        this.sender = sender;
+        this.receivers = receivers;
+        this.subject = subject;
+        this.mailbox = mailbox;
+        this.mark = mark;
+        this.dateTime = dateTime;
+        this.body = body;
+    }
+
     @Override
     public int getId() {
         return id;

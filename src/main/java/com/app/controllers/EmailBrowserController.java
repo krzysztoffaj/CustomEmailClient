@@ -95,8 +95,7 @@ public class EmailBrowserController {
             emailList.getItems().clear();
 
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                emailService.findEmailByText(searchInputField.getText()).stream()
-                        .filter(x -> x.getMailbox().equals(currentMailbox))
+                emailService.findEmailByText(currentMailbox, searchInputField.getText())
                         .forEach(email -> emailList.getItems().add(email));
                 disableProgressBar();
             }));
@@ -134,8 +133,7 @@ public class EmailBrowserController {
         emailList.getItems().clear();
 
         Thread loadEmail = new Thread(() -> Platform.runLater(() -> {
-            emailService.getEmails().stream()
-                    .filter(x -> x.getMailbox().equals(currentMailbox))
+            emailService.getEmailsInMailbox(currentMailbox)
                     .forEach(e -> emailList.getItems().add(e));
             disableProgressBar();
         }));
