@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("userService")
 public class DefaultUserService implements UserService {
@@ -26,7 +27,7 @@ public class DefaultUserService implements UserService {
     @Override
     public List<User> getUsers() {
         final List<User> users = userRepository.getAll();
-        if(users != null) {
+        if (users != null) {
             users.sort(Comparator.comparing(User::getEmailAddress));
             return users;
         } else {
@@ -35,18 +36,29 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    public List<User> getUsersInAddressBook() {
+        return getUsers()
+                .stream()
+                .filter(User::isInAddressBook)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<User> findUserByText(String text) {
         List<User> usersFound = new ArrayList<>();
 
-        getUsers().forEach(user -> {
-            String searchRange =
-                    user.getFirstName() +
-                    user.getLastName() +
-                    user.getEmailAddress();
-            if (searchRange.toLowerCase().contains(text.toLowerCase())) {
-                usersFound.add(user);
-            }
-        });
+        getUsers()
+                .stream()
+                .filter(User::isInAddressBook)
+                .forEach(user -> {
+                    String searchRange =
+                            user.getFirstName() +
+                            user.getLastName() +
+                            user.getEmailAddress();
+                    if (searchRange.toLowerCase().contains(text.toLowerCase())) {
+                        usersFound.add(user);
+                    }
+                });
 
         return usersFound;
     }

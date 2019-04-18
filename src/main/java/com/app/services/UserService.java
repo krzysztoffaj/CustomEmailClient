@@ -10,6 +10,8 @@ public interface UserService {
 
     List<User> getUsers();
 
+    List<User> getUsersInAddressBook();
+
     List<User> findUserByText(String text);
 
     void addUser(User user);

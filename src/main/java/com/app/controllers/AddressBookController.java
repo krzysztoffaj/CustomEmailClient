@@ -87,8 +87,7 @@ public class AddressBookController {
     void getUserList() {
         userTable.getItems().clear();
         Thread loadEmail = new Thread(() -> Platform.runLater(() -> {
-            userService.getUsers().stream()
-                    .filter(User::isInAddressBook)
+            userService.getUsersInAddressBook()
                     .forEach(user -> userTable.getItems().add(user));
         }));
         loadEmail.setDaemon(true);
@@ -125,8 +124,7 @@ public class AddressBookController {
         searchBtn.setOnAction(e -> {
             userTable.getItems().clear();
             Thread search = new Thread(() -> Platform.runLater(() -> {
-                userService.findUserByText(searchInputField.getText()).stream()
-                        .filter(User::isInAddressBook)
+                userService.findUserByText(searchInputField.getText())
                         .forEach(email -> userTable.getItems().add(email));
             }));
             search.setDaemon(true);
