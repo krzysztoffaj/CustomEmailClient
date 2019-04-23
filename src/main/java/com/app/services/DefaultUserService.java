@@ -119,7 +119,8 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User getUserWithEmailAddressOrCreateNew(String emailAddress) {
-        return getUsers().stream()
+        return getUsers()
+                .stream()
                 .filter(usr -> usr.getEmailAddress().equals(emailAddress))
                 .findFirst()
                 .orElseGet(() -> {

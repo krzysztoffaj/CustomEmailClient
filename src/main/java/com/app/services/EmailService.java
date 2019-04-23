@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface EmailService {
+    List<Email> getEmails();
+
     List<Email> getEmailsInMailbox(String mailbox);
 
     List<Email> findEmailByText(String mailbox, String text);

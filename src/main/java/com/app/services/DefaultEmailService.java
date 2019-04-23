@@ -20,6 +20,11 @@ public class DefaultEmailService implements EmailService {
     }
 
     @Override
+    public List<Email> getEmails() {
+        return emailRepository.getAll();
+    }
+
+    @Override
     public List<Email> getEmailsInMailbox(String mailbox) {
         List<Email> emails = emailRepository.getAll();
         if (emails != null) {
@@ -38,8 +43,6 @@ public class DefaultEmailService implements EmailService {
         List<Email> emailsFound = new ArrayList<>();
 
         getEmailsInMailbox(mailbox)
-                .stream()
-                .filter(x -> x.getMailbox().equals(mailbox))
                 .forEach(email -> {
                     String searchRange =
                             email.getSender().getEmailAddress() +
