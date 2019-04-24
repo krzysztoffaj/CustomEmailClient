@@ -20,11 +20,6 @@ public class DefaultEmailService implements EmailService {
     }
 
     @Override
-    public List<Email> getEmails() {
-        return emailRepository.getAll();
-    }
-
-    @Override
     public List<Email> getEmailsInMailbox(String mailbox) {
         List<Email> emails = emailRepository.getAll();
         if (emails != null) {

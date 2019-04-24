@@ -20,19 +20,18 @@ import static org.mockito.Mockito.when;
 public class TestEmailService {
 
     private final static int INBOX_EMAIL_COUNT = 2;
-    private final static int SAVED_EMAIL_COUNT = 0;
-    private final static int DELETD_EMAIL_COUNT = 1;
+    private final static int DELETED_EMAIL_COUNT = 1;
     private final static int DRAFT_WITH_TESTING_STRING_COUNT = 1;
 
-    private static final List<User> exampleUsers = Arrays.asList(
+    private final List<User> exampleUsers = Arrays.asList(
             new User(1, "William", "Murphy", "william.murphy@gmail.com", true),
             new User(2, "Benedict", "Garfield", "ben.garf@yahoo.com", false),
             new User(3, "Jack", "Norton", "jack.norton@microsoft.com", false),
-            new User(4, "Jeff", "Rivers", "jeff.rivers@bbc.com", true),
+            new User(4, "Jack", "Rivers", "jack.rivers@bbc.com", true),
             new User(5, "Steve", "Plant", "steve.plant@oracle.com", true)
     );
 
-    private static final List<Email> exampleEmails = Arrays.asList(
+    private final List<Email> exampleEmails = Arrays.asList(
             new Email(1, exampleUsers.get(1), new HashSet<>(Arrays.asList(exampleUsers.get(1), exampleUsers.get(2))),
                       "test1", "Inbox", String.valueOf(EmailMarks.UNMARKED), "2018-04-01 08:00:00", "Testing correct receivers"),
             new Email(2, exampleUsers.get(3), new HashSet<>(Arrays.asList(exampleUsers.get(3), exampleUsers.get(4), exampleUsers.get(1))),
@@ -49,40 +48,38 @@ public class TestEmailService {
     public void emailsShouldBeDividedIntoMailboxes() {
         EmailService service = getEmailService();
 
-        final List<Email> emailsInInbox = service.getEmailsInMailbox("Inbox");
+        List<Email> inboxEmails = service.getEmailsInMailbox("Inbox");
 
-        assertEquals("Invalid number of emails in inbox", INBOX_EMAIL_COUNT, emailsInInbox.size());
+        assertEquals("Invalid number of emails in inbox",
+                     INBOX_EMAIL_COUNT,
+                     inboxEmails.size());
     }
 
     @Test
-    public void searchOptionShouldOnlyWorkInOneMailbox() {
+    public void searchOptionShouldWorkOnlyInOneMailbox() {
         EmailService service = getEmailService();
 
-        final List<Email> emailsFound = service.findEmailByText("Draft", "Testing");
+        List<Email> emailsFound = service.findEmailByText("Draft", "Testing");
 
-        assertEquals("Invalid number of emails found by text. Probably looked beyond one mailbox.", DRAFT_WITH_TESTING_STRING_COUNT, emailsFound.size());
+        assertEquals("Invalid number of emails found by text. Probably looked beyond one mailbox.",
+                     DRAFT_WITH_TESTING_STRING_COUNT,
+                     emailsFound.size());
     }
 
     @Test
-    public void savingEmailShouldNotCreateNewRecord() {
+    public void deletingEmailShouldChangeItsMailbox() {
         EmailService service = getEmailService();
-        final int savedEmailsCountBeforeSaving = service.getEmails().size();
-
-        service.saveEmail(exampleEmails.get(0));
-        final int savedEmailsCountAfterSaving = service.getEmails().size();
-
-        assertEquals("Invalid number of emails. Saving an email changed the total count instead of moving it to the other mailbox.", savedEmailsCountBeforeSaving, savedEmailsCountAfterSaving);
-    }
-
-    @Test
-    public void deleteEmailShouldEraseItFromDataRepository() {
-        EmailService service = getEmailService();
-        final int deletedEmailsCountBeforeDeleting = service.getEmails().size();
 
         service.deleteEmail(exampleEmails.get(0));
-        final int deletedEmailsCountAfterDeleting = service.getEmails().size();
+        List<Email> inboxEmailsAfterwards = service.getEmailsInMailbox("Inbox");
+        List<Email> deletedEmailsAfterwards = service.getEmailsInMailbox("Deleted");
 
-        assertEquals("Invalid number of emails. Deleting an email changed the total count instead of moving it to the other mailbox.", deletedEmailsCountBeforeDeleting, deletedEmailsCountAfterDeleting);
+        assertEquals("Invalid number of emails. Deleting an email haven't moved it from the \"Inbox\" mailbox.",
+                     INBOX_EMAIL_COUNT - 1,
+                     inboxEmailsAfterwards.size());
+        assertEquals("Invalid number of emails. Deleting an email haven't moved it to the \"Deleted\" mailbox.",
+                     DELETED_EMAIL_COUNT + 1,
+                     deletedEmailsAfterwards.size());
     }
 
     private EmailService getEmailService() {
