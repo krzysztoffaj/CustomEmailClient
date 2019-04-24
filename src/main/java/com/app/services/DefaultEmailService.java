@@ -22,15 +22,12 @@ public class DefaultEmailService implements EmailService {
     @Override
     public List<Email> getEmailsInMailbox(String mailbox) {
         List<Email> emails = emailRepository.getAll();
-        if (emails != null) {
-            return emails
-                    .stream()
-                    .filter(x -> x.getMailbox().equals(mailbox))
-                    .sorted(Comparator.comparing(Email::getDateTime).reversed())
-                    .collect(Collectors.toList());
-        } else {
-            return new ArrayList<>();
-        }
+
+        return emails
+                .stream()
+                .filter(x -> x.getMailbox().equals(mailbox))
+                .sorted(Comparator.comparing(Email::getDateTime).reversed())
+                .collect(Collectors.toList());
     }
 
     @Override

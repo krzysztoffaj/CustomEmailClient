@@ -1,8 +1,8 @@
 package com.app.controllers;
 
 import com.app.models.Email;
-import com.app.models.EmailMarks;
-import com.app.models.EmailResponseOptions;
+import com.app.infrastructure.EmailMarks;
+import com.app.infrastructure.EmailResponseOptions;
 import com.app.services.EmailService;
 import com.app.services.UserService;
 import javafx.application.Platform;

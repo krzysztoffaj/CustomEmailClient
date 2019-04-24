@@ -3,6 +3,7 @@ package com.app.repositories.dbrepositories;
 import com.app.models.EntityId;
 import com.app.repositories.GenericRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DbGenericRepository<T extends EntityId> implements GenericRepository<T> {
@@ -13,7 +14,7 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
 
     @Override
     public List<T> getAll() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
