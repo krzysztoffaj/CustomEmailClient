@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         email.setSubject(emailFile.get(1));
         email.setMailbox(emailFile.get(2));
         email.setMark(emailFile.get(3));
-        email.setDateTime((emailFile.get(4)));
+        email.setDateTime(LocalDateTime.parse(emailFile.get(4)));
         email.setBody(prepareEmailBody(emailFile));
 
         return email;

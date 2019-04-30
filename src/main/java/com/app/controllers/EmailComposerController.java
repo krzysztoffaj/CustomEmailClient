@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class EmailComposerController {
@@ -164,7 +164,7 @@ public class EmailComposerController {
         composedEmail.setReceivers(emailService.getReceiversFromTextField(receiversField.getText()));
         composedEmail.setMailbox("Sent");
         composedEmail.setMark(String.valueOf(EmailMarks.UNMARKED));
-        composedEmail.setDateTime(String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())));
+        composedEmail.setDateTime(LocalDateTime.now().withNano(0));
         composedEmail.setBody(emailBodyArea.getText());
 
         return composedEmail;

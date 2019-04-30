@@ -3,6 +3,7 @@ package com.app.services;
 import com.app.models.Email;
 import com.app.models.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +27,8 @@ public interface EmailService {
     Email prepareReplyToAllEmail(Email email);
 
     Email prepareForwardEmail(Email email);
+
+    String getFormattedDateTime(LocalDateTime dateTime);
 
     String getOriginalEmailDetails(Email email);
 

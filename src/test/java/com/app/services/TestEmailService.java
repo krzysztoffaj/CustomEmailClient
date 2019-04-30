@@ -1,7 +1,7 @@
 package com.app.services;
 
 import com.app.models.Email;
-import com.app.models.EmailMarks;
+import com.app.infrastructure.EmailMarks;
 import com.app.models.User;
 import com.app.repositories.EmailRepository;
 import com.app.repositories.UserRepository;
