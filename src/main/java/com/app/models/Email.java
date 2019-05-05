@@ -1,5 +1,6 @@
 package com.app.models;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class Email implements EntityId {
@@ -9,7 +10,7 @@ public class Email implements EntityId {
     private String subject;
     private String mailbox;
     private String mark;
-    private String dateTime;
+    private LocalDateTime dateTime;
     private String body;
 
     public Email() {
@@ -19,7 +20,7 @@ public class Email implements EntityId {
         this.id = id;
     }
 
-    public Email(int id, User sender, Set<User> receivers, String subject, String mailbox, String mark, String dateTime, String body) {
+    public Email(int id, User sender, Set<User> receivers, String subject, String mailbox, String mark, LocalDateTime dateTime, String body) {
         this.id = id;
         this.sender = sender;
         this.receivers = receivers;
@@ -72,11 +73,11 @@ public class Email implements EntityId {
         this.mailbox = mailbox;
     }
 
-    public String getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 

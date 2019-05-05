@@ -3,6 +3,7 @@ package com.app.infrastructure;
 import com.app.models.Email;
 import com.app.models.User;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class EmailBuilder {
@@ -47,7 +48,7 @@ public class EmailBuilder {
         return this;
     }
 
-    public EmailBuilder withDateTime(String dateTime){
+    public EmailBuilder withDateTime(LocalDateTime dateTime){
         email.setDateTime(dateTime);
         return this;
     }

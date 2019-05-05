@@ -6,6 +6,7 @@ import com.app.repositories.EmailRepository;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -122,13 +123,18 @@ public class DefaultEmailService implements EmailService {
     }
 
     @Override
+    public String getFormattedDateTime(LocalDateTime dateTime) {
+        return dateTime.toString().replace("T", "   ");
+    }
+
+    @Override
     public String getOriginalEmailDetails(Email email) {
         return "\n\n" +
                "__________________________________________________\n\n" +
                "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
                "To:\t\t" + userService.listReceiversFullInfo(email.getReceivers()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
-               "Date:\t" + email.getDateTime() + "\n\n" +
+               "Date:\t" + getFormattedDateTime(email.getDateTime()) + "\n\n" +
                email.getBody();
     }
 
@@ -137,7 +143,7 @@ public class DefaultEmailService implements EmailService {
         return "From:\t" + userService.getFullUserInfo(email.getSender()) + "\n" +
                "To:\t\t" + userService.listReceiversFullInfo(email.getReceivers()) + "\n" +
                "Subject:\t" + email.getSubject() + "\n" +
-               "Date:\t" + email.getDateTime();
+               "Date:\t" + getFormattedDateTime(email.getDateTime());
     }
 
     @Override
@@ -145,11 +151,11 @@ public class DefaultEmailService implements EmailService {
         if (mailbox.equals("Sent") || mailbox.equals("Draft")) {
             return userService.listReceiversFullInfo(email.getReceivers()) + "\n" +
                    email.getSubject() + "\n" +
-                   email.getDateTime();
+                   getFormattedDateTime(email.getDateTime());
         } else {
             return userService.getFullUserInfo(email.getSender()) + "\n" +
                    email.getSubject() + "\n" +
-                   email.getDateTime();
+                   getFormattedDateTime(email.getDateTime());
         }
     }
 
