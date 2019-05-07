@@ -6,8 +6,10 @@ import com.app.infrastructure.EmailMarks;
 import com.app.models.User;
 import com.app.repositories.EmailRepository;
 import com.app.repositories.UserRepository;
+import junitparams.Parameters;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -27,15 +29,15 @@ public class TestEmailService {
 
     private final List<Email> exampleEmails = Arrays.asList(
             new Email(1, exampleUsers.get(1), new HashSet<>(Arrays.asList(exampleUsers.get(1), exampleUsers.get(2))),
-                      "test1", "Inbox", String.valueOf(EmailMarks.UNMARKED), "2018-04-01 08:05:33", "Testing correct receivers"),
+                      "test1", "Inbox", String.valueOf(EmailMarks.UNMARKED), LocalDateTime.parse("2018-04-01T08:05:33"), "Testing correct receivers"),
             new Email(2, exampleUsers.get(3), new HashSet<>(Arrays.asList(exampleUsers.get(3), exampleUsers.get(4), exampleUsers.get(1))),
-                      "test2", "Inbox", String.valueOf(EmailMarks.UNMARKED), "2019-01-12 15:35:27", "Testing single receiver"),
+                      "test2", "Inbox", String.valueOf(EmailMarks.UNMARKED), LocalDateTime.parse("2019-01-12T15:35:27"), "Testing single receiver"),
             new Email(3, exampleUsers.get(2), new HashSet<>(Collections.singletonList(exampleUsers.get(0))),
-                      "test3", "Draft", String.valueOf(EmailMarks.UNREAD), "2018-07-08 09:10:11", "Whatever"),
+                      "test3", "Draft", String.valueOf(EmailMarks.UNREAD), LocalDateTime.parse("2018-07-08T09:10:11"), "Whatever"),
             new Email(4, exampleUsers.get(0), new HashSet<>(Arrays.asList(exampleUsers.get(3), exampleUsers.get(3))),
-                      "test4", "Deleted", String.valueOf(EmailMarks.MARKED), "2019-04-23 20:14:53", "Testing duplicated receivers"),
+                      "test4", "Deleted", String.valueOf(EmailMarks.MARKED), LocalDateTime.parse("2019-04-23T20:14:53"), "Testing duplicated receivers"),
             new Email(5, exampleUsers.get(4), new HashSet<>(Arrays.asList(exampleUsers.get(2), exampleUsers.get(4))),
-                      "test5", "Draft", String.valueOf(EmailMarks.UNMARKED), "2018-12-10 10:10:10", "Testing draft mailbox")
+                      "test5", "Draft", String.valueOf(EmailMarks.UNMARKED), LocalDateTime.parse("2018-12-10T10:10:10"), "Testing draft mailbox")
     );
 
     @Test
@@ -51,19 +53,24 @@ public class TestEmailService {
     }
 
     @Test
-    public void emailsShouldBeSorted() {
+    @Parameters({
+            "{1, 0, 3, 2, 4}",
+            "{0, 1, 2, 3, 4}",
+            "{4, 3, 1, 0, 2}",
+    })
+    public void emailsShouldBeSortedByDateTime(int[] indices) {
         // Arrange
         String mailbox = "Inbox";
         List<Email> expectedEmails = new ArrayList<>();
         for (int i = 5; i > 0; i--) {
             expectedEmails.add(new EmailBuilder()
                                        .withMailbox(mailbox)
-                                       .withDateTime(String.format("2018-04-0%s 08:00:00", i))
+                                       .withDateTime(LocalDateTime.parse(String.format("2018-04-0%sT08:00:00", i)))
                                        .build());
         }
 
         List<Email> reorderedEmails = new ArrayList<>();
-        int[] indices = {1, 0, 3, 2, 4};
+//        int[] indices = {1, 0, 3, 2, 4};
         for (int index : indices) {
             reorderedEmails.add(expectedEmails.get(index));
         }
