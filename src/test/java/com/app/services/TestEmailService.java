@@ -6,8 +6,10 @@ import com.app.infrastructure.EmailMarks;
 import com.app.models.User;
 import com.app.repositories.EmailRepository;
 import com.app.repositories.UserRepository;
+import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(JUnitParamsRunner.class)
 public class TestEmailService {
 
     private final List<User> exampleUsers = Arrays.asList(
@@ -53,11 +56,7 @@ public class TestEmailService {
     }
 
     @Test
-    @Parameters({
-            "{1, 0, 3, 2, 4}",
-            "{0, 1, 2, 3, 4}",
-            "{4, 3, 1, 0, 2}",
-    })
+    @Parameters(method = "getIndicesForSortingTest")
     public void emailsShouldBeSortedByDateTime(int[] indices) {
         // Arrange
         String mailbox = "Inbox";
@@ -70,7 +69,7 @@ public class TestEmailService {
         }
 
         List<Email> reorderedEmails = new ArrayList<>();
-//        int[] indices = {1, 0, 3, 2, 4};
+        
         for (int index : indices) {
             reorderedEmails.add(expectedEmails.get(index));
         }
@@ -133,5 +132,15 @@ public class TestEmailService {
 
         UserService mockUserService = mock(UserService.class);
         return new DefaultEmailService(mockEmailRepo, mockUserService);
+    }
+
+    private int[][] getIndicesForSortingTest() {
+        return new int[][]{
+                {3, 2, 1, 0, 4},
+                {4, 0, 2, 1, 3},
+                {3, 4, 1, 2, 0},
+                {3, 2, 4, 1, 0},
+                {1, 3, 2, 4, 0},
+        };
     }
 }
