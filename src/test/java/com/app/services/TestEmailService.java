@@ -1,8 +1,8 @@
 package com.app.services;
 
 import com.app.infrastructure.EmailBuilder;
-import com.app.models.Email;
 import com.app.infrastructure.EmailMarks;
+import com.app.models.Email;
 import com.app.models.User;
 import com.app.repositories.EmailRepository;
 import com.app.repositories.UserRepository;
@@ -14,9 +14,10 @@ import org.junit.runner.RunWith;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnitParamsRunner.class)
@@ -44,21 +45,28 @@ public class TestEmailService {
     );
 
     @Test
-    public void emailsShouldBeDividedIntoMailboxes() {
-        String mailbox = "Inbox";
+    @Parameters(method = "getMailboxEmailIndicesPairs")
+    public void emailsShouldBeDividedIntoMailboxes(String mailbox, int[] emailIndices) {
+        // given
         EmailService service = getEmailService();
+        List<Email> expectedEmails = new ArrayList<>();
+        for (int index : emailIndices) {
+            expectedEmails.add(exampleEmails.get(index));
+        }
 
+        // when
         List<Email> inboxEmails = service.getEmailsInMailbox(mailbox);
 
-        assertEquals("Invalid collection returned.",
-                     Arrays.asList(exampleEmails.get(0), exampleEmails.get(1)),
-                     inboxEmails);
+        // then
+        assertThat("Invalid emails returned. Probably looked beyond one mailbox.",
+                   inboxEmails,
+                   containsInAnyOrder(expectedEmails));
     }
 
     @Test
     @Parameters(method = "getIndicesForSortingTest")
     public void emailsShouldBeSortedByDateTime(int[] indices) {
-        // Arrange
+        // given
         String mailbox = "Inbox";
         List<Email> expectedEmails = new ArrayList<>();
         for (int i = 5; i > 0; i--) {
@@ -68,52 +76,68 @@ public class TestEmailService {
                                        .build());
         }
 
-        List<Email> reorderedEmails = new ArrayList<>();
-        
+        List<Email> disorderedEmails = new ArrayList<>();
         for (int index : indices) {
-            reorderedEmails.add(expectedEmails.get(index));
+            disorderedEmails.add(expectedEmails.get(index));
         }
 
-        EmailService service = getEmailServiceWithCustomEmailMock(reorderedEmails);
+        EmailService service = getEmailServiceWithCustomEmailMock(disorderedEmails);
 
-        // Act
+        // when
         List<Email> inboxEmails = service.getEmailsInMailbox(mailbox);
 
-        // Assert
-//        assertEquals("Invalid number of emails in inbox",
-//                     INBOX_EMAIL_COUNT,
-//                     inboxEmails.size());
-        assertEquals(expectedEmails, inboxEmails);
+        // then
+        assertEquals("Emails not sorted from newest to oldest.",
+                     expectedEmails,
+                     inboxEmails);
     }
 
     @Test
-    public void searchOptionShouldWorkOnlyInOneMailbox() {
-        final int DRAFT_WITH_TESTING_STRING_COUNT = 1;
+    @Parameters(method = "getSearchEmailCases")
+    public void searchOptionShouldWorkOnlyInOneMailbox(String mailbox, String searchText, int[] emailIndices) {
+        // given
         EmailService service = getEmailService();
+        List<Email> expectedEmails = new ArrayList<>();
+        for (int index : emailIndices) {
+            expectedEmails.add(exampleEmails.get(index));
+        }
 
-        List<Email> emailsFound = service.findEmailByText("Draft", "Testing");
+        // when
+        List<Email> emailsFound = service.findEmailByText(mailbox, searchText);
 
-        assertEquals("Invalid number of emails found by text. Probably looked beyond one mailbox.",
-                     DRAFT_WITH_TESTING_STRING_COUNT,
-                     emailsFound.size());
+        // then
+        assertThat("Invalid emails found by text. Probably looked beyond one mailbox.",
+                   emailsFound,
+                   containsInAnyOrder(expectedEmails));
     }
 
     @Test
-    public void deletingEmailShouldChangeItsMailbox() {
-        final int inboxEmailCount = 2;
-        final int deletedEmailCount = 1;
+    public void deletingEmailShouldOnlyChangeItsMailbox() {
+        // given
         EmailService service = getEmailService();
 
+        // when
         service.deleteEmail(exampleEmails.get(0));
-        List<Email> inboxEmailsAfterwards = service.getEmailsInMailbox("Inbox");
-        List<Email> deletedEmailsAfterwards = service.getEmailsInMailbox("Deleted");
 
-        assertEquals("Invalid number of emails. Deleting an email haven't moved it from the \"Inbox\" mailbox.",
-                     inboxEmailCount - 1,
-                     inboxEmailsAfterwards.size());
-        assertEquals("Invalid number of emails. Deleting an email haven't moved it to the \"Deleted\" mailbox.",
-                     deletedEmailCount + 1,
-                     deletedEmailsAfterwards.size());
+        // then
+        assertEquals("Invalid mailbox. Deleting an email haven't moved it from \"Inbox\".",
+                     "Deleted",
+                     exampleEmails.get(0).getMailbox());
+    }
+
+    @Test
+    @Parameters({"0", "1", "2", "3", "4"})
+    public void emailCopyShouldHaveSamePropertyValuesAsOriginalExceptId(int emailId) {
+        // given
+        EmailService service = getEmailService();
+
+        // when
+        Email emailCopy = service.createEmailCopy(exampleEmails.get(emailId));
+
+        // then
+        assertThat("Email copy differentiates from its original.",
+                   exampleEmails.get(emailId),
+                   sameBeanAs(emailCopy).ignoring("id"));
     }
 
     private EmailService getEmailService() {
@@ -134,7 +158,7 @@ public class TestEmailService {
         return new DefaultEmailService(mockEmailRepo, mockUserService);
     }
 
-    private int[][] getIndicesForSortingTest() {
+    private Object[] getIndicesForSortingTest() {
         return new int[][]{
                 {3, 2, 1, 0, 4},
                 {4, 0, 2, 1, 3},
@@ -142,5 +166,29 @@ public class TestEmailService {
                 {3, 2, 4, 1, 0},
                 {1, 3, 2, 4, 0},
         };
+    }
+
+    private Object[] getMailboxEmailIndicesPairs() {
+        return new Object[]{
+                new Object[]{"Inbox", new int[]{0, 1}},
+                new Object[]{"Draft", new int[]{2, 4}},
+                new Object[]{"Deleted", new int[]{3}}
+        };
+    }
+
+    private Object[] getSearchEmailCases() {
+        return new Object[]{
+                new Object[]{"Inbox", "Testing", new int[]{0, 1}},
+                new Object[]{"Inbox", "correct", new int[]{0}},
+                new Object[]{"Draft", "te", new int[]{2, 4}},
+                new Object[]{"Draft", "Testing", new int[]{4}},
+                new Object[]{"Deleted", "deleted", new int[]{}},
+                new Object[]{"Deleted", "duplicated", new int[]{3}}
+        };
+    }
+
+
+    public static <T> org.hamcrest.Matcher<java.lang.Iterable<? extends T>> containsInAnyOrder(Collection<T> items) {
+        return org.hamcrest.collection.IsIterableContainingInAnyOrder.<T>containsInAnyOrder((T[]) items.toArray());
     }
 }

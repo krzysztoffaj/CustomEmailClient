@@ -26,5 +26,5 @@ public interface UserService {
 
     String listReceiversFullInfo(Set<User> receivers);
 
-    User getUserWithEmailAddressOrCreateNew(String emailAddress);
+    User getUserWithEmailAddressOrCreateNewOne(String emailAddress);
 }

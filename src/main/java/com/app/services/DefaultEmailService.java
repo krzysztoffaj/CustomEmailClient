@@ -163,7 +163,7 @@ public class DefaultEmailService implements EmailService {
     public Set<User> getReceiversFromTextField(String input) {
         Set<User> receivers = new HashSet<>();
         for (String emailAddress : input.split("\\s*,\\s*")) {
-            receivers.add(userService.getUserWithEmailAddressOrCreateNew(emailAddress));
+            receivers.add(userService.getUserWithEmailAddressOrCreateNewOne(emailAddress));
         }
         return receivers;
     }
