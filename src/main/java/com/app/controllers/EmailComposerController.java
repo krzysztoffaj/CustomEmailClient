@@ -126,7 +126,7 @@ public class EmailComposerController {
 
     private void handleAttachFileClick() {
         attachFileBtn.setOnAction(e -> {
-            Alert alert = new Alert(Alert.AlertType.NONE, "It's gonna be implemented someday, I swear...", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.NONE, "It's gonna be implemented someday, I promise...", ButtonType.OK);
             alert.showAndWait();
         });
     }

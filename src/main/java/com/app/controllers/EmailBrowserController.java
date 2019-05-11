@@ -209,7 +209,8 @@ public class EmailBrowserController {
 
     private void handleMarkClick() {
         markBtn.setOnAction(e -> {
-
+            Alert alert = new Alert(Alert.AlertType.NONE, "It's gonna be implemented someday, I promise...", ButtonType.OK);
+            alert.showAndWait();
         });
     }
 
