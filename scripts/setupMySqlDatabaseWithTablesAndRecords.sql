@@ -23,7 +23,7 @@ CREATE TABLE user
     first_name          CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
     last_name           CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
     email_address       CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
-    is_in_address_book  BOOLEAN,
+    is_in_address_book  BOOLEAN NOT NULL DEFAULT 0,
 
     PRIMARY KEY (user_id)
 );
