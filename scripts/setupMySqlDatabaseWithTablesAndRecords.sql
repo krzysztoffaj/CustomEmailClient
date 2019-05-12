@@ -50260,6 +50260,9 @@ INSERT INTO email_user (email_id, user_id)
 VALUES (6, 16);
 
 INSERT INTO email_user (email_id, user_id)
+VALUES (7, 1);
+
+INSERT INTO email_user (email_id, user_id)
 VALUES (8, 1);
 
 INSERT INTO email_user (email_id, user_id)
@@ -50291,6 +50294,9 @@ VALUES (17, 1);
 
 INSERT INTO email_user (email_id, user_id)
 VALUES (17, 16);
+
+INSERT INTO email_user (email_id, user_id)
+VALUES (18, 1);
 
 INSERT INTO email_user (email_id, user_id)
 VALUES (19, 19);
