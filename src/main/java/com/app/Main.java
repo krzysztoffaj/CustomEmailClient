@@ -10,7 +10,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         ApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
         EmailBrowserController browserController = appContext.getBean("emailBrowserController", EmailBrowserController.class);
