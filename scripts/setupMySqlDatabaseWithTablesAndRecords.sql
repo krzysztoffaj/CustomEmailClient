@@ -8,9 +8,9 @@ CREATE TABLE email
 (
     email_id    INT NOT NULL AUTO_INCREMENT,
     sender_id   INT NOT NULL,
-    subject     CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
-    mailbox     CHAR(10) CHARACTER SET UTF8MB4 NOT NULL,
-    mark        CHAR(10) CHARACTER SET UTF8MB4 NOT NULL,
+    subject     NVARCHAR(255) NOT NULL,
+    mailbox     NVARCHAR(10) NOT NULL,
+    mark        NVARCHAR(10) NOT NULL,
     date_time   DATETIME NOT NULL,
     body        LONGTEXT CHARACTER SET utf8 NOT NULL,
 
@@ -20,9 +20,9 @@ CREATE TABLE email
 CREATE TABLE user
 (
     user_id             INT NOT NULL AUTO_INCREMENT,
-    first_name          CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
-    last_name           CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
-    email_address       CHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
+    first_name          NVARCHAR(255) NOT NULL,
+    last_name           NVARCHAR(255) NOT NULL,
+    email_address       NVARCHAR(255) NOT NULL,
     is_in_address_book  BOOLEAN NOT NULL DEFAULT 0,
 
     PRIMARY KEY (user_id)
