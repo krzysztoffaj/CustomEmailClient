@@ -1,10 +1,25 @@
 package com.app.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user")
 public class User implements EntityId {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int id;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "email_address")
     private String emailAddress;
+
+    @Column(name = "is_in_address_book")
     private boolean isInAddressBook;
 
     public User() {

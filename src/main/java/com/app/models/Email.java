@@ -1,16 +1,40 @@
 package com.app.models;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Entity
+@Table(name = "email")
 public class Email implements EntityId {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "email_id")
     private int id;
+
+    @OneToOne
+    @JoinColumn(name = "sender_id")
     private User sender;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "email_user",
+            joinColumns = {@JoinColumn(name = "email_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> receivers;
+
+    @Column(name = "subject")
     private String subject;
+
+    @Column(name = "mailbox")
     private String mailbox;
+
+    @Column(name = "mark")
     private String mark;
+
+    @Column(name = "date_time")
     private LocalDateTime dateTime;
+
+    @Column(name = "body", columnDefinition="LONGTEXT")
     private String body;
 
     public Email() {

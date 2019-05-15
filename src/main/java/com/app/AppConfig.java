@@ -16,11 +16,11 @@ public class AppConfig {
 
     @Bean(name = "emailRepository")
     public EmailRepository getEmailRepository() {
-        return new TxtEmailRepository(getUserRepository());
+        return new DbEmailRepository(getUserRepository());
     }
 
     @Bean(name = "userRepository")
     public UserRepository getUserRepository() {
-        return new TxtUserRepository();
+        return new DbUserRepository();
     }
 }
