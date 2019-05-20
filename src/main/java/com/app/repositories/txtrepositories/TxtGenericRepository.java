@@ -67,7 +67,7 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     public void delete(T item) {
         try {
             Files.delete(Paths.get(genericTypePath, String.valueOf(item.getId())));
-            if(getGenericInstance() instanceof Email){
+            if (getGenericInstance() instanceof Email) {
                 Files.delete(Paths.get(txtRepositoryDataPath, "email_user", String.valueOf(item.getId())));
             }
         } catch (IOException e) {
