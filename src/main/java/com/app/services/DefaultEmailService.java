@@ -63,8 +63,10 @@ public class DefaultEmailService implements EmailService {
 
     @Override
     public void deleteEmail(Email email) {
-        email.setMailbox("Deleted");
-        emailRepository.update(email);
+//        email.setMailbox("Deleted");
+//        emailRepository.update(email);
+        // TODO change
+        emailRepository.delete(email);
     }
 
     @Override

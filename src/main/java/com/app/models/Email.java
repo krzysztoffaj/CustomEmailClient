@@ -16,7 +16,8 @@ public class Email implements EntityId {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
+//            , cascade = CascadeType.ALL)
     @JoinTable(name = "email_user",
             joinColumns = {@JoinColumn(name = "email_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})

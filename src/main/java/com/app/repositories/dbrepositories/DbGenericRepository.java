@@ -5,6 +5,7 @@ import com.app.models.Email;
 import com.app.models.EntityId;
 import com.app.models.User;
 import com.app.repositories.GenericRepository;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -21,7 +22,10 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
     public T get(int id) {
         Session session = getSessionFactory().openSession();
 
-        String queryString = String.format("FROM %s T WHERE T.id = :id", getInstanceSimpleName());
+        String queryString = String.format("FROM %s T " +
+                                           "WHERE T.id = :id",
+                                           getInstanceSimpleName());
+
         T object = (T) session.createQuery(queryString)
                 .setParameter("id", id)
                 .getSingleResult();
@@ -36,26 +40,51 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
     public List<T> getAll() {
         Session session = getSessionFactory().openSession();
 
-        String queryString = String.format("FROM %s", getInstanceSimpleName());
+//        session.get
+//
+        String queryString = String.format("FROM %s",
+                                           getInstanceSimpleName());
+
         List<T> all = (List<T>) session.createQuery(queryString).list();
 
+//        final Criteria crit = session.createCriteria(getGenericInstance().getClass());
         session.close();
+//        return crit.list();
+//
         return all;
     }
 
     @Override
     public void add(T item) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
 
+        session.save(item);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void update(T item) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
 
+        session.update(item);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void delete(T item) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
 
+        session.delete(item);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     @SuppressWarnings({"deprecation", "unchecked"})
