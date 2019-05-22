@@ -14,14 +14,4 @@ public class DbEmailRepository extends DbGenericRepository<Email> implements Ema
     public DbEmailRepository(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
-
-    @Override
-    public Set<User> getReceiversFromEmailUserEntity(int emailId) {
-        return null;
-    }
-
-    @Override
-    public void addEmailUserEntity(Email email) {
-
-    }
 }

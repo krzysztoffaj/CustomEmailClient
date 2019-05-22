@@ -52,7 +52,6 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         writeEmailToFile(email, writer);
     }
 
-    @Override
     public Set<User> getReceiversFromEmailUserEntity(int emailId) {
         Set<User> receivers = new HashSet<>();
         Path emailUserFilePath = Paths.get(getTxtRepositoryDataPath(), "email_user", String.valueOf(emailId));
@@ -65,7 +64,6 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
         return receivers;
     }
 
-    @Override
     public void addEmailUserEntity(Email email) {
         String newEntityPath = String.valueOf(Paths.get(getTxtRepositoryDataPath(), "email_user", String.valueOf(email.getId())));
         try (PrintWriter writer = new PrintWriter(newEntityPath)) {
