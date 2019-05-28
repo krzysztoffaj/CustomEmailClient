@@ -1,16 +1,14 @@
 package com.app.repositories.dbrepositories;
 
-import com.app.HibernateUtilities;
-import com.app.models.Email;
 import com.app.models.EntityId;
-import com.app.models.User;
 import com.app.repositories.GenericRepository;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.Criteria;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.app.HibernateUtilities.getSessionFactory;
@@ -22,16 +20,9 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
     public T get(int id) {
         Session session = getSessionFactory().openSession();
 
-        String queryString = String.format("FROM %s T " +
-                                           "WHERE T.id = :id",
-                                           getInstanceSimpleName());
-
-        T object = (T) session.createQuery(queryString)
-                .setParameter("id", id)
-                .getSingleResult();
+        T object = (T) session.get(getGenericInstance().getClass(), id);
 
         session.close();
-
         return object;
     }
 
@@ -40,17 +31,13 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
     public List<T> getAll() {
         Session session = getSessionFactory().openSession();
 
-//        session.get
-//
-        String queryString = String.format("FROM %s",
-                                           getInstanceSimpleName());
+//        CriteriaQuery<T> criteria = (CriteriaQuery<T>) session.getCriteriaBuilder().createQuery(getGenericInstance().getClass());
+//        criteria.from(getGenericInstance().getClass());
+//        List<T> all = session.createQuery(criteria).getResultList();
 
-        List<T> all = (List<T>) session.createQuery(queryString).list();
+        List<T> all = session.createCriteria(getGenericInstance().getClass()).list();
 
-//        final Criteria crit = session.createCriteria(getGenericInstance().getClass());
         session.close();
-//        return crit.list();
-//
         return all;
     }
 
@@ -99,9 +86,5 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
         }
 
         return instance;
-    }
-
-    private String getInstanceSimpleName() {
-        return getGenericInstance().getClass().getSimpleName();
     }
 }
