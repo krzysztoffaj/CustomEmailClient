@@ -9,9 +9,9 @@ public interface GenericRepository<T extends EntityId> {
 
     List<T> getAll();
 
-    void add(T item);
+    void add(T entity);
 
-    void update(T item);
+    void update(T entity);
 
-    void delete(T item);
+    void delete(T entityit);
 }

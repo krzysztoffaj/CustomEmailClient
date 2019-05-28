@@ -20,9 +20,9 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
 
     public abstract T castType(File file);
 
-    public abstract void addItem(T item, PrintWriter writer);
+    public abstract void addEntity(T entity, PrintWriter writer);
 
-    public abstract void updateItem(T item, PrintWriter writer);
+    public abstract void updateEntity(T entity, PrintWriter writer);
 
     @Override
     public T get(int id) {
@@ -43,32 +43,32 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
     }
 
     @Override
-    public void add(T item) {
-        if (item.getId() == 0) {
-            item.setId(getNextId());
+    public void add(T entity) {
+        if (entity.getId() == 0) {
+            entity.setId(getNextId());
         }
-        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(item.getId()))))) {
-            addItem(item, writer);
+        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(entity.getId()))))) {
+            addEntity(entity, writer);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void update(T item) {
-        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(item.getId()))))) {
-            updateItem(item, writer);
+    public void update(T entity) {
+        try (PrintWriter writer = new PrintWriter(String.valueOf(Paths.get(genericTypePath, String.valueOf(entity.getId()))))) {
+            updateEntity(entity, writer);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void delete(T item) {
+    public void delete(T entity) {
         try {
-            Files.delete(Paths.get(genericTypePath, String.valueOf(item.getId())));
+            Files.delete(Paths.get(genericTypePath, String.valueOf(entity.getId())));
             if (getGenericInstance() instanceof Email) {
-                Files.delete(Paths.get(txtRepositoryDataPath, "email_user", String.valueOf(item.getId())));
+                Files.delete(Paths.get(txtRepositoryDataPath, "email_user", String.valueOf(entity.getId())));
             }
         } catch (IOException e) {
             e.printStackTrace();

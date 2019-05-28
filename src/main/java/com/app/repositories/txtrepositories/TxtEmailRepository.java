@@ -42,13 +42,13 @@ public class TxtEmailRepository extends TxtGenericRepository<Email> implements E
     }
 
     @Override
-    public void addItem(Email email, PrintWriter writer) {
+    public void addEntity(Email email, PrintWriter writer) {
         writeEmailToFile(email, writer);
         addEmailUserEntity(email);
     }
 
     @Override
-    public void updateItem(Email email, PrintWriter writer) {
+    public void updateEntity(Email email, PrintWriter writer) {
         writeEmailToFile(email, writer);
     }
 

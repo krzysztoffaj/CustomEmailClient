@@ -23,12 +23,12 @@ public class TxtUserRepository extends TxtGenericRepository<User> implements Use
     }
 
     @Override
-    public void addItem(User user, PrintWriter writer) {
+    public void addEntity(User user, PrintWriter writer) {
         writeUserToFile(user, writer);
     }
 
     @Override
-    public void updateItem(User user, PrintWriter writer) {
+    public void updateEntity(User user, PrintWriter writer) {
         writeUserToFile(user, writer);
     }
 
