@@ -13,18 +13,18 @@ import java.util.List;
 public abstract class DbGenericRepository<T extends EntityId> implements GenericRepository<T> {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     @SuppressWarnings({"unchecked"})
     public T get(int id) {
-        return null;
+        return (T) entityManager.find(getGenericInstance().getClass(), id);
     }
 
     @Override
     @SuppressWarnings({"unchecked"})
     public List<T> getAll() {
-        return entityManager.createQuery("Select t from " + "Email" + " t").getResultList();
+        return entityManager.createQuery("SELECT t FROM " + getInstanceSimpleName() + " t").getResultList();
     }
 
     @Override
@@ -56,5 +56,9 @@ public abstract class DbGenericRepository<T extends EntityId> implements Generic
         }
 
         return instance;
+    }
+
+    private String getInstanceSimpleName() {
+        return getGenericInstance().getClass().getSimpleName();
     }
 }

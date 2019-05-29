@@ -104,10 +104,6 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         return instance;
     }
 
-    private String getInstanceSimpleName() {
-        return getGenericInstance().getClass().getSimpleName().toLowerCase();
-    }
-
     private int getNextId() {
         try {
             return Files.list(Paths.get(genericTypePath))
@@ -117,5 +113,9 @@ public abstract class TxtGenericRepository<T extends EntityId> implements Generi
         } catch (IOException e) {
             return -1;
         }
+    }
+
+    private String getInstanceSimpleName() {
+        return getGenericInstance().getClass().getSimpleName().toLowerCase();
     }
 }
