@@ -48,12 +48,12 @@ public class EmailBuilder {
         return this;
     }
 
-    public EmailBuilder withDateTime(LocalDateTime dateTime){
+    public EmailBuilder withDateTime(LocalDateTime dateTime) {
         email.setDateTime(dateTime);
         return this;
     }
 
-    public EmailBuilder withBody(String body){
+    public EmailBuilder withBody(String body) {
         email.setBody(body);
         return this;
     }

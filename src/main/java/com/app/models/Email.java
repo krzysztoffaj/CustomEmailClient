@@ -17,7 +17,6 @@ public class Email implements EntityId {
     private User sender;
 
     @ManyToMany(fetch = FetchType.EAGER)
-//            , cascade = CascadeType.ALL)
     @JoinTable(name = "email_user",
             joinColumns = {@JoinColumn(name = "email_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
@@ -35,7 +34,7 @@ public class Email implements EntityId {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    @Column(name = "body", columnDefinition="LONGTEXT")
+    @Column(name = "body", columnDefinition = "LONGTEXT")
     private String body;
 
     public Email() {
